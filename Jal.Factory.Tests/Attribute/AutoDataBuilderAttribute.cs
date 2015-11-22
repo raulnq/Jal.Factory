@@ -1,7 +1,7 @@
-﻿using Cignium.Framework.Infrastructure.Factory.Tests.Interfaces;
-using Cignium.Framework.Infrastructure.Factory.Tests.Model;
-using Jal.Factory.Interface;
+﻿using Jal.Factory.Interface;
 using Jal.Factory.Model;
+using Jal.Factory.Tests.Interfaces;
+using Jal.Factory.Tests.Model;
 using Jal.Locator.Interface;
 using Moq;
 using Ploeh.AutoFixture;

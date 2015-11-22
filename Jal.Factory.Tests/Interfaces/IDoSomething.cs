@@ -1,4 +1,4 @@
-﻿namespace Cignium.Framework.Infrastructure.Factory.Tests.Interfaces
+﻿namespace Jal.Factory.Tests.Interfaces
 {
     public interface IDoSomething
     {

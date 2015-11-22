@@ -1,4 +1,4 @@
-namespace Cignium.Framework.Infrastructure.Factory.Tests.Model
+namespace Jal.Factory.Tests.Model
 {
     public class Customer
     {

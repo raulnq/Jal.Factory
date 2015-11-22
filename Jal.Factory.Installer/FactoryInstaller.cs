@@ -15,7 +15,7 @@ namespace Jal.Factory.Installer
                 Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton(),
                 Component.For(typeof(IObjectFactoryConfigurationSelector)).ImplementedBy(typeof(ObjectFactoryConfigurationSelector)).LifestyleSingleton()
             );
-
+            
             var assemblysources = AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource");
             if (assemblysources != null)
             {

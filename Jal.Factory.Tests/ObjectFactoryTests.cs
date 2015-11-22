@@ -1,8 +1,8 @@
-﻿using Cignium.Framework.Infrastructure.Factory.Tests.Interfaces;
-using Cignium.Framework.Infrastructure.Factory.Tests.Model;
-using Jal.Factory.Impl;
+﻿using Jal.Factory.Impl;
 using Jal.Factory.Model;
 using Jal.Factory.Tests.Attribute;
+using Jal.Factory.Tests.Interfaces;
+using Jal.Factory.Tests.Model;
 using NUnit.Framework;
 using Shouldly;
 
