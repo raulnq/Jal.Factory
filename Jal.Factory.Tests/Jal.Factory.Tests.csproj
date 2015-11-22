@@ -30,8 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Jal.AssemblyFinder">
+      <HintPath>..\packages\Jal.AssemblyFinder.1.0.0.1\lib\net40\Jal.AssemblyFinder.dll</HintPath>
+    </Reference>
     <Reference Include="Jal.Locator">
       <HintPath>..\packages\Jal.Locator.1.0.0.0\lib\net40\Jal.Locator.dll</HintPath>
+    </Reference>
+    <Reference Include="Jal.Locator.CastleWindsor">
+      <HintPath>..\packages\Jal.Locator.CastleWindsor.1.0.0.0\lib\net40\Jal.Locator.CastleWindsor.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
@@ -67,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\AutoDataBuilderAttribute.cs" />
+    <Compile Include="Impl\DoSomething.cs" />
+    <Compile Include="Impl\ObjectFactoryConfigurationSource.cs" />
+    <Compile Include="Integration\Tests.cs" />
     <Compile Include="Interfaces\IDoSomething.cs" />
     <Compile Include="LocalAddin.cs" />
     <Compile Include="Model\Customer.cs" />
@@ -80,11 +95,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jal.Factory.Installer\Jal.Factory.Installer.csproj">
+      <Project>{3F5DCFD1-C2D0-4523-AFAC-732B1D2AB5C1}</Project>
+      <Name>Jal.Factory.Installer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jal.Factory\Jal.Factory.csproj">
       <Project>{A408B8D4-499F-42F4-96C3-BA87BE5F4450}</Project>
       <Name>Jal.Factory</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
