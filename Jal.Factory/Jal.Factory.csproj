@@ -55,7 +55,6 @@
     <Compile Include="Fluent\ObjectFactoryConfigurationCreateGroupDescriptor.cs" />
     <Compile Include="Fluent\ObjectFactoryConfigurationWhenDescriptor.cs" />
     <Compile Include="Model\ObjectFactoryConfigurationItem.cs" />
-    <Compile Include="Model\ObjectFactoryResolverType.cs" />
     <Compile Include="Model\ObjectFactorySettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

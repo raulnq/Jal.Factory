@@ -31,10 +31,10 @@ namespace Jal.Factory.Tests
         }
 
         [Test]
-        [AutoDataBuilder(ObjectFactoryResolverType.Name, true)]
+        [AutoDataBuilder(true)]
         public void Provide_WithNullReturnType_ShouldThrowException(ObjectFactoryConfigurationProvider sut, Customer customer)
         {
-            Should.Throw<ArgumentException>(()=>sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
+            Should.Throw<ArgumentException>(() => sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder]
         public void Provide_WithValidSelector_ShouldNotBeEmpty(Fixture result)
         {
-            var sut = new ObjectFactoryConfigurationProvider(new [] { result.Create<IObjectFactoryConfigurationSource>() });
+            var sut = new ObjectFactoryConfigurationProvider(new[] { result.Create<IObjectFactoryConfigurationSource>() });
             sut.ObjectFactoryConfiguration.Items.ShouldNotBeEmpty();
         }
     }

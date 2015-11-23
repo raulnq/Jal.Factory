@@ -29,7 +29,7 @@ namespace Jal.Factory.Tests.Integration
             _container.Kernel.Resolver.AddSubResolver(new ArrayResolver(_container.Kernel));
             _container.Install(new ServiceLocatorInstaller());
             _container.Install(new FactoryInstaller());
-            _container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named("DoSomething"));
+            _container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
         }
 
         [Test]

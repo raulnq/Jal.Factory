@@ -29,9 +29,9 @@ namespace Jal.Factory.Impl
             return Create<TTarget, TResult>(instance, name);
         }
 
-        public TResult[] Create<TTarget,TResult>(TTarget instance, string name) where TResult : class
+        public TResult[] Create<TTarget, TResult>(TTarget instance, string name) where TResult : class
         {
-            var factoryConfigurationItems = _objectFactoryConfigurationProvider.Provide(instance,name);
+            var factoryConfigurationItems = _objectFactoryConfigurationProvider.Provide(instance, name);
 
             var list = new List<TResult>();
 
@@ -39,9 +39,9 @@ namespace Jal.Factory.Impl
             {
                 foreach (var configurationItem in factoryConfigurationItems)
                 {
-                    if (typeof (TResult).IsAssignableFrom(configurationItem.ResultType))
+                    if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
                     {
-                        var result = Resolve<TResult>(configurationItem);
+                        var result = _serviceLocator.Resolve<TResult>(configurationItem.ResultType.FullName);
 
                         if (_objectFactoryConfigurationSelector.Select(configurationItem, instance, result))
                         {
@@ -51,18 +51,6 @@ namespace Jal.Factory.Impl
                 }
             }
             return list.ToArray();
-        }
-
-        private TResult Resolve<TResult>(ObjectFactoryConfigurationItem configurationItem) where TResult : class
-        {
-            if (configurationItem.ResolverType == ObjectFactoryResolverType.Type)
-            {
-                return _serviceLocator.Resolve(configurationItem.ResultType) as TResult;
-            }
-            else
-            {
-                return _serviceLocator.Resolve<TResult>(configurationItem.ResultType.Name);
-            }
         }
     }
 }

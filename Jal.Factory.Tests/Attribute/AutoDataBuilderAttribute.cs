@@ -12,14 +12,14 @@ namespace Jal.Factory.Tests.Attribute
 {
     public class AutoDataBuilderAttribute : AutoDataAttribute
     {
-        public AutoDataBuilderAttribute(ObjectFactoryResolverType resolverType = ObjectFactoryResolverType.Name, bool withoutResult=false)
+        public AutoDataBuilderAttribute(bool withoutResult = false)
             : base(new Fixture().Customize(new AutoMoqCustomization()))
         {
             var provider = Fixture.Freeze<Mock<IObjectFactoryConfigurationProvider>>();
 
             var service = Fixture.Freeze<Mock<IDoSomething>>();
 
-            var item = new ObjectFactoryConfigurationItem(typeof(Customer), service.Object.GetType(), resolverType);
+            var item = new ObjectFactoryConfigurationItem(typeof(Customer), service.Object.GetType());
 
             if (withoutResult)
             {

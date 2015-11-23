@@ -15,24 +15,11 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder]
         public void Create_WithResolveByName_ShouldBeOne(ObjectFactory sut, Customer customer)
         {
-            var implementations= sut.Create<Customer, IDoSomething>(customer);
-
-            implementations.ShouldNotBeNull();
-
-            implementations.Length.ShouldBe(1);
-        }
-
-        [Test]
-        [AutoDataBuilder(ObjectFactoryResolverType.Type)]
-        public void Create_WithResolveByType_ShouldBeOne(ObjectFactory sut, Customer customer)
-        {
-
             var implementations = sut.Create<Customer, IDoSomething>(customer);
 
             implementations.ShouldNotBeNull();
 
             implementations.Length.ShouldBe(1);
         }
-      
     }
 }
