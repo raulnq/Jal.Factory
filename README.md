@@ -23,9 +23,9 @@ Install the Jal.Factory library, use the FactoryInstaller class included
 
 	container.Install(new FactoryInstaller());
 	
-Register your services, it's mandatory name the service with the same name of the class
+Register your services, it's mandatory name the service with the same full name of the class
 
-	container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named("DoSomething"));
+	container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName)));
 	
 Create a class to setup the Jal.Factory library
 
