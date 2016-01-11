@@ -13,7 +13,7 @@ Setup the Jal.AssemblyFinder library
 Setup the Castle Windsor container
 
 	var container = new WindsorContainer();
-	container.Kernel.Resolver.AddSubResolver(new ArrayResolver(_container.Kernel));
+	container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
 	
 Install the Jal.Locator.CastleWindsor library
 
@@ -43,7 +43,7 @@ Tag the assembly container of the ObjectFactoryConfigurationSource class in orde
 	
 Resolve a instance of the interface IObjectFactory
 
-	var factory = _container.Resolve<IObjectFactory>();
+	var factory = container.Resolve<IObjectFactory>();
 
 Use the factory
 
