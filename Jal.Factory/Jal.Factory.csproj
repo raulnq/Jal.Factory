@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jal.Locator">
-      <HintPath>..\packages\Jal.Locator.1.0.0.0\lib\net40\Jal.Locator.dll</HintPath>
+    <Reference Include="Jal.Locator, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Jal.Locator.1.0.3.0\lib\net40\Jal.Locator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,10 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IObjectFactoryServiceLocatorSetupDescriptor.cs" />
+    <Compile Include="Interface\IObjectFactorySetupDescriptor.cs" />
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationProvider.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationSelector.cs" />
+    <Compile Include="Fluent\ObjectFactorySetupDescriptor.cs" />
     <Compile Include="Interface\IObjectFactory.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationProvider.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationSelector.cs" />

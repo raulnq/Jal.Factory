@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Jal.Factory.Fluent;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
 using Jal.Locator.Interface;
@@ -7,6 +8,17 @@ namespace Jal.Factory.Impl
 {
     public class ObjectFactory : IObjectFactory
     {
+
+        public static IObjectFactory Current;
+
+        public static IObjectFactoryServiceLocatorSetupDescriptor Setup
+        {
+            get
+            {
+                return new ObjectFactorySetupDescriptor();
+            }
+        }
+
         private readonly IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
 
         private readonly IServiceLocator _serviceLocator;

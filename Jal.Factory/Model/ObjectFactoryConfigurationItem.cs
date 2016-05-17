@@ -51,5 +51,7 @@ namespace Jal.Factory.Model
         public object Selector { get; set; }
 
         public object Filter { get; set; }
+
+        public dynamic Bag { get; set; }
     }
 }
