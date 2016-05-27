@@ -8,26 +8,28 @@ namespace Jal.Factory.Impl
 {
     public class ObjectFactoryConfigurationProvider : IObjectFactoryConfigurationProvider
     {
-        private readonly ObjectFactoryConfiguration _objectFactoryConfiguration;
+        public ObjectFactoryConfiguration Configuration { get; set; }
 
-        public ObjectFactoryConfiguration ObjectFactoryConfiguration { get { return _objectFactoryConfiguration; } }
+        public IObjectFactoryConfigurationSource[] Sources { get; set; }
 
         public ObjectFactoryConfigurationProvider(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
         {
-            _objectFactoryConfiguration = new ObjectFactoryConfiguration();
+            Sources = objectFactoryConfigurationSources;
+
+            Configuration = new ObjectFactoryConfiguration();
 
             if (objectFactoryConfigurationSources!=null)
             {
-                foreach (var objectFactoryConfigurationSource in objectFactoryConfigurationSources)
+                foreach (var objectFactoryConfigurationSource in Sources)
                 {
-                    _objectFactoryConfiguration.Items.AddRange(objectFactoryConfigurationSource.Source().Items);
+                    Configuration.Items.AddRange(objectFactoryConfigurationSource.Source().Items);
                 }
             }
         }
 
         public ObjectFactoryConfigurationItem[] Provide<TTarget>(TTarget instance, string name)
         {
-            var objectFactoryConfigurationItems = _objectFactoryConfiguration.Items;
+            var objectFactoryConfigurationItems = Configuration.Items;
 
             var items = objectFactoryConfigurationItems.Where(x => x.TargetType == typeof(TTarget)).ToList();
 

@@ -25,8 +25,8 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder]
         public void Provide_WithInvalidSelector_ShouldNotBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer, Fixture fixture)
         {
-            sut.ObjectFactoryConfiguration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
-            sut.ObjectFactoryConfiguration.Items[0].Selector = (Func<string, bool>)(t => true);
+            sut.Configuration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
+            sut.Configuration.Items[0].Selector = (Func<string, bool>)(t => true);
             sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
 
@@ -41,8 +41,8 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder]
         public void Provide_WithValidSelector_ShouldNotBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer, Fixture fixture)
         {
-            sut.ObjectFactoryConfiguration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
-            sut.ObjectFactoryConfiguration.Items[0].Selector = (Func<Customer, bool>)(t => true);
+            sut.Configuration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
+            sut.Configuration.Items[0].Selector = (Func<Customer, bool>)(t => true);
             sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
 
@@ -52,7 +52,7 @@ namespace Jal.Factory.Tests
         public void Provide_WithValidSelector_ShouldNotBeEmpty(Fixture result)
         {
             var sut = new ObjectFactoryConfigurationProvider(new[] { result.Create<IObjectFactoryConfigurationSource>() });
-            sut.ObjectFactoryConfiguration.Items.ShouldNotBeEmpty();
+            sut.Configuration.Items.ShouldNotBeEmpty();
         }
     }
 }

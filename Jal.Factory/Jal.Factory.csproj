@@ -52,7 +52,7 @@
     <Compile Include="Fluent\ObjectFactorySetupDescriptor.cs" />
     <Compile Include="Interface\IObjectFactory.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationProvider.cs" />
-    <Compile Include="Interface\IObjectFactoryConfigurationSelector.cs" />
+    <Compile Include="Interface\IObjectFactoryConfigurationRuntimeProvider.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationSource.cs" />
     <Compile Include="Model\ObjectFactoryConfiguration.cs" />
     <Compile Include="Fluent\ObjectFactoryConfigurationCreateDescriptor.cs" />
