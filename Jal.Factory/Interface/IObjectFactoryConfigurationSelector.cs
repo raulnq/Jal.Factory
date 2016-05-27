@@ -2,8 +2,8 @@
 
 namespace Jal.Factory.Interface
 {
-    public interface IObjectFactoryConfigurationSelector
+    public interface IObjectFactoryConfigurationRuntimeProvider
     {
-        bool Select<TTarget, TResult>(ObjectFactoryConfigurationItem configurationItem, TTarget instance, TResult result);
+        bool Provide<TTarget, TResult>(ObjectFactoryConfigurationItem configurationItem, TTarget instance, TResult result);
     }
 }

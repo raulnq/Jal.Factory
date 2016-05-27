@@ -48,7 +48,7 @@
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationProvider.cs" />
-    <Compile Include="Impl\ObjectFactoryConfigurationSelector.cs" />
+    <Compile Include="Impl\ObjectFactoryConfigurationRuntimeProvider.cs" />
     <Compile Include="Fluent\ObjectFactorySetupDescriptor.cs" />
     <Compile Include="Interface\IObjectFactory.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationProvider.cs" />

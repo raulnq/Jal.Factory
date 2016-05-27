@@ -86,7 +86,7 @@
     <Compile Include="LocalAddin.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="ObjectFactoryConfigurationProviderTests.cs" />
-    <Compile Include="ObjectFactoryConfigurationSelectorTests.cs" />
+    <Compile Include="ObjectFactoryConfigurationRuntimeProviderTests.cs" />
     <Compile Include="ObjectFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

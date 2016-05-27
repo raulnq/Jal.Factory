@@ -13,7 +13,7 @@ namespace Jal.Factory.Installer
             container.Register(
                 Component.For(typeof(IObjectFactory)).ImplementedBy(typeof(ObjectFactory)).LifestyleSingleton(),
                 Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton(),
-                Component.For(typeof(IObjectFactoryConfigurationSelector)).ImplementedBy(typeof(ObjectFactoryConfigurationSelector)).LifestyleSingleton()
+                Component.For(typeof(IObjectFactoryConfigurationRuntimeProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationRuntimeProvider)).LifestyleSingleton()
             );
             
             var assemblysources = AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource");

@@ -5,5 +5,15 @@
         TResult[] Create<TTarget, TResult>(TTarget target, string name) where TResult : class;
 
         TResult[] Create<TTarget, TResult>(TTarget target) where TResult : class;
+
+        IObjectFactoryConfigurationProvider ConfigurationProvider
+        {
+            get;
+        }
+
+        IObjectFactoryConfigurationRuntimeProvider ConfigurationRuntimeProvider
+        {
+            get;
+        }
     }
 }

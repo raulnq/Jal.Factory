@@ -12,7 +12,7 @@ namespace Jal.Factory.Fluent
 
         private IObjectFactory _objectFactory;
 
-        private IObjectFactoryConfigurationSelector _objectFactoryConfigurationSelector;
+        private IObjectFactoryConfigurationRuntimeProvider _objectFactoryConfigurationRuntimeProvider;
 
         private IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
 
@@ -28,9 +28,9 @@ namespace Jal.Factory.Fluent
             return this;
         }
 
-        public IObjectFactorySetupDescriptor UseObjectFactoryConfigurationSelector(IObjectFactoryConfigurationSelector objectFactoryConfigurationSelector)
+        public IObjectFactorySetupDescriptor UseObjectFactoryConfigurationRuntimeProvider(IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider)
         {
-            _objectFactoryConfigurationSelector = objectFactoryConfigurationSelector;
+            _objectFactoryConfigurationRuntimeProvider = objectFactoryConfigurationRuntimeProvider;
             return this;
         }
 
@@ -59,11 +59,11 @@ namespace Jal.Factory.Fluent
                 return _objectFactory;
             }
 
-            IObjectFactoryConfigurationSelector objectFactoryConfigurationSelector = new ObjectFactoryConfigurationSelector();
+            IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider = new ObjectFactoryConfigurationRuntimeProvider();
 
-            if (_objectFactoryConfigurationSelector != null)
+            if (_objectFactoryConfigurationRuntimeProvider != null)
             {
-                objectFactoryConfigurationSelector = _objectFactoryConfigurationSelector;
+                objectFactoryConfigurationRuntimeProvider = _objectFactoryConfigurationRuntimeProvider;
             }
 
             IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider = new ObjectFactoryConfigurationProvider(_objectFactoryConfigurationSources);
@@ -73,7 +73,7 @@ namespace Jal.Factory.Fluent
                 objectFactoryConfigurationProvider = _objectFactoryConfigurationProvider;
             }
 
-            return new ObjectFactory(objectFactoryConfigurationProvider, _serviceLocator, objectFactoryConfigurationSelector);
+            return new ObjectFactory(objectFactoryConfigurationProvider, _serviceLocator, objectFactoryConfigurationRuntimeProvider);
         }
     }
 }

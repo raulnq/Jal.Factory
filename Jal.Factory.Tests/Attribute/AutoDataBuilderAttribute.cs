@@ -28,9 +28,9 @@ namespace Jal.Factory.Tests.Attribute
 
             provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { item }).Verifiable();
 
-            var selector = Fixture.Freeze<Mock<IObjectFactoryConfigurationSelector>>();
+            var selector = Fixture.Freeze<Mock<IObjectFactoryConfigurationRuntimeProvider>>();
 
-            selector.Setup(x => x.Select(It.IsAny<ObjectFactoryConfigurationItem>(), It.IsAny<Customer>(), It.IsAny<IDoSomething>())).Returns(true).Verifiable();
+            selector.Setup(x => x.Provide(It.IsAny<ObjectFactoryConfigurationItem>(), It.IsAny<Customer>(), It.IsAny<IDoSomething>())).Returns(true).Verifiable();
 
             var serviceLocator = Fixture.Freeze<Mock<IServiceLocator>>();
 

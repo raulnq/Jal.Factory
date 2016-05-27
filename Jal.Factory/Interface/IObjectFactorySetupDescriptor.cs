@@ -2,7 +2,7 @@ namespace Jal.Factory.Interface
 {
     public interface IObjectFactorySetupDescriptor
     {
-        IObjectFactorySetupDescriptor UseObjectFactoryConfigurationSelector(IObjectFactoryConfigurationSelector objectFactoryConfigurationSelector);
+        IObjectFactorySetupDescriptor UseObjectFactoryConfigurationRuntimeProvider(IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider);
 
         IObjectFactorySetupDescriptor UseObjectFactoryConfigurationProvider(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider);
 

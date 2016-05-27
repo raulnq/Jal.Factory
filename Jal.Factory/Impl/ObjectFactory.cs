@@ -19,19 +19,19 @@ namespace Jal.Factory.Impl
             }
         }
 
-        private readonly IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
+        public IObjectFactoryConfigurationProvider ConfigurationProvider { get; set; }
+
+        public IObjectFactoryConfigurationRuntimeProvider ConfigurationRuntimeProvider { get; set; }
 
         private readonly IServiceLocator _serviceLocator;
 
-        private readonly IObjectFactoryConfigurationSelector _objectFactoryConfigurationSelector;
-
-        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IServiceLocator serviceLocator, IObjectFactoryConfigurationSelector objectFactoryConfigurationSelector)
+        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IServiceLocator serviceLocator, IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider)
         {
-            _objectFactoryConfigurationProvider = objectFactoryConfigurationProvider;
+            ConfigurationProvider = objectFactoryConfigurationProvider;
 
             _serviceLocator = serviceLocator;
 
-            _objectFactoryConfigurationSelector = objectFactoryConfigurationSelector;
+            ConfigurationRuntimeProvider = objectFactoryConfigurationRuntimeProvider;
         }
 
         public TResult[] Create<TTarget, TResult>(TTarget instance) where TResult : class
@@ -43,7 +43,7 @@ namespace Jal.Factory.Impl
 
         public TResult[] Create<TTarget, TResult>(TTarget instance, string name) where TResult : class
         {
-            var factoryConfigurationItems = _objectFactoryConfigurationProvider.Provide(instance, name);
+            var factoryConfigurationItems = ConfigurationProvider.Provide(instance, name);
 
             var list = new List<TResult>();
 
@@ -55,7 +55,7 @@ namespace Jal.Factory.Impl
                     {
                         var result = _serviceLocator.Resolve<TResult>(configurationItem.ResultType.FullName);
 
-                        if (_objectFactoryConfigurationSelector.Select(configurationItem, instance, result))
+                        if (ConfigurationRuntimeProvider.Provide(configurationItem, instance, result))
                         {
                             list.Add(result);
                         }
