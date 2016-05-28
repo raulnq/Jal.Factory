@@ -3,7 +3,7 @@ using Jal.Locator.Interface;
 
 namespace Jal.Factory.Interface
 {
-    public interface IObjectFactoryServiceLocatorSetupDescriptor
+    public interface IServiceLocatorSetupDescriptor
     {
         IObjectFactorySetupDescriptor UseServiceLocator(IServiceLocator serviceLocator);
     }

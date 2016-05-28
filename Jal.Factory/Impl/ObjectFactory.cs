@@ -11,11 +11,11 @@ namespace Jal.Factory.Impl
 
         public static IObjectFactory Current;
 
-        public static IObjectFactoryServiceLocatorSetupDescriptor Setup
+        public static IServiceLocatorSetupDescriptor Setup
         {
             get
             {
-                return new ObjectFactorySetupDescriptor();
+                return new SetupDescriptor();
             }
         }
 

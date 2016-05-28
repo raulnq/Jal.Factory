@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IObjectFactoryServiceLocatorSetupDescriptor.cs" />
+    <Compile Include="Interface\IServiceLocatorSetupDescriptor.cs" />
     <Compile Include="Interface\IObjectFactorySetupDescriptor.cs" />
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />

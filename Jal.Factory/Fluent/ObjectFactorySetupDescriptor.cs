@@ -5,7 +5,7 @@ using Jal.Locator.Interface;
 
 namespace Jal.Factory.Fluent
 {
-    public class ObjectFactorySetupDescriptor : IObjectFactoryServiceLocatorSetupDescriptor, IObjectFactorySetupDescriptor
+    public class SetupDescriptor : IServiceLocatorSetupDescriptor, IObjectFactorySetupDescriptor
     {
 
         private IServiceLocator _serviceLocator;
