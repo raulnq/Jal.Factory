@@ -59,7 +59,7 @@ namespace Jal.Factory.Fluent
             return this;
         }
 
-        public IObjectFactorySetupDescriptor UseObjectFactoryInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor)
+        public IObjectFactorySetupDescriptor UseInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor)
         {
             _objectFactoryInterceptor = objectFactoryInterceptor;
             return this;

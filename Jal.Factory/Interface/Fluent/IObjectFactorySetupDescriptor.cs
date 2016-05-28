@@ -8,6 +8,6 @@ namespace Jal.Factory.Interface.Fluent
 
         IObjectFactorySetupDescriptor WithConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources);
 
-        IObjectFactorySetupDescriptor UseObjectFactoryInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor);
+        IObjectFactorySetupDescriptor UseInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor);
     }
 }
