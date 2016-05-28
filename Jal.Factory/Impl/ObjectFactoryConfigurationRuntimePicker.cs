@@ -4,9 +4,9 @@ using Jal.Factory.Model;
 
 namespace Jal.Factory.Impl
 {
-    public class ObjectFactoryConfigurationRuntimeProvider : IObjectFactoryConfigurationRuntimeProvider
+    public class ObjectFactoryConfigurationRuntimePicker : IObjectFactoryConfigurationRuntimePicker
     {
-        public bool Provide<TTarget, TResult>(ObjectFactoryConfigurationItem configurationItem, TTarget instance, TResult result)
+        public bool Pick<TTarget, TResult>(ObjectFactoryConfigurationItem configurationItem, TTarget instance, TResult result)
         {
             if (configurationItem.Filter != null)
             {

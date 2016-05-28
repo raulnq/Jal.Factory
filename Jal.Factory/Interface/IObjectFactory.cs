@@ -6,19 +6,12 @@
 
         TResult[] Create<TTarget, TResult>(TTarget target) where TResult : class;
 
-        IObjectFactoryConfigurationProvider ConfigurationProvider
-        {
-            get;
-        }
+        IObjectFactoryConfigurationProvider ConfigurationProvider { get; }
 
-        IObjectFactoryConfigurationRuntimeProvider ConfigurationRuntimeProvider
-        {
-            get;
-        }
+        IObjectFactoryConfigurationRuntimePicker ConfigurationRuntimePicker { get; }
 
-        IObjectCreator Creator
-        {
-            get;
-        }
+        IObjectCreator Creator { get; }
+
+        IObjectFactoryInterceptor Interceptor { get; }
     }
 }

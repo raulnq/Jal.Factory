@@ -1,4 +1,5 @@
-﻿using Jal.Factory.Interface;
+﻿using System;
+using Jal.Factory.Interface;
 using Jal.Locator.Interface;
 
 namespace Jal.Factory.Impl
@@ -12,9 +13,9 @@ namespace Jal.Factory.Impl
             _serviceLocator = serviceLocator;
         }
 
-        public T Create<T>(string name) where T : class
+        public T Create<T>(Type type) where T : class
         {
-            return _serviceLocator.Resolve<T>(name);
+            return _serviceLocator.Resolve<T>(type.FullName);
         }
     }
 }

@@ -1,25 +1,27 @@
 using System;
-using System.ComponentModel.Design;
 using Jal.Factory.Impl;
 using Jal.Factory.Interface;
+using Jal.Factory.Interface.Fluent;
 using Jal.Locator.Interface;
 
 namespace Jal.Factory.Fluent
 {
-    public class SetupDescriptor : IObjectCreatorSetupDescriptor, IObjectFactorySetupDescriptor
+    public class ObjectFactorySetupDescriptor : IObjectFactoryStartSetupDescriptor, IObjectFactorySetupDescriptor
     {
 
         private IObjectCreator _objectCreator;
 
         private IObjectFactory _objectFactory;
 
-        private IObjectFactoryConfigurationRuntimeProvider _objectFactoryConfigurationRuntimeProvider;
+        private IObjectFactoryInterceptor _objectFactoryInterceptor;
+
+        private IObjectFactoryConfigurationRuntimePicker _objectFactoryConfigurationRuntimePicker;
 
         private IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
 
         private IObjectFactoryConfigurationSource[] _objectFactoryConfigurationSources;
 
-        public IObjectFactorySetupDescriptor UseObjectCreator(IObjectCreator objectCreator)
+        public IObjectFactorySetupDescriptor UseCreator(IObjectCreator objectCreator)
         {
             if (objectCreator == null)
             {
@@ -39,25 +41,31 @@ namespace Jal.Factory.Fluent
             return this;
         }
 
-        public IObjectFactorySetupDescriptor UseObjectFactoryConfigurationRuntimeProvider(IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider)
+        public IObjectFactorySetupDescriptor UseConfigurationRuntimePicker(IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker)
         {
-            _objectFactoryConfigurationRuntimeProvider = objectFactoryConfigurationRuntimeProvider;
+            _objectFactoryConfigurationRuntimePicker = objectFactoryConfigurationRuntimePicker;
             return this;
         }
 
-        public IObjectFactorySetupDescriptor UseObjectFactoryConfigurationProvider(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider)
+        public IObjectFactorySetupDescriptor UseConfigurationProvider(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider)
         {
             _objectFactoryConfigurationProvider = objectFactoryConfigurationProvider;
             return this;
         }
 
-        public IObjectFactorySetupDescriptor WithObjectFactoryConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
+        public IObjectFactorySetupDescriptor WithConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
         {
             _objectFactoryConfigurationSources = objectFactoryConfigurationSources;
             return this;
         }
 
-        public IObjectFactorySetupDescriptor WithObjectFactory(IObjectFactory objectFactory)
+        public IObjectFactorySetupDescriptor UseObjectFactoryInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor)
+        {
+            _objectFactoryInterceptor = objectFactoryInterceptor;
+            return this;
+        }
+
+        public IObjectFactoryEndSetupDescriptor UseObjectFactory(IObjectFactory objectFactory)
         {
             _objectFactory = objectFactory;
             return this;
@@ -70,11 +78,18 @@ namespace Jal.Factory.Fluent
                 return _objectFactory;
             }
 
-            IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider = new ObjectFactoryConfigurationRuntimeProvider();
+            IObjectFactoryInterceptor objectFactoryInterceptor = new NullObjectFactoryInterceptor();
 
-            if (_objectFactoryConfigurationRuntimeProvider != null)
+            if (_objectFactoryInterceptor != null)
             {
-                objectFactoryConfigurationRuntimeProvider = _objectFactoryConfigurationRuntimeProvider;
+                objectFactoryInterceptor = _objectFactoryInterceptor;
+            }
+
+            IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker = new ObjectFactoryConfigurationRuntimePicker();
+
+            if (_objectFactoryConfigurationRuntimePicker != null)
+            {
+                objectFactoryConfigurationRuntimePicker = _objectFactoryConfigurationRuntimePicker;
             }
 
             IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider = new ObjectFactoryConfigurationProvider(_objectFactoryConfigurationSources);
@@ -84,7 +99,7 @@ namespace Jal.Factory.Fluent
                 objectFactoryConfigurationProvider = _objectFactoryConfigurationProvider;
             }
 
-            return new ObjectFactory(objectFactoryConfigurationProvider, _objectCreator, objectFactoryConfigurationRuntimeProvider);
+            return new ObjectFactory(objectFactoryConfigurationProvider, _objectCreator, objectFactoryConfigurationRuntimePicker, objectFactoryInterceptor);
         }
     }
 }

@@ -43,18 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Impl\NullObjectFactoryInterceptor.cs" />
     <Compile Include="Impl\ObjectCreator.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryEndSetupDescriptor.cs" />
     <Compile Include="Interface\IObjectCreator.cs" />
-    <Compile Include="Interface\IObjectCreatorSetupDescriptor.cs" />
-    <Compile Include="Interface\IObjectFactorySetupDescriptor.cs" />
+    <Compile Include="Interface\Fluent\IObjectCreatorSetupDescriptor.cs" />
+    <Compile Include="Interface\IObjectFactoryInterceptor.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactorySetupDescriptor.cs" />
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationProvider.cs" />
-    <Compile Include="Impl\ObjectFactoryConfigurationRuntimeProvider.cs" />
+    <Compile Include="Impl\ObjectFactoryConfigurationRuntimePicker.cs" />
     <Compile Include="Fluent\ObjectFactorySetupDescriptor.cs" />
     <Compile Include="Interface\IObjectFactory.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationProvider.cs" />
-    <Compile Include="Interface\IObjectFactoryConfigurationRuntimeProvider.cs" />
+    <Compile Include="Interface\IObjectFactoryConfigurationRuntimePicker.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationSource.cs" />
     <Compile Include="Model\ObjectFactoryConfiguration.cs" />
     <Compile Include="Fluent\ObjectFactoryConfigurationCreateDescriptor.cs" />

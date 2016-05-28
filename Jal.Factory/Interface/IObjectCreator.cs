@@ -1,9 +1,9 @@
-﻿using System.Runtime.InteropServices.ComTypes;
+﻿using System;
 
 namespace Jal.Factory.Interface
 {
     public interface IObjectCreator
     {
-        T Create<T>(string name) where T:class;
+        T Create<T>(Type type) where T:class;
     }
 }

@@ -15,52 +15,52 @@ namespace Jal.Factory.Tests
     {
         [Test]
         [AutoDataBuilder]
-        public void Select_WithNullFilter_ShouldBeTrue(ObjectFactoryConfigurationRuntimeProvider sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
+        public void Select_WithNullFilter_ShouldBeTrue(ObjectFactoryConfigurationRuntimePicker sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
         {
             item.Filter = null;
 
             var service = fixture.Create<IDoSomething>();
 
-            var result = sut.Provide(item, customer, service);
+            var result = sut.Pick(item, customer, service);
 
             result.ShouldBe(true);
         }
 
         [Test]
         [AutoDataBuilder]
-        public void Select_WithNotValidFilter_ShouldBeTrue(ObjectFactoryConfigurationRuntimeProvider sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
+        public void Select_WithNotValidFilter_ShouldBeTrue(ObjectFactoryConfigurationRuntimePicker sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
         {
             item.Filter = (Func<Customer, string, bool>)((t, r) => true);
 
             var service = fixture.Create<IDoSomething>();
 
-            var result = sut.Provide(item, customer, service);
+            var result = sut.Pick(item, customer, service);
 
             result.ShouldBe(true);
         }
 
         [Test]
         [AutoDataBuilder]
-        public void Select_WithValidFilter_ShouldBeTrue(ObjectFactoryConfigurationRuntimeProvider sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
+        public void Select_WithValidFilter_ShouldBeTrue(ObjectFactoryConfigurationRuntimePicker sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
         {
             item.Filter = (Func<Customer, IDoSomething, bool>)((t, r) => true);
 
             var service = fixture.Create<IDoSomething>();
 
-            var result = sut.Provide(item, customer, service);
+            var result = sut.Pick(item, customer, service);
 
             result.ShouldBe(true);
         }
 
         [Test]
         [AutoDataBuilder]
-        public void Select_WithValidFilter_ShouldBeFalse(ObjectFactoryConfigurationRuntimeProvider sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
+        public void Select_WithValidFilter_ShouldBeFalse(ObjectFactoryConfigurationRuntimePicker sut, ObjectFactoryConfigurationItem item, Customer customer, Fixture fixture)
         {
             item.Filter = (Func<Customer, IDoSomething, bool>)((t, r) => false);
 
             var service = fixture.Create<IDoSomething>();
 
-            var result = sut.Provide(item, customer, service);
+            var result = sut.Pick(item, customer, service);
 
             result.ShouldBe(false);
         }
