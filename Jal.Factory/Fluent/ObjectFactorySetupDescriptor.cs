@@ -1,14 +1,15 @@
 using System;
+using System.ComponentModel.Design;
 using Jal.Factory.Impl;
 using Jal.Factory.Interface;
 using Jal.Locator.Interface;
 
 namespace Jal.Factory.Fluent
 {
-    public class SetupDescriptor : IServiceLocatorSetupDescriptor, IObjectFactorySetupDescriptor
+    public class SetupDescriptor : IObjectCreatorSetupDescriptor, IObjectFactorySetupDescriptor
     {
 
-        private IServiceLocator _serviceLocator;
+        private IObjectCreator _objectCreator;
 
         private IObjectFactory _objectFactory;
 
@@ -18,13 +19,23 @@ namespace Jal.Factory.Fluent
 
         private IObjectFactoryConfigurationSource[] _objectFactoryConfigurationSources;
 
+        public IObjectFactorySetupDescriptor UseObjectCreator(IObjectCreator objectCreator)
+        {
+            if (objectCreator == null)
+            {
+                throw new ArgumentNullException("objectCreator");
+            }
+            _objectCreator = objectCreator;
+            return this;
+        }
+
         public IObjectFactorySetupDescriptor UseServiceLocator(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
             {
                 throw new ArgumentNullException("serviceLocator");
             }
-            _serviceLocator = serviceLocator;
+            _objectCreator = new ObjectCreator(serviceLocator);
             return this;
         }
 
@@ -73,7 +84,7 @@ namespace Jal.Factory.Fluent
                 objectFactoryConfigurationProvider = _objectFactoryConfigurationProvider;
             }
 
-            return new ObjectFactory(objectFactoryConfigurationProvider, _serviceLocator, objectFactoryConfigurationRuntimeProvider);
+            return new ObjectFactory(objectFactoryConfigurationProvider, _objectCreator, objectFactoryConfigurationRuntimeProvider);
         }
     }
 }

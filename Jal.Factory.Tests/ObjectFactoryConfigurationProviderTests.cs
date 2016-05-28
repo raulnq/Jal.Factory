@@ -25,6 +25,8 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder]
         public void Provide_WithInvalidSelector_ShouldNotBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer, Fixture fixture)
         {
+            sut.Configuration.Items[0].GroupName = "Default_Customer";
+            sut.Configuration.Items[0].TargetType = typeof(Customer);
             sut.Configuration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
             sut.Configuration.Items[0].Selector = (Func<string, bool>)(t => true);
             sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
@@ -34,6 +36,9 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder(true)]
         public void Provide_WithNullReturnType_ShouldThrowException(ObjectFactoryConfigurationProvider sut, Customer customer)
         {
+            sut.Configuration.Items[0].GroupName = "Default_Customer";
+            sut.Configuration.Items[0].TargetType = typeof(Customer);
+            sut.Configuration.Items[0].ResultType = null;
             Should.Throw<ArgumentException>(() => sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
         }
 
@@ -41,6 +46,8 @@ namespace Jal.Factory.Tests
         [AutoDataBuilder]
         public void Provide_WithValidSelector_ShouldNotBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer, Fixture fixture)
         {
+            sut.Configuration.Items[0].GroupName = "Default_Customer";
+            sut.Configuration.Items[0].TargetType = typeof(Customer);
             sut.Configuration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
             sut.Configuration.Items[0].Selector = (Func<Customer, bool>)(t => true);
             sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();

@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\IServiceLocatorSetupDescriptor.cs" />
+    <Compile Include="Impl\ObjectCreator.cs" />
+    <Compile Include="Interface\IObjectCreator.cs" />
+    <Compile Include="Interface\IObjectCreatorSetupDescriptor.cs" />
     <Compile Include="Interface\IObjectFactorySetupDescriptor.cs" />
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />

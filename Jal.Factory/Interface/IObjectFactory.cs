@@ -15,5 +15,10 @@
         {
             get;
         }
+
+        IObjectCreator Creator
+        {
+            get;
+        }
     }
 }

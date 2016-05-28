@@ -2,7 +2,6 @@
 using Jal.Factory.Fluent;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
-using Jal.Locator.Interface;
 
 namespace Jal.Factory.Impl
 {
@@ -11,7 +10,7 @@ namespace Jal.Factory.Impl
 
         public static IObjectFactory Current;
 
-        public static IServiceLocatorSetupDescriptor Setup
+        public static IObjectCreatorSetupDescriptor Setup
         {
             get
             {
@@ -23,13 +22,13 @@ namespace Jal.Factory.Impl
 
         public IObjectFactoryConfigurationRuntimeProvider ConfigurationRuntimeProvider { get; set; }
 
-        private readonly IServiceLocator _serviceLocator;
+        public IObjectCreator Creator { get; set; }
 
-        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IServiceLocator serviceLocator, IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider)
+        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator, IObjectFactoryConfigurationRuntimeProvider objectFactoryConfigurationRuntimeProvider)
         {
             ConfigurationProvider = objectFactoryConfigurationProvider;
 
-            _serviceLocator = serviceLocator;
+            Creator = objectCreator;
 
             ConfigurationRuntimeProvider = objectFactoryConfigurationRuntimeProvider;
         }
@@ -53,7 +52,7 @@ namespace Jal.Factory.Impl
                 {
                     if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
                     {
-                        var result = _serviceLocator.Resolve<TResult>(configurationItem.ResultType.FullName);
+                        var result = Creator.Create<TResult>(configurationItem.ResultType.FullName);
 
                         if (ConfigurationRuntimeProvider.Provide(configurationItem, instance, result))
                         {

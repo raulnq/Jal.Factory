@@ -32,9 +32,9 @@ namespace Jal.Factory.Tests.Attribute
 
             selector.Setup(x => x.Provide(It.IsAny<ObjectFactoryConfigurationItem>(), It.IsAny<Customer>(), It.IsAny<IDoSomething>())).Returns(true).Verifiable();
 
-            var serviceLocator = Fixture.Freeze<Mock<IServiceLocator>>();
+            var serviceLocator = Fixture.Freeze<Mock<IObjectCreator>>();
 
-            serviceLocator.Setup(x => x.Resolve<IDoSomething>(It.IsAny<string>())).Returns(service.Object).Verifiable();
+            serviceLocator.Setup(x => x.Create<IDoSomething>(It.IsAny<string>())).Returns(service.Object).Verifiable();
 
             var source = Fixture.Freeze<Mock<IObjectFactoryConfigurationSource>>();
 
