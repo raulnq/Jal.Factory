@@ -30,9 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jal.Locator, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Jal.Locator, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Jal.Locator.1.0.3.0\lib\net40\Jal.Locator.dll</HintPath>
+      <HintPath>..\packages\Jal.Locator.1.0.4.0\lib\net40\Jal.Locator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,26 +43,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Impl\AbstractObjectFactoryInterceptor.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryConfigurationGroupFluentBuilder.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryConfigurationFluentBuilder.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryConfigurationWhenFluentBuilder.cs" />
     <Compile Include="Impl\NullObjectFactoryInterceptor.cs" />
     <Compile Include="Impl\ObjectCreator.cs" />
-    <Compile Include="Interface\Fluent\IObjectFactoryEndSetupDescriptor.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryEndFluentBuilder.cs" />
     <Compile Include="Interface\IObjectCreator.cs" />
-    <Compile Include="Interface\Fluent\IObjectCreatorSetupDescriptor.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryStartFluentBuilder.cs" />
     <Compile Include="Interface\IObjectFactoryInterceptor.cs" />
-    <Compile Include="Interface\Fluent\IObjectFactorySetupDescriptor.cs" />
+    <Compile Include="Interface\Fluent\IObjectFactoryFluentBuilder.cs" />
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationProvider.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationRuntimePicker.cs" />
-    <Compile Include="Fluent\ObjectFactorySetupDescriptor.cs" />
+    <Compile Include="Fluent\ObjectFactoryFluentBuilder.cs" />
     <Compile Include="Interface\IObjectFactory.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationProvider.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationRuntimePicker.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationSource.cs" />
     <Compile Include="Model\ObjectFactoryConfiguration.cs" />
-    <Compile Include="Fluent\ObjectFactoryConfigurationCreateDescriptor.cs" />
-    <Compile Include="Fluent\ObjectFactoryConfigurationCreateGroupDescriptor.cs" />
-    <Compile Include="Fluent\ObjectFactoryConfigurationWhenDescriptor.cs" />
+    <Compile Include="Fluent\ObjectFactoryConfigurationFluentBuilder.cs" />
+    <Compile Include="Fluent\ObjectFactoryConfigurationGroupFluentBuilder.cs" />
+    <Compile Include="Fluent\ObjectFactoryConfigurationWhenFluentBuilder.cs" />
     <Compile Include="Model\ObjectFactoryConfigurationItem.cs" />
     <Compile Include="Model\ObjectFactorySettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

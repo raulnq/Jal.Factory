@@ -3,10 +3,12 @@ using Jal.Factory.Impl;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
 using Jal.Factory.Tests.Attribute;
-using Jal.Factory.Tests.Interfaces;
+using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Model;
+using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 using Shouldly;
 
 namespace Jal.Factory.Tests
@@ -14,41 +16,61 @@ namespace Jal.Factory.Tests
     [TestFixture]
     public class ObjectFactoryConfigurationProviderTests
     {
+        public ObjectFactoryConfigurationProvider Create()
+        {
+            var fixure = new Fixture();
+
+            fixure.Customize(new AutoMoqCustomization());
+
+            var item = new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething));
+
+            var source = fixure.Freeze<Mock<IObjectFactoryConfigurationSource>>();
+
+            fixure.RepeatCount = 1;
+
+            var configuration = new ObjectFactoryConfiguration();
+
+            configuration.Items.Add(item);
+
+            source.Setup(x => x.Source()).Returns(configuration);
+
+            var sut = fixure.Build<ObjectFactoryConfigurationProvider>().Without(x=>x.Configuration).Create();
+
+            return sut;
+        }
+
         [Test]
         [AutoDataBuilder]
-        public void Provide_WithNonExistingName_ShouldBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer)
+        public void Provide_WithNonExistingName_ShouldBeEmpty(Customer customer)
         {
+            var sut = Create();
+
             sut.Provide(customer, string.Empty).ShouldBeEmpty();
         }
 
         [Test]
         [AutoDataBuilder]
-        public void Provide_WithInvalidSelector_ShouldNotBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer, Fixture fixture)
+        public void Provide_WithInvalidSelector_ShouldNotBeEmpty(Customer customer)
         {
-            sut.Configuration.Items[0].GroupName = "Default_Customer";
-            sut.Configuration.Items[0].TargetType = typeof(Customer);
-            sut.Configuration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
+            var sut = Create();
             sut.Configuration.Items[0].Selector = (Func<string, bool>)(t => true);
             sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
 
         [Test]
-        [AutoDataBuilder(true)]
-        public void Provide_WithNullReturnType_ShouldThrowException(ObjectFactoryConfigurationProvider sut, Customer customer)
+        [AutoDataBuilder]
+        public void Provide_WithNullReturnType_ShouldThrowException(Customer customer)
         {
-            sut.Configuration.Items[0].GroupName = "Default_Customer";
-            sut.Configuration.Items[0].TargetType = typeof(Customer);
+            var sut = Create();
             sut.Configuration.Items[0].ResultType = null;
             Should.Throw<ArgumentException>(() => sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
         }
 
         [Test]
         [AutoDataBuilder]
-        public void Provide_WithValidSelector_ShouldNotBeEmpty(ObjectFactoryConfigurationProvider sut, Customer customer, Fixture fixture)
+        public void Provide_WithValidSelector_ShouldNotBeEmpty(Customer customer)
         {
-            sut.Configuration.Items[0].GroupName = "Default_Customer";
-            sut.Configuration.Items[0].TargetType = typeof(Customer);
-            sut.Configuration.Items[0].ResultType = fixture.Create<IDoSomething>().GetType();
+            var sut = Create();
             sut.Configuration.Items[0].Selector = (Func<Customer, bool>)(t => true);
             sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
@@ -56,9 +78,9 @@ namespace Jal.Factory.Tests
 
         [Test]
         [AutoDataBuilder]
-        public void Provide_WithValidSelector_ShouldNotBeEmpty(Fixture result)
+        public void Provide_WithValidSelector_ShouldNotBeEmpty()
         {
-            var sut = new ObjectFactoryConfigurationProvider(new[] { result.Create<IObjectFactoryConfigurationSource>() });
+            var sut = Create();
             sut.Configuration.Items.ShouldNotBeEmpty();
         }
     }

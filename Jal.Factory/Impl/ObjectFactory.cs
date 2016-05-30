@@ -12,11 +12,11 @@ namespace Jal.Factory.Impl
 
         public static IObjectFactory Current;
 
-        public static IObjectFactoryStartSetupDescriptor Setup
+        public static IObjectFactoryStartFluentBuilder Builder
         {
             get
             {
-                return new ObjectFactorySetupDescriptor();
+                return new ObjectFactoryFluentBuilder();
             }
         }
 
@@ -28,7 +28,7 @@ namespace Jal.Factory.Impl
 
         public IObjectCreator Creator { get; set; }
 
-        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator, IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker, IObjectFactoryInterceptor objectFactoryInterceptor)
+        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator, IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker)
         {
             ConfigurationProvider = objectFactoryConfigurationProvider;
 
@@ -36,7 +36,7 @@ namespace Jal.Factory.Impl
 
             ConfigurationRuntimePicker = objectFactoryConfigurationRuntimePicker;
 
-            Interceptor = objectFactoryInterceptor;
+            Interceptor = AbstractObjectFactoryInterceptor.Instance;
         }
 
         public TResult[] Create<TTarget, TResult>(TTarget instance) where TResult : class
@@ -72,12 +72,12 @@ namespace Jal.Factory.Impl
                         }
                     }
 
-                    Interceptor.OnSuccess(instance, name, items, list);
+                    Interceptor.OnSuccess(instance, name, list);
                 }
             }
             catch (Exception ex)
             {
-                Interceptor.OnError(instance, name, ex);
+                Interceptor.OnError(instance, name, list, ex);
 
                 throw;
             }

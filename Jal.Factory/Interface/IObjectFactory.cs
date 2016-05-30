@@ -12,6 +12,6 @@
 
         IObjectCreator Creator { get; }
 
-        IObjectFactoryInterceptor Interceptor { get; }
+        IObjectFactoryInterceptor Interceptor { get; set; }
     }
 }

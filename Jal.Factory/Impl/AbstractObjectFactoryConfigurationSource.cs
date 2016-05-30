@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Jal.Factory.Fluent;
 using Jal.Factory.Interface;
+using Jal.Factory.Interface.Fluent;
 using Jal.Factory.Model;
 
 namespace Jal.Factory.Impl
@@ -22,20 +23,20 @@ namespace Jal.Factory.Impl
             return result;
         }
 
-        public ObjectFactoryConfigurationCreateDescriptor<TTarget, TRestriction> For<TTarget, TRestriction>()
+        public IObjectFactoryConfigurationFluentBuilder<TTarget, TRestriction> For<TTarget, TRestriction>()
         {
             var value = new ObjectFactoryConfigurationItem(typeof(TTarget));
 
-            var descriptor = new ObjectFactoryConfigurationCreateDescriptor<TTarget, TRestriction>(value);
+            var descriptor = new ObjectFactoryConfigurationFluentBuilder<TTarget, TRestriction>(value);
 
             ObjectFactoryConfigurationItems.Add(value);
 
             return descriptor;
         }
 
-        public void For<TTarget, TRestriction>(string name, Action<ObjectFactoryConfigurationCreateGroupDescriptor<TTarget, TRestriction>> action)
+        public void For<TTarget, TRestriction>(string name, Action<IObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction>> action)
         {
-            var descriptor = new ObjectFactoryConfigurationCreateGroupDescriptor<TTarget, TRestriction>(ObjectFactoryConfigurationItems, name);
+            var descriptor = new ObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction>(ObjectFactoryConfigurationItems, name);
 
             action(descriptor);
         }
