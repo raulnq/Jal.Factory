@@ -3,7 +3,41 @@ Just another library to implement the factory method pattern
 
 ##How to use?
 
-Note: The Jal.Locator.CastleWindsor and Jal.AssemblyFinder library are needed.
+###Default implementation
+
+I only suggest to use this implementation on simple apps.
+
+Create an instance of the locator
+
+    var locator = ServiceLocator.Builder.Create as ServiceLocator;
+
+Register your service
+
+    locator.Register(typeof(IDoSomething), new DoSomething(), typeof(DoSomething).FullName);
+
+Create a class to setup the Jal.Factory library
+
+    public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
+    {
+        public ObjectFactoryConfigurationSource()
+        {
+            For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
+        }
+    }
+ 
+Create an instance of the factory
+
+    var factory = ObjectFactory.Builder.UseServiceLocator(locator).UseConfigurationSource(new IObjectFactoryConfigurationSource[]{new ObjectFactoryConfigurationSource()}).Create;
+    
+Use the factory
+
+    var customer = new Customer(){Age = 25};
+
+    var services = factory.Create<Customer, IDoSomething>(customer);
+
+###Castle Windsor Integration
+
+The Jal.Locator.CastleWindsor and Jal.AssemblyFinder library are needed.
 
 Setup the Jal.AssemblyFinder library
 
