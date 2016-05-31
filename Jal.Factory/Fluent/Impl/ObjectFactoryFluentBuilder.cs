@@ -1,14 +1,13 @@
 using System;
+using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Impl;
 using Jal.Factory.Interface;
-using Jal.Factory.Interface.Fluent;
 using Jal.Locator.Interface;
 
-namespace Jal.Factory.Fluent
+namespace Jal.Factory.Fluent.Impl
 {
-    public class ObjectFactoryFluentBuilder : IObjectFactoryStartFluentBuilder, IObjectFactoryFluentBuilder
+    public class ObjectFactoryFluentBuilder : IObjectFactoryStartFluentBuilder, IObjectFactoryFluentBuilder, IObjectFactoryProviderFluentBuilder
     {
-
         private IObjectCreator _objectCreator;
 
         private IObjectFactory _objectFactory;
@@ -19,9 +18,7 @@ namespace Jal.Factory.Fluent
 
         private IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
 
-        private IObjectFactoryConfigurationSource[] _objectFactoryConfigurationSources;
-
-        public IObjectFactoryFluentBuilder UseCreator(IObjectCreator objectCreator)
+        public IObjectFactoryProviderFluentBuilder UseCreator(IObjectCreator objectCreator)
         {
             if (objectCreator == null)
             {
@@ -31,7 +28,7 @@ namespace Jal.Factory.Fluent
             return this;
         }
 
-        public IObjectFactoryFluentBuilder UseServiceLocator(IServiceLocator serviceLocator)
+        public IObjectFactoryProviderFluentBuilder UseCreator(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
             {
@@ -43,34 +40,50 @@ namespace Jal.Factory.Fluent
 
         public IObjectFactoryFluentBuilder UseConfigurationRuntimePicker(IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker)
         {
+            if (objectFactoryConfigurationRuntimePicker == null)
+            {
+                throw new ArgumentNullException("objectFactoryConfigurationRuntimePicker");
+            }
             _objectFactoryConfigurationRuntimePicker = objectFactoryConfigurationRuntimePicker;
             return this;
         }
 
         public IObjectFactoryFluentBuilder UseConfigurationProvider(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider)
         {
+            if (objectFactoryConfigurationProvider == null)
+            {
+                throw new ArgumentNullException("objectFactoryConfigurationProvider");
+            }
             _objectFactoryConfigurationProvider = objectFactoryConfigurationProvider;
             return this;
         }
 
-        public IObjectFactoryFluentBuilder UseConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
+        public IObjectFactoryFluentBuilder UseConfigurationProvider(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
         {
             if (objectFactoryConfigurationSources == null)
             {
                 throw new ArgumentNullException("objectFactoryConfigurationSources");
             }
-            _objectFactoryConfigurationSources = objectFactoryConfigurationSources;
+            _objectFactoryConfigurationProvider = new ObjectFactoryConfigurationProvider(objectFactoryConfigurationSources);
             return this;
         }
 
         public IObjectFactoryFluentBuilder UseInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor)
         {
+            if (objectFactoryInterceptor == null)
+            {
+                throw new ArgumentNullException("objectFactoryInterceptor");
+            }
             _objectFactoryInterceptor = objectFactoryInterceptor;
             return this;
         }
 
         public IObjectFactoryEndFluentBuilder UseObjectFactory(IObjectFactory objectFactory)
         {
+            if (objectFactory == null)
+            {
+                throw new ArgumentNullException("objectFactory");
+            }
             _objectFactory = objectFactory;
             return this;
         } 
@@ -84,38 +97,25 @@ namespace Jal.Factory.Fluent
                     return _objectFactory;
                 }
 
-                IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker =
-                    new ObjectFactoryConfigurationRuntimePicker();
+                IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker = new ObjectFactoryConfigurationRuntimePicker();
 
                 if (_objectFactoryConfigurationRuntimePicker != null)
                 {
                     objectFactoryConfigurationRuntimePicker = _objectFactoryConfigurationRuntimePicker;
                 }
 
-                if (_objectFactoryConfigurationSources==null)
+               
+                if (_objectFactoryConfigurationProvider == null)
                 {
-                    throw new Exception("A ObjectFactoryConfigurationSource is needed");
+                    throw new Exception("An implementation of IObjectFactoryConfigurationProvider is needed");
                 }
 
-                IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider =
-                    new ObjectFactoryConfigurationProvider(_objectFactoryConfigurationSources);
-
-                if (_objectFactoryConfigurationProvider != null)
-                {
-                    objectFactoryConfigurationProvider = _objectFactoryConfigurationProvider;
-                }
-
-                var result =  new ObjectFactory(objectFactoryConfigurationProvider, _objectCreator,
-                    objectFactoryConfigurationRuntimePicker);
-
-                IObjectFactoryInterceptor objectFactoryInterceptor = new NullObjectFactoryInterceptor();
+                var result = new ObjectFactory(_objectFactoryConfigurationProvider, _objectCreator, objectFactoryConfigurationRuntimePicker);
 
                 if (_objectFactoryInterceptor != null)
                 {
-                    objectFactoryInterceptor = _objectFactoryInterceptor;
+                    result.Interceptor = _objectFactoryInterceptor;
                 }
-
-                result.Interceptor = objectFactoryInterceptor;
 
                 return result;
             }

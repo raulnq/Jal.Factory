@@ -1,4 +1,4 @@
-﻿namespace Jal.Factory.Interface.Fluent
+﻿namespace Jal.Factory.Fluent.Interface
 {
     public interface IObjectFactoryConfigurationGroupFluentBuilder<out TTarget, TRestriction>
     {

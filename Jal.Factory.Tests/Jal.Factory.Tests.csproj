@@ -39,13 +39,13 @@
     <Reference Include="Jal.AssemblyFinder">
       <HintPath>..\packages\Jal.AssemblyFinder.1.1.1.0\lib\net40\Jal.AssemblyFinder.dll</HintPath>
     </Reference>
-    <Reference Include="Jal.Locator, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Jal.Locator, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Jal.Locator.1.0.5.0\lib\net40\Jal.Locator.dll</HintPath>
+      <HintPath>..\packages\Jal.Locator.1.0.6.0\lib\net40\Jal.Locator.dll</HintPath>
     </Reference>
-    <Reference Include="Jal.Locator.CastleWindsor, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Jal.Locator.CastleWindsor, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Jal.Locator.CastleWindsor.1.0.3.0\lib\net40\Jal.Locator.CastleWindsor.dll</HintPath>
+      <HintPath>..\packages\Jal.Locator.CastleWindsor.1.0.4.0\lib\net40\Jal.Locator.CastleWindsor.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>

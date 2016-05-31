@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
@@ -10,11 +9,11 @@ namespace Jal.Factory.Installer
 {
     public class FactoryInstaller : IWindsorInstaller
     {
-        private readonly Func<Assembly[]> _factorySourceProvider;
+        private readonly Assembly[] _objectFactoryConfigurationSourceAssemblies;
 
-        public FactoryInstaller(Func<Assembly[]> factorySourceProvider)
+        public FactoryInstaller(Assembly[] objectFactoryConfigurationSourceAssemblies)
         {
-            _factorySourceProvider = factorySourceProvider;
+            _objectFactoryConfigurationSourceAssemblies = objectFactoryConfigurationSourceAssemblies;
         }
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
@@ -26,19 +25,17 @@ namespace Jal.Factory.Installer
                 Component.For(typeof(IObjectFactoryConfigurationRuntimePicker)).ImplementedBy(typeof(ObjectFactoryConfigurationRuntimePicker)).LifestyleSingleton()
             );
 
-            if (_factorySourceProvider != null)
-            {
-                var assemblysources = _factorySourceProvider();
+            var assemblysources = _objectFactoryConfigurationSourceAssemblies;
 
-                if (assemblysources != null)
+            if (assemblysources != null)
+            {
+                foreach (var assemblysource in assemblysources)
                 {
-                    foreach (var assemblysource in assemblysources)
-                    {
-                        var assemblyDescriptor = Classes.FromAssembly(assemblysource);
-                        container.Register(assemblyDescriptor.BasedOn<AbstractObjectFactoryConfigurationSource>().WithServiceAllInterfaces());
-                    }
+                    var assemblyDescriptor = Classes.FromAssembly(assemblysource);
+                    container.Register(assemblyDescriptor.BasedOn<AbstractObjectFactoryConfigurationSource>().WithServiceAllInterfaces());
                 }
             }
+            
         }
     }
 }

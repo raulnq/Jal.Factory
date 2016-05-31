@@ -1,6 +1,4 @@
-﻿using Jal.Factory.Fluent;
-
-namespace Jal.Factory.Interface.Fluent
+﻿namespace Jal.Factory.Fluent.Interface
 {
     public interface IObjectFactoryConfigurationFluentBuilder<out TTarget, TRestriction>
     {

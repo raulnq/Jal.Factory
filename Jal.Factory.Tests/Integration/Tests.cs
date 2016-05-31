@@ -32,7 +32,7 @@ namespace Jal.Factory.Tests.Integration
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller( () => AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource") ));
+            container.Install(new FactoryInstaller(AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource")));
 
             container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
 
@@ -58,7 +58,7 @@ namespace Jal.Factory.Tests.Integration
 
             locator.Register(typeof(IDoSomething), new DoSomething(), typeof(DoSomething).FullName);
 
-            var factory = ObjectFactory.Builder.UseServiceLocator(locator).UseConfigurationSource(new IObjectFactoryConfigurationSource[]{new ObjectFactoryConfigurationSource()}).Create;
+            var factory = ObjectFactory.Builder.UseCreator(locator).UseConfigurationProvider(new IObjectFactoryConfigurationSource[]{new ObjectFactoryConfigurationSource()}).Create;
 
             var customer = new Customer() { Age = 25 };
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Jal.Factory.Fluent;
+using Jal.Factory.Fluent.Impl;
+using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Interface;
-using Jal.Factory.Interface.Fluent;
 using Jal.Factory.Model;
 
 namespace Jal.Factory.Impl

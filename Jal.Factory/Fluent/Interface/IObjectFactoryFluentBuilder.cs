@@ -1,12 +1,10 @@
-namespace Jal.Factory.Interface.Fluent
+using Jal.Factory.Interface;
+
+namespace Jal.Factory.Fluent.Interface
 {
     public interface IObjectFactoryFluentBuilder : IObjectFactoryEndFluentBuilder
     {
         IObjectFactoryFluentBuilder UseConfigurationRuntimePicker(IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker);
-
-        IObjectFactoryFluentBuilder UseConfigurationProvider(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider);
-
-        IObjectFactoryFluentBuilder UseConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources);
 
         IObjectFactoryFluentBuilder UseInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor);
     }

@@ -1,7 +1,7 @@
-﻿using Jal.Factory.Interface.Fluent;
+﻿using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Model;
 
-namespace Jal.Factory.Fluent
+namespace Jal.Factory.Fluent.Impl
 {
     public class ObjectFactoryConfigurationFluentBuilder<TTarget, TRestriction> : IObjectFactoryConfigurationFluentBuilder<TTarget, TRestriction>
     {
