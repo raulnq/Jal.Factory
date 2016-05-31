@@ -26,13 +26,13 @@ namespace Jal.Factory.Tests.Integration
 
             var directory = AppDomain.CurrentDomain.BaseDirectory;
 
-            AssemblyFinder.Impl.AssemblyFinder.Current = new AssemblyFinder.Impl.AssemblyFinder(directory);
+            AssemblyFinder.Impl.AssemblyFinder.Current = AssemblyFinder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
 
             container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller());
+            container.Install(new FactoryInstaller( () => AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource") ));
 
             container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
 

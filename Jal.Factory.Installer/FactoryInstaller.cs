@@ -1,4 +1,6 @@
-﻿using Castle.MicroKernel.Registration;
+﻿using System;
+using System.Reflection;
+using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Jal.Factory.Impl;
@@ -8,6 +10,13 @@ namespace Jal.Factory.Installer
 {
     public class FactoryInstaller : IWindsorInstaller
     {
+        private readonly Func<Assembly[]> _factorySourceProvider;
+
+        public FactoryInstaller(Func<Assembly[]> factorySourceProvider)
+        {
+            _factorySourceProvider = factorySourceProvider;
+        }
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
@@ -16,14 +25,18 @@ namespace Jal.Factory.Installer
                 Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton(),
                 Component.For(typeof(IObjectFactoryConfigurationRuntimePicker)).ImplementedBy(typeof(ObjectFactoryConfigurationRuntimePicker)).LifestyleSingleton()
             );
-            
-            var assemblysources = AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource");
-            if (assemblysources != null)
+
+            if (_factorySourceProvider != null)
             {
-                foreach (var assemblysource in assemblysources)
+                var assemblysources = _factorySourceProvider();
+
+                if (assemblysources != null)
                 {
-                    var assemblyDescriptor = Classes.FromAssembly(assemblysource);
-                    container.Register(assemblyDescriptor.BasedOn<AbstractObjectFactoryConfigurationSource>().WithServiceAllInterfaces());
+                    foreach (var assemblysource in assemblysources)
+                    {
+                        var assemblyDescriptor = Classes.FromAssembly(assemblysource);
+                        container.Register(assemblyDescriptor.BasedOn<AbstractObjectFactoryConfigurationSource>().WithServiceAllInterfaces());
+                    }
                 }
             }
         }
