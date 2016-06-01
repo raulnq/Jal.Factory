@@ -46,6 +46,13 @@ namespace Jal.Factory.Impl
             return Create<TTarget, TResult>(instance, name);
         }
 
+        public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget instance) where TResult : class
+        {
+            var name = ObjectFactorySettings.BuildDefaultName(typeof(TTarget));
+
+            return ConfigurationFor<TTarget, TResult>(instance, name);
+        }
+
         public TResult[] Create<TTarget, TResult>(TTarget instance, string name) where TResult : class
         {
 
@@ -84,6 +91,41 @@ namespace Jal.Factory.Impl
             finally
             {
                 Interceptor.OnExit(instance, name, list);
+            }
+            return list.ToArray();
+        }
+
+        public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget instance, string name) where TResult : class
+        {
+
+            var list = new List<ObjectFactoryConfigurationItem>();
+
+            try
+            {
+                var items = ConfigurationProvider.Provide(instance, name);
+
+                if (items != null)
+                {
+                    foreach (var configurationItem in items)
+                    {
+                        if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
+                        {
+                            var result = Creator.Create<TResult>(configurationItem.ResultType);
+
+                            if (ConfigurationRuntimePicker.Pick(configurationItem, instance, result))
+                            {
+                                list.Add(configurationItem);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
             }
             return list.ToArray();
         }
