@@ -110,12 +110,12 @@ namespace Jal.Factory.Impl
                     {
                         if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
                         {
-                            var result = Creator.Create<TResult>(configurationItem.ResultType);
+                            //var result = Creator.Create<TResult>(configurationItem.ResultType);
 
-                            if (ConfigurationRuntimePicker.Pick(configurationItem, instance, result))
-                            {
+                            //if (ConfigurationRuntimePicker.Pick(configurationItem, instance, result))
+                            //{
                                 list.Add(configurationItem);
-                            }
+                            //}
                         }
                     }
                 }
