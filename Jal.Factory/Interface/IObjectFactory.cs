@@ -14,8 +14,6 @@ namespace Jal.Factory.Interface
 
         IObjectFactoryConfigurationProvider ConfigurationProvider { get; }
 
-        IObjectFactoryConfigurationRuntimePicker ConfigurationRuntimePicker { get; }
-
         IObjectCreator Creator { get; }
 
         IObjectFactoryInterceptor Interceptor { get; set; }

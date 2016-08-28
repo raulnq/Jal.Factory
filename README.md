@@ -37,12 +37,12 @@ Use the factory
 
 ###Castle Windsor Integration
 
-The Jal.Locator.CastleWindsor and Jal.AssemblyFinder library are needed.
+The Jal.Locator.CastleWindsor and Jal.Finder library are needed.
 
-Setup the Jal.AssemblyFinder library
+Setup the Jal.Finder library
 
 	var directory = AppDomain.CurrentDomain.BaseDirectory;
-	AssemblyFinder.Impl.AssemblyFinder.Current = new AssemblyFinder.Impl.AssemblyFinder(directory);
+	var finder = Finder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
 
 Setup the Castle Windsor container
 
@@ -55,7 +55,8 @@ Install the Jal.Locator.CastleWindsor library
 	
 Install the Jal.Factory library, use the FactoryInstaller class included
 
-	container.Install(new FactoryInstaller());
+	var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
+	container.Install(new FactoryInstaller(assemblies));
 	
 Register your services, it's mandatory name the service with the same full name of the class
 

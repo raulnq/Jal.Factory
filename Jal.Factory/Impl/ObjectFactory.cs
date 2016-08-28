@@ -22,20 +22,17 @@ namespace Jal.Factory.Impl
 
         public IObjectFactoryConfigurationProvider ConfigurationProvider { get; set; }
 
-        public IObjectFactoryConfigurationRuntimePicker ConfigurationRuntimePicker { get; set; }
 
         public IObjectFactoryInterceptor Interceptor { get; set; }
 
         public IObjectCreator Creator { get; set; }
 
-        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator, IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker)
+        public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator)
         {
             ConfigurationProvider = objectFactoryConfigurationProvider;
 
             Creator = objectCreator;
-
-            ConfigurationRuntimePicker = objectFactoryConfigurationRuntimePicker;
-
+            
             Interceptor = AbstractObjectFactoryInterceptor.Instance;
         }
 
@@ -72,10 +69,7 @@ namespace Jal.Factory.Impl
                         {
                             var result = Creator.Create<TResult>(configurationItem.ResultType);
 
-                            if (ConfigurationRuntimePicker.Pick(configurationItem, instance, result))
-                            {
-                                list.Add(result);
-                            }
+                            list.Add(result);
                         }
                     }
 
@@ -100,33 +94,19 @@ namespace Jal.Factory.Impl
 
             var list = new List<ObjectFactoryConfigurationItem>();
 
-            try
+            var items = ConfigurationProvider.Provide(instance, name);
+
+            if (items != null)
             {
-                var items = ConfigurationProvider.Provide(instance, name);
-
-                if (items != null)
+                foreach (var configurationItem in items)
                 {
-                    foreach (var configurationItem in items)
+                    if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
                     {
-                        if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
-                        {
-                            //var result = Creator.Create<TResult>(configurationItem.ResultType);
-
-                            //if (ConfigurationRuntimePicker.Pick(configurationItem, instance, result))
-                            //{
-                                list.Add(configurationItem);
-                            //}
-                        }
+                        list.Add(configurationItem);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            finally
-            {
-            }
+            
             return list.ToArray();
         }
     }

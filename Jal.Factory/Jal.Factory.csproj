@@ -58,11 +58,9 @@
     <Compile Include="Impl\AbstractObjectFactoryConfigurationSource.cs" />
     <Compile Include="Impl\ObjectFactory.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationProvider.cs" />
-    <Compile Include="Impl\ObjectFactoryConfigurationRuntimePicker.cs" />
     <Compile Include="Fluent\Impl\ObjectFactoryFluentBuilder.cs" />
     <Compile Include="Interface\IObjectFactory.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationProvider.cs" />
-    <Compile Include="Interface\IObjectFactoryConfigurationRuntimePicker.cs" />
     <Compile Include="Interface\IObjectFactoryConfigurationSource.cs" />
     <Compile Include="Model\ObjectFactoryConfiguration.cs" />
     <Compile Include="Fluent\Impl\ObjectFactoryConfigurationFluentBuilder.cs" />

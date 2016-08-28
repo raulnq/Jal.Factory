@@ -3,10 +3,10 @@ using System.Diagnostics;
 
 namespace Jal.Factory.Model
 {
-    [DebuggerDisplay("GroupName: {GroupName}, TargetType: {TargetType.Name}, ResultType: {ResultType.Name}, Selector: {Selector!=null}, Filter: {Filter!=null}")]
+    [DebuggerDisplay("GroupName: {GroupName}, TargetType: {TargetType.Name}, ResultType: {ResultType.Name}, Selector: {Selector!=null}")]
     public class ObjectFactoryConfigurationItem
     {
-        public ObjectFactoryConfigurationItem(Type target, Type result, string groupName, object selector, object filter)
+        public ObjectFactoryConfigurationItem(Type target, Type result, string groupName, object selector)
         {
             GroupName = groupName;
 
@@ -20,12 +20,10 @@ namespace Jal.Factory.Model
             ResultType = result;
 
             TargetType = target;
-
-            Filter = filter;
         }
 
-        public ObjectFactoryConfigurationItem(Type target, Type result, object selector, object filter)
-            : this(target, result, null, selector, filter)
+        public ObjectFactoryConfigurationItem(Type target, Type result, object selector)
+            : this(target, result, null, selector)
         {
 
         }
@@ -49,8 +47,6 @@ namespace Jal.Factory.Model
         public Type ResultType { get; set; }
 
         public object Selector { get; set; }
-
-        public object Filter { get; set; }
 
         public dynamic Bag { get; set; }
     }

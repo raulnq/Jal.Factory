@@ -29,10 +29,6 @@ namespace Jal.Factory.Tests
 
             provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { item }).Verifiable();
 
-            var selector = fixure.Freeze<Mock<IObjectFactoryConfigurationRuntimePicker>>();
-
-            selector.Setup(x => x.Pick(It.IsAny<ObjectFactoryConfigurationItem>(), It.IsAny<Customer>(), It.IsAny<IDoSomething>())).Returns(true).Verifiable();
-
             var objectcreator = fixure.Freeze<Mock<IObjectCreator>>();
 
             objectcreator.Setup(x => x.Create<IDoSomething>(It.IsAny<Type>())).Returns(new DoSomething()).Verifiable();

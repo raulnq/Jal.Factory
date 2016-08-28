@@ -36,8 +36,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Jal.AssemblyFinder">
-      <HintPath>..\packages\Jal.AssemblyFinder.1.1.1.0\lib\net40\Jal.AssemblyFinder.dll</HintPath>
+    <Reference Include="Jal.Finder, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jal.Finder.1.0.1.0\lib\net40\Jal.Finder.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Jal.Locator, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,7 +89,6 @@
     <Compile Include="LocalAddin.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="ObjectFactoryConfigurationProviderTests.cs" />
-    <Compile Include="ObjectFactoryConfigurationRuntimeProviderTests.cs" />
     <Compile Include="ObjectFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

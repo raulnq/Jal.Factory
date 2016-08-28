@@ -8,6 +8,7 @@ using Jal.Factory.Interface;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
+using Jal.Finder.Atrribute;
 using Jal.Locator.CastleWindsor.Installer;
 using Jal.Locator.Impl;
 using NUnit.Framework;
@@ -26,13 +27,15 @@ namespace Jal.Factory.Tests.Integration
 
             var directory = AppDomain.CurrentDomain.BaseDirectory;
 
-            AssemblyFinder.Impl.AssemblyFinder.Current = AssemblyFinder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
+            var finder = Finder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
 
             container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller(AssemblyFinder.Impl.AssemblyFinder.Current.GetAssemblies("FactorySource")));
+            var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
+
+            container.Install(new FactoryInstaller(assemblies));
 
             container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
 

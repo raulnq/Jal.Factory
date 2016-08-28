@@ -13,13 +13,6 @@ namespace Jal.Factory.Fluent.Impl
             _objectFactoryConfigurationItem = objectFactoryConfigurationItem;
         }
 
-        public IObjectFactoryConfigurationWhenFluentBuilder<TTarget, TResult, TRestriction> When(Func<TTarget, TRestriction, bool> filter)
-        {
-            _objectFactoryConfigurationItem.Filter = filter;
-
-            return this;
-        }
-
         public IObjectFactoryConfigurationWhenFluentBuilder<TTarget, TResult, TRestriction> When(Func<TTarget, bool> selector)
         {
             _objectFactoryConfigurationItem.Selector = selector;

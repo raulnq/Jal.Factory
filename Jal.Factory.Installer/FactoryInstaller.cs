@@ -21,8 +21,7 @@ namespace Jal.Factory.Installer
             container.Register(
                 Component.For(typeof(IObjectFactory)).ImplementedBy(typeof(ObjectFactory)).LifestyleSingleton(),
                 Component.For(typeof(IObjectCreator)).ImplementedBy(typeof(ObjectCreator)).LifestyleSingleton(),
-                Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton(),
-                Component.For(typeof(IObjectFactoryConfigurationRuntimePicker)).ImplementedBy(typeof(ObjectFactoryConfigurationRuntimePicker)).LifestyleSingleton()
+                Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton()
             );
 
             var assemblysources = _objectFactoryConfigurationSourceAssemblies;

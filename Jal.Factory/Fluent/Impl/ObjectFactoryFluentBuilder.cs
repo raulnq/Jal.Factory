@@ -14,8 +14,6 @@ namespace Jal.Factory.Fluent.Impl
 
         private IObjectFactoryInterceptor _objectFactoryInterceptor;
 
-        private IObjectFactoryConfigurationRuntimePicker _objectFactoryConfigurationRuntimePicker;
-
         private IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
 
         public IObjectFactoryProviderFluentBuilder UseCreator(IObjectCreator objectCreator)
@@ -35,16 +33,6 @@ namespace Jal.Factory.Fluent.Impl
                 throw new ArgumentNullException("serviceLocator");
             }
             _objectCreator = new ObjectCreator(serviceLocator);
-            return this;
-        }
-
-        public IObjectFactoryFluentBuilder UseConfigurationRuntimePicker(IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker)
-        {
-            if (objectFactoryConfigurationRuntimePicker == null)
-            {
-                throw new ArgumentNullException("objectFactoryConfigurationRuntimePicker");
-            }
-            _objectFactoryConfigurationRuntimePicker = objectFactoryConfigurationRuntimePicker;
             return this;
         }
 
@@ -96,21 +84,13 @@ namespace Jal.Factory.Fluent.Impl
                 {
                     return _objectFactory;
                 }
-
-                IObjectFactoryConfigurationRuntimePicker objectFactoryConfigurationRuntimePicker = new ObjectFactoryConfigurationRuntimePicker();
-
-                if (_objectFactoryConfigurationRuntimePicker != null)
-                {
-                    objectFactoryConfigurationRuntimePicker = _objectFactoryConfigurationRuntimePicker;
-                }
-
                
                 if (_objectFactoryConfigurationProvider == null)
                 {
                     throw new Exception("An implementation of IObjectFactoryConfigurationProvider is needed");
                 }
 
-                var result = new ObjectFactory(_objectFactoryConfigurationProvider, _objectCreator, objectFactoryConfigurationRuntimePicker);
+                var result = new ObjectFactory(_objectFactoryConfigurationProvider, _objectCreator);
 
                 if (_objectFactoryInterceptor != null)
                 {
