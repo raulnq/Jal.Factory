@@ -13,17 +13,17 @@ namespace Jal.Factory.Impl
 
         }
 
-        public virtual void OnSuccess<TTarget, TResult>(TTarget instance, string name, List<TResult> results)
+        public virtual void OnSuccess<TTarget, TResult>(TTarget instance, string name, IList<TResult> results)
         {
 
         }
 
-        public virtual void OnError<TTarget, TResult>(TTarget instance, string name, List<TResult> results, Exception exception)
+        public virtual void OnError<TTarget, TResult>(TTarget instance, string name, IList<TResult> results, Exception exception)
         {
 
         }
 
-        public virtual void OnExit<TTarget, TResult>(TTarget instance, string name, List<TResult> results)
+        public virtual void OnExit<TTarget, TResult>(TTarget instance, string name, IList<TResult> results)
         {
 
         }

@@ -22,7 +22,12 @@ namespace Jal.Factory.Impl
             {
                 foreach (var objectFactoryConfigurationSource in Sources)
                 {
-                    Configuration.Items.AddRange(objectFactoryConfigurationSource.Source().Items);
+                    var source = objectFactoryConfigurationSource.Source();
+
+                    if (source != null)
+                    {
+                        Configuration.Items.AddRange(source.Items);
+                    }             
                 }
             }
         }
@@ -53,7 +58,7 @@ namespace Jal.Factory.Impl
                     var type = configurationItem.ResultType;
 
                     if (type == null) 
-                        throw new ArgumentException(string.Format("The return type for the item named {0} is null", name));
+                        throw new ArgumentException($"The return type for the item named {name} is null");
 
                     list.Add(configurationItem);
                 }

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Jal.Factory.Tests</RootNamespace>
     <AssemblyName>Jal.Factory.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
@@ -45,8 +48,16 @@
       <HintPath>..\packages\Jal.Locator.1.0.6.0\lib\net40\Jal.Locator.dll</HintPath>
     </Reference>
     <Reference Include="Jal.Locator.CastleWindsor, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Jal.Locator.CastleWindsor.1.0.4.0\lib\net40\Jal.Locator.CastleWindsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Jal.Locator.LightInject, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jal.Locator.LightInject.1.0.2\lib\net45\Jal.Locator.LightInject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LightInject, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightInject.4.1.0\lib\net45\LightInject.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
@@ -82,15 +93,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\AutoDataBuilderAttribute.cs" />
+    <Compile Include="CastleWindsor\Tests.cs" />
     <Compile Include="Impl\DoSomething.cs" />
     <Compile Include="Impl\ObjectFactoryConfigurationSource.cs" />
-    <Compile Include="Integration\Tests.cs" />
+    <Compile Include="FactoryInstallerTests.cs" />
+    <Compile Include="Default\Tests.cs" />
     <Compile Include="Interfaces\IDoSomething.cs" />
+    <Compile Include="LightInject\Tests.cs" />
     <Compile Include="LocalAddin.cs" />
     <Compile Include="Model\Customer.cs" />
+    <Compile Include="ObjectCreatorTests.cs" />
     <Compile Include="ObjectFactoryConfigurationProviderTests.cs" />
+    <Compile Include="ObjectFactoryConfigurationSourceTests.cs" />
+    <Compile Include="ObjectFactoryFluentBuilderTest.cs" />
     <Compile Include="ObjectFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContainerExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -100,6 +118,10 @@
     <ProjectReference Include="..\Jal.Factory.Installer\Jal.Factory.Installer.csproj">
       <Project>{3F5DCFD1-C2D0-4523-AFAC-732B1D2AB5C1}</Project>
       <Name>Jal.Factory.Installer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jal.Factory.LightInject.Installer\Jal.Factory.LightInject.Installer.csproj">
+      <Project>{60b01681-5f51-4d86-91c9-4b5464c98066}</Project>
+      <Name>Jal.Factory.LightInject.Installer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jal.Factory\Jal.Factory.csproj">
       <Project>{A408B8D4-499F-42F4-96C3-BA87BE5F4450}</Project>

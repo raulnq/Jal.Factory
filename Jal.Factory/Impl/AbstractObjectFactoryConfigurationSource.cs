@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Jal.Factory.Fluent;
 using Jal.Factory.Fluent.Impl;
 using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Interface;
@@ -39,7 +38,7 @@ namespace Jal.Factory.Impl
         {
             var descriptor = new ObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction>(ObjectFactoryConfigurationItems, name);
 
-            action(descriptor);
+            action?.Invoke(descriptor);
         }
     }     
 }

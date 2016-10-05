@@ -59,22 +59,17 @@ namespace Jal.Factory.Impl
             {
                 Interceptor.OnEntry(instance, name);
 
-                var items = ConfigurationProvider.Provide(instance, name);
+                var items = ConfigurationFor<TTarget, TResult> (instance, name);
 
-                if (items != null)
+                foreach (var configurationItem in items)
                 {
-                    foreach (var configurationItem in items)
-                    {
-                        if (typeof (TResult).IsAssignableFrom(configurationItem.ResultType))
-                        {
-                            var result = Creator.Create<TResult>(configurationItem.ResultType);
+                    var result = Creator.Create<TResult>(configurationItem.ResultType);
 
-                            list.Add(result);
-                        }
-                    }
-
-                    Interceptor.OnSuccess(instance, name, list);
+                    list.Add(result);
                 }
+
+                Interceptor.OnSuccess(instance, name, list);
+                
             }
             catch (Exception ex)
             {

@@ -14,14 +14,14 @@ using Jal.Locator.Impl;
 using NUnit.Framework;
 using Shouldly;
 
-namespace Jal.Factory.Tests.Integration
+namespace Jal.Factory.Tests.CastleWindsor
 {
     [TestFixture]
     public class Tests
     {
 
         [Test]
-        public void CreateCastleWindsor_WithCustomerOlderThan25_ServicesShouldBeNotEmpty()
+        public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
             var container = new WindsorContainer();
 
@@ -42,28 +42,6 @@ namespace Jal.Factory.Tests.Integration
             var factory = container.Resolve<IObjectFactory>();
 
             var customer = new Customer(){Age = 25};
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething>();
-        }
-
-        [Test]
-        public void Create_WithCustomerOlderThan25_ServicesShouldBeNotEmpty()
-        {
-            var locator = ServiceLocator.Builder.Create as ServiceLocator;
-
-            locator.Register(typeof(IDoSomething), new DoSomething(), typeof(DoSomething).FullName);
-
-            var factory = ObjectFactory.Builder.UseCreator(locator).UseConfigurationProvider(new IObjectFactoryConfigurationSource[]{new ObjectFactoryConfigurationSource()}).Create;
-
-            var customer = new Customer() { Age = 25 };
 
             var services = factory.Create<Customer, IDoSomething>(customer);
 

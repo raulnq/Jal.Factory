@@ -5,10 +5,6 @@ namespace Jal.Factory.Fluent.Interface
 {
     public interface IObjectFactoryStartFluentBuilder
     {
-        IObjectFactoryProviderFluentBuilder UseCreator(IObjectCreator objectCreator);
-
-        IObjectFactoryProviderFluentBuilder UseCreator(IServiceLocator serviceLocator);
-
-        IObjectFactoryEndFluentBuilder UseObjectFactory(IObjectFactory objectFactory);
+        IObjectFactoryProviderFluentBuilder UseLocator(IServiceLocator serviceLocator);
     }
 }

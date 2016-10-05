@@ -1,14 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Jal.Factory.Impl;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
-using Jal.Factory.Tests.Attribute;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Model;
 using Moq;
 using NUnit.Framework;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
 using Shouldly;
 
 namespace Jal.Factory.Tests
@@ -16,72 +14,87 @@ namespace Jal.Factory.Tests
     [TestFixture]
     public class ObjectFactoryConfigurationProviderTests
     {
-        public ObjectFactoryConfigurationProvider Create()
+        [Test]
+        public void Provide_WithNonExistingName_ShouldBeEmpty()
         {
-            var fixure = new Fixture();
+            var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            fixure.Customize(new AutoMoqCustomization());
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration() {Items= new List<ObjectFactoryConfigurationItem>()
+                    {
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething))
+                    }
+                }
+            );
 
-            var item = new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething));
+            var sut = new ObjectFactoryConfigurationProvider(new []{ source.Object });
 
-            var source = fixure.Freeze<Mock<IObjectFactoryConfigurationSource>>();
-
-            fixure.RepeatCount = 1;
-
-            var configuration = new ObjectFactoryConfiguration();
-
-            configuration.Items.Add(item);
-
-            source.Setup(x => x.Source()).Returns(configuration);
-
-            var sut = fixure.Build<ObjectFactoryConfigurationProvider>().Without(x=>x.Configuration).Create();
-
-            return sut;
+            sut.Provide(new Customer(), string.Empty).ShouldBeEmpty();
         }
 
         [Test]
-        [AutoDataBuilder]
-        public void Provide_WithNonExistingName_ShouldBeEmpty(Customer customer)
+        public void Provide_WithNoConfigurationItems_ShouldBeEmpty()
         {
-            var sut = Create();
+            var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            sut.Provide(customer, string.Empty).ShouldBeEmpty();
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration());
+
+            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
+
+            sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldBeEmpty();
         }
 
         [Test]
-        [AutoDataBuilder]
-        public void Provide_WithInvalidSelector_ShouldNotBeEmpty(Customer customer)
+        public void Provide_WithWrongSelector_ShouldNotBeEmpty()
         {
-            var sut = Create();
-            sut.Configuration.Items[0].Selector = (Func<string, bool>)(t => true);
-            sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
+            var source = new Mock<IObjectFactoryConfigurationSource>();
+
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
+            {
+                Items = new List<ObjectFactoryConfigurationItem>
+                    {
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), (Func<string, bool>)(t => true))
+                    }
+            });
+
+            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
+
+            sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
 
         [Test]
-        [AutoDataBuilder]
-        public void Provide_WithNullReturnType_ShouldThrowException(Customer customer)
+        public void Provide_WithNullReturnType_ShouldThrowException()
         {
-            var sut = Create();
-            sut.Configuration.Items[0].ResultType = null;
-            Should.Throw<ArgumentException>(() => sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
+            var source = new Mock<IObjectFactoryConfigurationSource>();
+
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
+            {
+                Items = new List<ObjectFactoryConfigurationItem>
+                    {
+                        new ObjectFactoryConfigurationItem(typeof(Customer))
+                    }
+            });
+
+            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
+
+            Should.Throw<ArgumentException>(() => sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
         }
 
         [Test]
-        [AutoDataBuilder]
-        public void Provide_WithValidSelector_ShouldNotBeEmpty(Customer customer)
-        {
-            var sut = Create();
-            sut.Configuration.Items[0].Selector = (Func<Customer, bool>)(t => true);
-            sut.Provide(customer, ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
-        }
-
-
-        [Test]
-        [AutoDataBuilder]
         public void Provide_WithValidSelector_ShouldNotBeEmpty()
         {
-            var sut = Create();
-            sut.Configuration.Items.ShouldNotBeEmpty();
+            var source = new Mock<IObjectFactoryConfigurationSource>();
+
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
+            {
+                Items = new List<ObjectFactoryConfigurationItem>
+                    {
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), (Func<Customer, bool>)(t => true))
+                    }
+            });
+
+            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
+            
+            sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
     }
 }

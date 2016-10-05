@@ -8,51 +8,33 @@ namespace Jal.Factory.Fluent.Impl
 {
     public class ObjectFactoryFluentBuilder : IObjectFactoryStartFluentBuilder, IObjectFactoryFluentBuilder, IObjectFactoryProviderFluentBuilder
     {
-        private IObjectCreator _objectCreator;
+        public IObjectCreator ObjectCreator;
 
-        private IObjectFactory _objectFactory;
+        public IObjectFactoryInterceptor ObjectFactoryInterceptor;
 
-        private IObjectFactoryInterceptor _objectFactoryInterceptor;
+        public IObjectFactoryConfigurationProvider ObjectFactoryConfigurationProvider;
 
-        private IObjectFactoryConfigurationProvider _objectFactoryConfigurationProvider;
-
-        public IObjectFactoryProviderFluentBuilder UseCreator(IObjectCreator objectCreator)
-        {
-            if (objectCreator == null)
-            {
-                throw new ArgumentNullException("objectCreator");
-            }
-            _objectCreator = objectCreator;
-            return this;
-        }
-
-        public IObjectFactoryProviderFluentBuilder UseCreator(IServiceLocator serviceLocator)
+        public IObjectFactoryProviderFluentBuilder UseLocator(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
             {
-                throw new ArgumentNullException("serviceLocator");
+                throw new ArgumentNullException(nameof(serviceLocator));
             }
-            _objectCreator = new ObjectCreator(serviceLocator);
+
+            ObjectCreator = new ObjectCreator(serviceLocator);
+
             return this;
         }
 
-        public IObjectFactoryFluentBuilder UseConfigurationProvider(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider)
-        {
-            if (objectFactoryConfigurationProvider == null)
-            {
-                throw new ArgumentNullException("objectFactoryConfigurationProvider");
-            }
-            _objectFactoryConfigurationProvider = objectFactoryConfigurationProvider;
-            return this;
-        }
-
-        public IObjectFactoryFluentBuilder UseConfigurationProvider(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
+        public IObjectFactoryFluentBuilder UseConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
         {
             if (objectFactoryConfigurationSources == null)
             {
-                throw new ArgumentNullException("objectFactoryConfigurationSources");
+                throw new ArgumentNullException(nameof(objectFactoryConfigurationSources));
             }
-            _objectFactoryConfigurationProvider = new ObjectFactoryConfigurationProvider(objectFactoryConfigurationSources);
+
+            ObjectFactoryConfigurationProvider = new ObjectFactoryConfigurationProvider(objectFactoryConfigurationSources);
+
             return this;
         }
 
@@ -60,41 +42,28 @@ namespace Jal.Factory.Fluent.Impl
         {
             if (objectFactoryInterceptor == null)
             {
-                throw new ArgumentNullException("objectFactoryInterceptor");
+                throw new ArgumentNullException(nameof(objectFactoryInterceptor));
             }
-            _objectFactoryInterceptor = objectFactoryInterceptor;
+
+            ObjectFactoryInterceptor = objectFactoryInterceptor;
+
             return this;
         }
-
-        public IObjectFactoryEndFluentBuilder UseObjectFactory(IObjectFactory objectFactory)
-        {
-            if (objectFactory == null)
-            {
-                throw new ArgumentNullException("objectFactory");
-            }
-            _objectFactory = objectFactory;
-            return this;
-        } 
 
         public IObjectFactory Create
         {
             get
-            {
-                if (_objectFactory != null)
+            {          
+                if (ObjectFactoryConfigurationProvider == null || ObjectCreator == null)
                 {
-                    return _objectFactory;
-                }
-               
-                if (_objectFactoryConfigurationProvider == null)
-                {
-                    throw new Exception("An implementation of IObjectFactoryConfigurationProvider is needed");
+                    throw new Exception("An implementation of IObjectFactoryConfigurationProvider/IObjectCreator is needed");
                 }
 
-                var result = new ObjectFactory(_objectFactoryConfigurationProvider, _objectCreator);
+                var result = new ObjectFactory(ObjectFactoryConfigurationProvider, ObjectCreator);
 
-                if (_objectFactoryInterceptor != null)
+                if (ObjectFactoryInterceptor != null)
                 {
-                    result.Interceptor = _objectFactoryInterceptor;
+                    result.Interceptor = ObjectFactoryInterceptor;
                 }
 
                 return result;
