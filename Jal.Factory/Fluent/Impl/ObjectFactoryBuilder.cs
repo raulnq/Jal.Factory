@@ -6,7 +6,7 @@ using Jal.Locator.Interface;
 
 namespace Jal.Factory.Fluent.Impl
 {
-    public class ObjectFactoryFluentBuilder : IObjectFactoryStartFluentBuilder, IObjectFactoryFluentBuilder, IObjectFactoryProviderFluentBuilder
+    public class ObjectFactoryBuilder : IObjectFactoryLocatorBuilder, IObjectFactoryInterceptorBuilder, IObjectFactoryProviderBuilder
     {
         public IObjectCreator ObjectCreator;
 
@@ -14,7 +14,7 @@ namespace Jal.Factory.Fluent.Impl
 
         public IObjectFactoryConfigurationProvider ObjectFactoryConfigurationProvider;
 
-        public IObjectFactoryProviderFluentBuilder UseLocator(IServiceLocator serviceLocator)
+        public IObjectFactoryProviderBuilder UseLocator(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
             {
@@ -26,7 +26,7 @@ namespace Jal.Factory.Fluent.Impl
             return this;
         }
 
-        public IObjectFactoryFluentBuilder UseConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
+        public IObjectFactoryInterceptorBuilder UseConfigurationSource(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
         {
             if (objectFactoryConfigurationSources == null)
             {
@@ -38,7 +38,7 @@ namespace Jal.Factory.Fluent.Impl
             return this;
         }
 
-        public IObjectFactoryFluentBuilder UseInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor)
+        public IObjectFactoryCreateBuilder UseInterceptor(IObjectFactoryInterceptor objectFactoryInterceptor)
         {
             if (objectFactoryInterceptor == null)
             {

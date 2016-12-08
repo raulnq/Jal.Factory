@@ -32,7 +32,7 @@ namespace Jal.Factory.Tests
         }
 
         [Test]
-        public void Source_WithNamedForNoSetup_ShouldEmpty()
+        public void Source_WithNameForNoAction_ShouldEmpty()
         {
             var sut = new ObjectFactoryConfigurationSource();
 
@@ -46,17 +46,11 @@ namespace Jal.Factory.Tests
         }
 
         [Test]
-        public void Source_WithNamedForNullSetup_ShouldEmpty()
+        public void Source_WithNameForNullAction_ShouldThorwException()
         {
             var sut = new ObjectFactoryConfigurationSource();
 
-            sut.For<Customer, IDoSomething>("Group", null);
-
-            var configuration = sut.Source();
-
-            configuration.ShouldNotBeNull();
-
-            configuration.Items.ShouldBeEmpty();
+            Should.Throw<Exception>(() => sut.For<Customer, IDoSomething>("Group", null));
         }
 
         [Test]
@@ -129,7 +123,7 @@ namespace Jal.Factory.Tests
         }
 
         [Test]
-        public void Source_WithNamedForCreateWhen_ShouldBeOne()
+        public void Source_WithNameForCreateWhen_ShouldBeOne()
         {
             var sut = new ObjectFactoryConfigurationSource();
 

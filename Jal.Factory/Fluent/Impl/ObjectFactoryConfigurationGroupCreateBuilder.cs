@@ -4,26 +4,26 @@ using Jal.Factory.Model;
 
 namespace Jal.Factory.Fluent.Impl
 {
-    public class ObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction> : IObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction>
+    public class ObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction> : IObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction>
     {
         private readonly List<ObjectFactoryConfigurationItem> _objectFactoryConfigurationItems;
 
         private readonly string _groupName;
 
-        public ObjectFactoryConfigurationGroupFluentBuilder(List<ObjectFactoryConfigurationItem> objectFactoryConfigurationItems, string groupName)
+        public ObjectFactoryConfigurationGroupCreateBuilder(List<ObjectFactoryConfigurationItem> objectFactoryConfigurationItems, string groupName)
         {
             _objectFactoryConfigurationItems = objectFactoryConfigurationItems;
 
             _groupName = groupName;
         }
 
-        public IObjectFactoryConfigurationWhenFluentBuilder<TTarget, TResult, TRestriction> Create<TResult>() where TResult : TRestriction
+        public IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TResult>() where TResult : TRestriction
         {
             var value = new ObjectFactoryConfigurationItem(typeof(TTarget)) { ResultType = typeof(TResult), GroupName = _groupName };
 
             _objectFactoryConfigurationItems.Add(value);
 
-            return new ObjectFactoryConfigurationWhenFluentBuilder<TTarget, TResult, TRestriction>(value);
+            return new ObjectFactoryConfigurationWhenBuilder<TTarget>(value);
         }
 
     }

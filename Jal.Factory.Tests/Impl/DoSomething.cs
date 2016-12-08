@@ -9,4 +9,12 @@ namespace Jal.Factory.Tests.Impl
             throw new System.NotImplementedException();
         }
     }
+
+    public class DoSomething2 : IDoSomething
+    {
+        public bool Apply()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

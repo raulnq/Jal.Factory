@@ -1,5 +1,4 @@
 using System;
-using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Impl;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;

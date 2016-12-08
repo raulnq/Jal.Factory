@@ -2,7 +2,7 @@ using Jal.Factory.Interface;
 
 namespace Jal.Factory.Fluent.Interface
 {
-    public interface IObjectFactoryEndFluentBuilder
+    public interface IObjectFactoryCreateBuilder
     {
         IObjectFactory Create { get; }
     }

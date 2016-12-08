@@ -9,13 +9,13 @@ namespace Jal.Factory.Impl
 {
     public abstract class AbstractObjectFactoryConfigurationSource : IObjectFactoryConfigurationSource
     {
-        protected readonly List<ObjectFactoryConfigurationItem> ObjectFactoryConfigurationItems = new List<ObjectFactoryConfigurationItem>();
+        protected readonly List<ObjectFactoryConfigurationItem> Items = new List<ObjectFactoryConfigurationItem>();
 
         public ObjectFactoryConfiguration Source()
         {
             var result = new ObjectFactoryConfiguration();
 
-            foreach (var item in ObjectFactoryConfigurationItems)
+            foreach (var item in Items)
             {
                 result.Items.Add(item);
             }
@@ -23,22 +23,27 @@ namespace Jal.Factory.Impl
             return result;
         }
 
-        public IObjectFactoryConfigurationFluentBuilder<TTarget, TRestriction> For<TTarget, TRestriction>()
+        public IObjectFactoryConfigurationCreateBuilder<TTarget, TRestriction> For<TTarget, TRestriction>()
         {
             var value = new ObjectFactoryConfigurationItem(typeof(TTarget));
 
-            var descriptor = new ObjectFactoryConfigurationFluentBuilder<TTarget, TRestriction>(value);
+            var descriptor = new ObjectFactoryConfigurationCreateBuilder<TTarget, TRestriction>(value);
 
-            ObjectFactoryConfigurationItems.Add(value);
+            Items.Add(value);
 
             return descriptor;
         }
 
-        public void For<TTarget, TRestriction>(string name, Action<IObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction>> action)
+        public void For<TTarget, TRestriction>(string name, Action<IObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction>> action)
         {
-            var descriptor = new ObjectFactoryConfigurationGroupFluentBuilder<TTarget, TRestriction>(ObjectFactoryConfigurationItems, name);
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
 
-            action?.Invoke(descriptor);
+            var descriptor = new ObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction>(Items, name);
+
+            action.Invoke(descriptor);
         }
     }     
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using Jal.Factory.Fluent.Impl;
 using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Interface;
@@ -12,20 +12,13 @@ namespace Jal.Factory.Impl
 
         public static IObjectFactory Current;
 
-        public static IObjectFactoryStartFluentBuilder Builder
-        {
-            get
-            {
-                return new ObjectFactoryFluentBuilder();
-            }
-        }
+        public static IObjectFactoryLocatorBuilder Builder => new ObjectFactoryBuilder();
 
-        public IObjectFactoryConfigurationProvider ConfigurationProvider { get; set; }
-
+        public IObjectFactoryConfigurationProvider ConfigurationProvider { get; }
 
         public IObjectFactoryInterceptor Interceptor { get; set; }
 
-        public IObjectCreator Creator { get; set; }
+        public IObjectCreator Creator { get; }
 
         public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator)
         {
@@ -53,20 +46,13 @@ namespace Jal.Factory.Impl
         public TResult[] Create<TTarget, TResult>(TTarget instance, string name) where TResult : class
         {
 
-            var list = new List<TResult>();
+            var list = new TResult[] {};
 
             try
             {
                 Interceptor.OnEntry(instance, name);
 
-                var items = ConfigurationFor<TTarget, TResult> (instance, name);
-
-                foreach (var configurationItem in items)
-                {
-                    var result = Creator.Create<TResult>(configurationItem.ResultType);
-
-                    list.Add(result);
-                }
+                list = ConfigurationFor<TTarget, TResult> (instance, name).Select(configurationitem=> Creator.Create<TResult>(configurationitem.ResultType)).ToArray();
 
                 Interceptor.OnSuccess(instance, name, list);
                 
@@ -81,28 +67,17 @@ namespace Jal.Factory.Impl
             {
                 Interceptor.OnExit(instance, name, list);
             }
-            return list.ToArray();
+            return list;
         }
 
         public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget instance, string name) where TResult : class
         {
+            return ConfigurationProvider.Provide(instance, name).Where(IsAssignableFrom<TResult>).ToArray();
+        }
 
-            var list = new List<ObjectFactoryConfigurationItem>();
-
-            var items = ConfigurationProvider.Provide(instance, name);
-
-            if (items != null)
-            {
-                foreach (var configurationItem in items)
-                {
-                    if (typeof(TResult).IsAssignableFrom(configurationItem.ResultType))
-                    {
-                        list.Add(configurationItem);
-                    }
-                }
-            }
-            
-            return list.ToArray();
+        private static bool IsAssignableFrom<TResult>(ObjectFactoryConfigurationItem objectFactoryConfigurationItem) where TResult : class
+        {
+            return typeof(TResult).IsAssignableFrom(objectFactoryConfigurationItem.ResultType);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
@@ -8,63 +7,65 @@ namespace Jal.Factory.Impl
 {
     public class ObjectFactoryConfigurationProvider : IObjectFactoryConfigurationProvider
     {
-        public ObjectFactoryConfiguration Configuration { get; set; }
+        public ObjectFactoryConfiguration Configuration { get; }
 
-        public IObjectFactoryConfigurationSource[] Sources { get; set; }
+        public IObjectFactoryConfigurationSource[] Sources { get; }
 
         public ObjectFactoryConfigurationProvider(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
         {
+            if (objectFactoryConfigurationSources == null)
+            {
+                throw new ArgumentNullException(nameof(objectFactoryConfigurationSources));
+            }
+
             Sources = objectFactoryConfigurationSources;
 
-            Configuration = new ObjectFactoryConfiguration();
-
-            if (objectFactoryConfigurationSources!=null)
+            Configuration = new ObjectFactoryConfiguration()
             {
-                foreach (var objectFactoryConfigurationSource in Sources)
-                {
-                    var source = objectFactoryConfigurationSource.Source();
+                Items = Sources
+                .Select(objectFactoryConfigurationSource => objectFactoryConfigurationSource.Source())
+                .Where(source => source != null)
+                .SelectMany(source => source.Items).ToList()
+            };
 
-                    if (source != null)
-                    {
-                        Configuration.Items.AddRange(source.Items);
-                    }             
-                }
+            foreach (var objectFactoryConfigurationItem in Configuration.Items.Where(objectFactoryConfigurationItem => objectFactoryConfigurationItem.ResultType == null))
+            {
+                throw new ArgumentException($"The return type for the item named {objectFactoryConfigurationItem.GroupName} is null");
             }
+        }
+
+        private static bool IsSelected<TTarget>(ObjectFactoryConfigurationItem objectFactoryConfigurationItem, TTarget instance)
+        {
+            var selector = objectFactoryConfigurationItem.Selector as Func<TTarget, bool>;
+
+            var isselected = true;
+
+            if (selector != null)
+            {
+                isselected = selector(instance);
+            }
+
+            return isselected;
         }
 
         public ObjectFactoryConfigurationItem[] Provide<TTarget>(TTarget instance, string name)
         {
-            var objectFactoryConfigurationItems = Configuration.Items;
+            return Configuration.Items
+                .Where(configurationItem => 
+                IsSameType<TTarget>(configurationItem) && 
+                IsSameGroup(configurationItem, name) && 
+                IsSelected(configurationItem, instance)
+                ).ToArray();
+        }
 
-            var items = objectFactoryConfigurationItems.Where(x => x.TargetType == typeof(TTarget)).ToList();
+        private static bool IsSameType<TTarget>(ObjectFactoryConfigurationItem objectFactoryConfigurationItem)
+        {
+            return objectFactoryConfigurationItem.TargetType == typeof (TTarget);
+        }
 
-            var group = items.Where(x => x.GroupName == name);
-
-            var list = new List<ObjectFactoryConfigurationItem>();
-
-            foreach (var configurationItem in group)
-            {
-                var selector = configurationItem.Selector as Func<TTarget, bool>;
-
-                var selected = true;
-
-                if (selector != null)
-                {
-                    selected = selector(instance);
-                }
-
-                if (selected)
-                {
-                    var type = configurationItem.ResultType;
-
-                    if (type == null) 
-                        throw new ArgumentException($"The return type for the item named {name} is null");
-
-                    list.Add(configurationItem);
-                }
-            }
-
-            return list.ToArray();
+        private static bool IsSameGroup(ObjectFactoryConfigurationItem objectFactoryConfigurationItem, string groupname)
+        {
+            return objectFactoryConfigurationItem.GroupName == groupname;
         }
     }
 }

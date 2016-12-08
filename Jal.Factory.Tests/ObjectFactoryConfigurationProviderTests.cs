@@ -15,7 +15,46 @@ namespace Jal.Factory.Tests
     public class ObjectFactoryConfigurationProviderTests
     {
         [Test]
-        public void Provide_WithNonExistingName_ShouldBeEmpty()
+        public void Provide_WithNoConfigurationItems_ShouldBeEmpty()
+        {
+            var source = new Mock<IObjectFactoryConfigurationSource>();
+
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration());
+
+            var name = $"Default_{typeof(Customer).Name}";
+
+            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
+
+            sut.Provide(new Customer(), name).ShouldBeEmpty();
+        }
+
+        [Test]
+        public void Provide_WithInvalidType_ShouldBeEmpty()
+        {
+            var source = new Mock<IObjectFactoryConfigurationSource>();
+
+            var name = $"Default_{typeof(Customer).Name}";
+
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
+            {
+                Items = new List<ObjectFactoryConfigurationItem>()
+                    {
+                        new ObjectFactoryConfigurationItem(typeof(Person), typeof(DoSomething), name)
+                    }
+            }
+            );
+
+            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
+
+            sut.Provide(new Customer(), name).ShouldBeEmpty();
+        }
+
+        [Test]
+        [TestCase("")]
+        [TestCase("  ")]
+        [TestCase(null)]
+        [TestCase("name")]
+        public void Provide_WithValidTypeAndInvalidName_ShouldBeEmpty(string name)
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
@@ -28,23 +67,14 @@ namespace Jal.Factory.Tests
 
             var sut = new ObjectFactoryConfigurationProvider(new []{ source.Object });
 
-            sut.Provide(new Customer(), string.Empty).ShouldBeEmpty();
+            sut.Provide(new Customer(), name).ShouldBeEmpty();
         }
 
-        [Test]
-        public void Provide_WithNoConfigurationItems_ShouldBeEmpty()
-        {
-            var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration());
 
-            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
-
-            sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldBeEmpty();
-        }
 
         [Test]
-        public void Provide_WithWrongSelector_ShouldNotBeEmpty()
+        public void Provide_WithValidTypeAndValidNameAndInvalidSelector_ShouldNotBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
@@ -61,26 +91,9 @@ namespace Jal.Factory.Tests
             sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
 
-        [Test]
-        public void Provide_WithNullReturnType_ShouldThrowException()
-        {
-            var source = new Mock<IObjectFactoryConfigurationSource>();
-
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>
-                    {
-                        new ObjectFactoryConfigurationItem(typeof(Customer))
-                    }
-            });
-
-            var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
-
-            Should.Throw<ArgumentException>(() => sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))));
-        }
 
         [Test]
-        public void Provide_WithValidSelector_ShouldNotBeEmpty()
+        public void Provide_WithValidTypeAndValidNameAndValidSelector_ShouldNotBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
@@ -93,8 +106,10 @@ namespace Jal.Factory.Tests
             });
 
             var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
-            
-            sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
+
+            var configuration = sut.Provide(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof (Customer)));
+
+            configuration.ShouldNotBeEmpty();
         }
     }
 }

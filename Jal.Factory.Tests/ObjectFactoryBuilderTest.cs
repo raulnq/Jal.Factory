@@ -10,12 +10,12 @@ using Shouldly;
 namespace Jal.Factory.Tests
 {
     [TestFixture]
-    public class ObjectFactoryFluentBuilderTest
+    public class ObjectFactoryBuilderTest
     {
         [Test]
         public void UseLocator_WithNullLocator_ShouldThrowException()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             Should.Throw<ArgumentNullException>(()=> sut.UseLocator(null));
         }
@@ -23,11 +23,11 @@ namespace Jal.Factory.Tests
         [Test]
         public void UseLocator_WithNotNullLocator_ShouldBeNotNull()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             var chain = sut.UseLocator(new Mock<IServiceLocator>().Object);
 
-            chain.ShouldBeAssignableTo<IObjectFactoryProviderFluentBuilder>();
+            chain.ShouldBeAssignableTo<IObjectFactoryProviderBuilder>();
 
             chain.ShouldNotBeNull();
 
@@ -37,11 +37,11 @@ namespace Jal.Factory.Tests
         [Test]
         public void UseConfigurationSource_WithNotNullConfigurationSource_ShouldBeNotNull()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             var chain = sut.UseConfigurationSource(new [] {new Mock<IObjectFactoryConfigurationSource>().Object });
 
-            chain.ShouldBeAssignableTo<IObjectFactoryFluentBuilder>();
+            chain.ShouldBeAssignableTo<IObjectFactoryInterceptorBuilder>();
 
             chain.ShouldNotBeNull();
 
@@ -51,7 +51,7 @@ namespace Jal.Factory.Tests
         [Test]
         public void UseConfigurationSource_WithNullConfigurationSource_ShouldThrowException()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             Should.Throw<ArgumentNullException>(() => sut.UseConfigurationSource(null));
         }
@@ -59,11 +59,11 @@ namespace Jal.Factory.Tests
         [Test]
         public void UseInterceptor_WithNotNullInterceptor_ShouldBeNotNull()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             var chain = sut.UseInterceptor(new Mock<IObjectFactoryInterceptor>().Object);
 
-            chain.ShouldBeAssignableTo<IObjectFactoryFluentBuilder>();
+            chain.ShouldBeAssignableTo<IObjectFactoryInterceptorBuilder>();
 
             chain.ShouldNotBeNull();
 
@@ -73,7 +73,7 @@ namespace Jal.Factory.Tests
         [Test]
         public void UseInterceptor_WithNullInterceptor_ShouldThrowException()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             Should.Throw<ArgumentNullException>(() => sut.UseInterceptor(null));
         }
@@ -81,7 +81,7 @@ namespace Jal.Factory.Tests
         [Test]
         public void Create_WithNullConfigurationProviderAndCreator_ShouldThrowException()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             Should.Throw<Exception>(() => { var instance = sut.Create; } );
         }
@@ -89,7 +89,7 @@ namespace Jal.Factory.Tests
         [Test]
         public void Create_WithConfigurationProviderAndCreator_ShouldBeNotNull()
         {
-            var sut = new ObjectFactoryFluentBuilder();
+            var sut = new ObjectFactoryBuilder();
 
             var instance = sut.UseLocator(new Mock<IServiceLocator>().Object).UseConfigurationSource(new[] { new Mock<IObjectFactoryConfigurationSource>().Object }).UseInterceptor(new Mock<IObjectFactoryInterceptor>().Object).Create;
 
