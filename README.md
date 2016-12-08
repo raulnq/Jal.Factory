@@ -1,4 +1,4 @@
-# Jal.Factory
+# Jal.Factory [![Build status](https://ci.appveyor.com/api/projects/status/c63jmwrdr2iussdm?svg=true)](https://ci.appveyor.com/project/raulnq/jal-factory) [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.svg)](https://www.nuget.org/packages/Jal.Factory) [![Coverage Status](https://coveralls.io/repos/github/raulnq/Jal.Factory/badge.svg?branch=master)](https://coveralls.io/github/raulnq/Jal.Factory?branch=master)
 Just another library to implement the factory method pattern
 
 ## How to use?
@@ -142,6 +142,3 @@ Use the factory
     var customer = new Customer(){Age = 25};
 
     var services = factory.Create<Customer, IDoSomething>(customer);
-
-[![Build status](https://ci.appveyor.com/api/projects/status/c63jmwrdr2iussdm?svg=true)](https://ci.appveyor.com/project/raulnq/jal-factory)
-[![NuGet](https://img.shields.io/nuget/v/Jal.Factory.svg)](https://www.nuget.org/packages/Jal.Factory) 
