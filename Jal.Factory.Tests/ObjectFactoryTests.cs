@@ -20,7 +20,7 @@ namespace Jal.Factory.Tests
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
 
-            provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] {new ObjectFactoryConfigurationItem(typeof (Customer), typeof(DoSomething)) });
+            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] {new ObjectFactoryConfigurationItem(typeof (Customer), typeof(DoSomething)) });
 
             var creator = new Mock<IObjectCreator>();
 
@@ -40,27 +40,11 @@ namespace Jal.Factory.Tests
         }
 
         [Test]
-        public void Create_WithNotAssignableReturnType_ShouldBeEmpty()
-        {
-            var provider = new Mock<IObjectFactoryConfigurationProvider>();
-
-            provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { new ObjectFactoryConfigurationItem(typeof(Customer), typeof(Customer)) });
-
-            var sut = new ObjectFactory(provider.Object, null);
-
-            var implementations = sut.Create<Customer, IDoSomething>(new Customer());
-
-            implementations.ShouldNotBeNull();
-
-            implementations.ShouldBeEmpty();
-        }
-
-        [Test]
         public void Create_WithEmptyObjectFactoryConfigurationItem_ShouldBeEmpty()
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
 
-            provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new ObjectFactoryConfigurationItem[] { });
+            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new ObjectFactoryConfigurationItem[] { });
 
             var sut = new ObjectFactory(provider.Object, null);
 
@@ -76,7 +60,7 @@ namespace Jal.Factory.Tests
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
 
-            provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Throws<Exception>();
+            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Throws<Exception>();
 
             var sut = new ObjectFactory(provider.Object, null);
 
@@ -88,7 +72,7 @@ namespace Jal.Factory.Tests
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
 
-            provider.Setup(x => x.Provide(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething)) {Bag = ""} });
+            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething)) {Bag = ""} });
 
             var sut = new ObjectFactory(provider.Object, null);
 

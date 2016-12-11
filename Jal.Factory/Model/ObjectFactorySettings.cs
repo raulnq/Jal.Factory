@@ -1,5 +1,4 @@
 ﻿using System;
-using Jal.Factory.Interface;
 
 namespace Jal.Factory.Model
 {

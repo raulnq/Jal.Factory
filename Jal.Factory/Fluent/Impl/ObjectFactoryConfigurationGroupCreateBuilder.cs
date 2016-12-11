@@ -8,18 +8,18 @@ namespace Jal.Factory.Fluent.Impl
     {
         private readonly List<ObjectFactoryConfigurationItem> _objectFactoryConfigurationItems;
 
-        private readonly string _groupName;
+        private readonly string _name;
 
-        public ObjectFactoryConfigurationGroupCreateBuilder(List<ObjectFactoryConfigurationItem> objectFactoryConfigurationItems, string groupName)
+        public ObjectFactoryConfigurationGroupCreateBuilder(List<ObjectFactoryConfigurationItem> objectFactoryConfigurationItems, string name)
         {
             _objectFactoryConfigurationItems = objectFactoryConfigurationItems;
 
-            _groupName = groupName;
+            _name = name;
         }
 
         public IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TResult>() where TResult : TRestriction
         {
-            var value = new ObjectFactoryConfigurationItem(typeof(TTarget)) { ResultType = typeof(TResult), GroupName = _groupName };
+            var value = new ObjectFactoryConfigurationItem(typeof(TTarget)) { ResultType = typeof(TResult), Name = _name };
 
             _objectFactoryConfigurationItems.Add(value);
 

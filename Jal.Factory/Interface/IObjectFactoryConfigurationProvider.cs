@@ -8,6 +8,6 @@ namespace Jal.Factory.Interface
 
         ObjectFactoryConfiguration Configuration { get; }
 
-        ObjectFactoryConfigurationItem[] Provide<TTarget>(TTarget target, string name);
+        ObjectFactoryConfigurationItem[] Provide<TTarget,TResult>(TTarget target, string name);
     }
 }

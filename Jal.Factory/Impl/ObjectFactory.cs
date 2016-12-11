@@ -52,7 +52,7 @@ namespace Jal.Factory.Impl
             {
                 Interceptor.OnEntry(instance, name);
 
-                list = ConfigurationFor<TTarget, TResult> (instance, name).Select(configurationitem=> Creator.Create<TResult>(configurationitem.ResultType)).ToArray();
+                list = ConfigurationFor<TTarget, TResult> (instance, name).Select(item=> Creator.Create<TResult>(item.ResultType)).ToArray();
 
                 Interceptor.OnSuccess(instance, name, list);
                 
@@ -72,12 +72,7 @@ namespace Jal.Factory.Impl
 
         public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget instance, string name) where TResult : class
         {
-            return ConfigurationProvider.Provide(instance, name).Where(IsAssignableFrom<TResult>).ToArray();
-        }
-
-        private static bool IsAssignableFrom<TResult>(ObjectFactoryConfigurationItem objectFactoryConfigurationItem) where TResult : class
-        {
-            return typeof(TResult).IsAssignableFrom(objectFactoryConfigurationItem.ResultType);
+            return ConfigurationProvider.Provide<TTarget, TResult>(instance, name);
         }
     }
 }

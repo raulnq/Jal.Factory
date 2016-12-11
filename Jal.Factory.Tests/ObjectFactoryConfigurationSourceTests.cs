@@ -68,7 +68,7 @@ namespace Jal.Factory.Tests
 
             configuration.Items.Count.ShouldBe(1);
 
-            configuration.Items[0].GroupName = "Group";
+            configuration.Items[0].Name = "Group";
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 
@@ -139,7 +139,7 @@ namespace Jal.Factory.Tests
 
             configuration.Items.Count.ShouldBe(1);
 
-            configuration.Items[0].GroupName = "Group";
+            configuration.Items[0].Name = "Group";
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 

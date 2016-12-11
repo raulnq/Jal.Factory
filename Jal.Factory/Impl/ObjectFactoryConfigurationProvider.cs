@@ -11,32 +11,39 @@ namespace Jal.Factory.Impl
 
         public IObjectFactoryConfigurationSource[] Sources { get; }
 
-        public ObjectFactoryConfigurationProvider(IObjectFactoryConfigurationSource[] objectFactoryConfigurationSources)
+        public ObjectFactoryConfigurationProvider(IObjectFactoryConfigurationSource[] sources)
         {
-            if (objectFactoryConfigurationSources == null)
+            if (sources == null)
             {
-                throw new ArgumentNullException(nameof(objectFactoryConfigurationSources));
+                throw new ArgumentNullException(nameof(sources));
             }
 
-            Sources = objectFactoryConfigurationSources;
+            Sources = sources;
 
             Configuration = new ObjectFactoryConfiguration()
             {
-                Items = Sources
-                .Select(objectFactoryConfigurationSource => objectFactoryConfigurationSource.Source())
-                .Where(source => source != null)
-                .SelectMany(source => source.Items).ToList()
+                Items = Sources.Select(source => source.Source()).Where(source => source != null).SelectMany(source => source.Items).ToList()
             };
 
-            foreach (var objectFactoryConfigurationItem in Configuration.Items.Where(objectFactoryConfigurationItem => objectFactoryConfigurationItem.ResultType == null))
+            foreach (var item in Configuration.Items.Where(objectFactoryConfigurationItem => objectFactoryConfigurationItem.ResultType == null))
             {
-                throw new ArgumentException($"The return type for the item named {objectFactoryConfigurationItem.GroupName} is null");
+                throw new ArgumentException($"The return type for the item named {item.Name} is null");
             }
         }
 
-        private static bool IsSelected<TTarget>(ObjectFactoryConfigurationItem objectFactoryConfigurationItem, TTarget instance)
+        public ObjectFactoryConfigurationItem[] Provide<TTarget, TResult>(TTarget instance, string name)
         {
-            var selector = objectFactoryConfigurationItem.Selector as Func<TTarget, bool>;
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            return Configuration.Items.Where(item => SameTargetTypeOf<TTarget>(item) && SameNameConfiguration(item, name) && IsSelected(item, instance) && ResultAssignableTo<TResult>(item)).ToArray();
+        }
+
+        private static bool IsSelected<TTarget>(ObjectFactoryConfigurationItem item, TTarget instance)
+        {
+            var selector = item.Selector as Func<TTarget, bool>;
 
             var isselected = true;
 
@@ -48,24 +55,19 @@ namespace Jal.Factory.Impl
             return isselected;
         }
 
-        public ObjectFactoryConfigurationItem[] Provide<TTarget>(TTarget instance, string name)
+        private static bool SameTargetTypeOf<TTarget>(ObjectFactoryConfigurationItem item)
         {
-            return Configuration.Items
-                .Where(configurationItem => 
-                IsSameType<TTarget>(configurationItem) && 
-                IsSameGroup(configurationItem, name) && 
-                IsSelected(configurationItem, instance)
-                ).ToArray();
+            return item.TargetType == typeof (TTarget);
         }
 
-        private static bool IsSameType<TTarget>(ObjectFactoryConfigurationItem objectFactoryConfigurationItem)
+        private static bool ResultAssignableTo<TResult>(ObjectFactoryConfigurationItem item)
         {
-            return objectFactoryConfigurationItem.TargetType == typeof (TTarget);
+            return typeof(TResult).IsAssignableFrom(item.ResultType);
         }
 
-        private static bool IsSameGroup(ObjectFactoryConfigurationItem objectFactoryConfigurationItem, string groupname)
+        private static bool SameNameConfiguration(ObjectFactoryConfigurationItem item, string name)
         {
-            return objectFactoryConfigurationItem.GroupName == groupname;
+            return item.Name == name;
         }
     }
 }

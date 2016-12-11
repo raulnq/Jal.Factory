@@ -56,7 +56,7 @@ namespace Jal.Factory.Fluent.Impl
             {          
                 if (ObjectFactoryConfigurationProvider == null || ObjectCreator == null)
                 {
-                    throw new Exception("An implementation of IObjectFactoryConfigurationProvider/IObjectCreator is needed");
+                    throw new ApplicationException("An implementation of IObjectFactoryConfigurationProvider/IObjectCreator is needed");
                 }
 
                 var result = new ObjectFactory(ObjectFactoryConfigurationProvider, ObjectCreator);

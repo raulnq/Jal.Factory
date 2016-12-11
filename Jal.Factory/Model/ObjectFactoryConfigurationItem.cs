@@ -3,16 +3,16 @@ using System.Diagnostics;
 
 namespace Jal.Factory.Model
 {
-    [DebuggerDisplay("GroupName: {GroupName}, TargetType: {TargetType.Name}, ResultType: {ResultType.Name}, Selector: {Selector!=null}")]
+    [DebuggerDisplay("Name: {Name}, TargetType: {TargetType.Name}, ResultType: {ResultType.Name}, Selector: {Selector!=null}")]
     public class ObjectFactoryConfigurationItem
     {
-        public ObjectFactoryConfigurationItem(Type target, Type result, string groupName, object selector)
+        public ObjectFactoryConfigurationItem(Type target, Type result, string name, object selector)
         {
-            GroupName = groupName;
+            Name = name;
 
-            if (string.IsNullOrWhiteSpace(GroupName))
+            if (string.IsNullOrWhiteSpace(Name))
             {
-                GroupName = ObjectFactorySettings.BuildDefaultName(target);
+                Name = ObjectFactorySettings.BuildDefaultName(target);
             }
 
             Selector = selector;
@@ -40,7 +40,7 @@ namespace Jal.Factory.Model
 
         }
 
-        public string GroupName { get; set; }
+        public string Name { get; set; }
 
         public Type TargetType { get; set; }
 

@@ -83,7 +83,7 @@ namespace Jal.Factory.Tests
         {
             var sut = new ObjectFactoryBuilder();
 
-            Should.Throw<Exception>(() => { var instance = sut.Create; } );
+            Should.Throw<ApplicationException>(() => { var instance = sut.Create; } );
         }
 
         [Test]
