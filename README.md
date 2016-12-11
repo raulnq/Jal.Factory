@@ -93,52 +93,53 @@ var services = factory.Create<Customer, IDoSomething>(customer);
 ``` 
 ### LightInject Integration [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.LightInject.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.LightInject.Installer)
 
-The Jal.Locator.LightInject and Jal.Finder library are needed. 
+The [Jal.Locator.LightInject](https://www.nuget.org/packages/Jal.Locator.LightInject/) and [Jal.Finder](https://www.nuget.org/packages/Jal.Finder/) library are needed. 
 
 Setup the Jal.Finder library
+```c++
+var directory = AppDomain.CurrentDomain.BaseDirectory;
 
-    var directory = AppDomain.CurrentDomain.BaseDirectory;
-
-    var finder = Finder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
-
+var finder = Finder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
+``` 
 Setup the LightInject container
-
-    var container = new ServiceContainer();
-    
+```c++
+var container = new ServiceContainer();
+```     
 Install the Jal.Locator.CastleWindsor library
-
+```c++
     container.RegisterFrom<ServiceLocatorCompositionRoot>();
-    
+```     
 Install the Jal.Factory library, use the FactoryInstaller class included
+```c++
+var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
 
-    var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
-
-    container.RegisterFactory(assemblies);
-    
+container.RegisterFactory(assemblies);
+```    
 Register your services, it's mandatory name the service with the full name of the class
-
-    container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
-    
+```c++
+container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
+```    
 Create a class to setup the Jal.Factory library
-
-    public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
+```c++
+public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
+{
+    public ObjectFactoryConfigurationSource()
     {
-        public ObjectFactoryConfigurationSource()
-        {
-            For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
-        }
+        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
     }
-    
+}
+```  
 Tag the assembly container of the ObjectFactoryConfigurationSource class in order to be read by the library
-
-    [assembly: AssemblyTag("FactorySource")]
-    
+```c++
+[assembly: AssemblyTag()]
+```     
 Resolve a instance of the interface IObjectFactory
-
-    var factory = container.GetInstance<IObjectFactory>();
-
+```c++
+var factory = container.GetInstance<IObjectFactory>();
+``` 
 Use the factory
+```c++
+var customer = new Customer(){Age = 25};
 
-    var customer = new Customer(){Age = 25};
-
-    var services = factory.Create<Customer, IDoSomething>(customer);
+var services = factory.Create<Customer, IDoSomething>(customer);
+``` 
