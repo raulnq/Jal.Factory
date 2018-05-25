@@ -39,9 +39,8 @@
     <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Jal.Finder, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jal.Finder.1.0.2\lib\net40\Jal.Finder.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Jal.Finder, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jal.Finder.1.1.0\lib\net45\Jal.Finder.dll</HintPath>
     </Reference>
     <Reference Include="Jal.Locator, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Jal.Locator.1.1.1\lib\net45\Jal.Locator.dll</HintPath>
