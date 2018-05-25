@@ -1,20 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jal.Factory", "Jal.Factory\Jal.Factory.csproj", "{A408B8D4-499F-42F4-96C3-BA87BE5F4450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jal.Factory", "Jal.Factory\Jal.Factory.csproj", "{A408B8D4-499F-42F4-96C3-BA87BE5F4450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jal.Factory.Installer", "Jal.Factory.Installer\Jal.Factory.Installer.csproj", "{3F5DCFD1-C2D0-4523-AFAC-732B1D2AB5C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jal.Factory.Installer", "Jal.Factory.Installer\Jal.Factory.Installer.csproj", "{3F5DCFD1-C2D0-4523-AFAC-732B1D2AB5C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jal.Factory.Tests", "Jal.Factory.Tests\Jal.Factory.Tests.csproj", "{12EF099E-4CFC-4A96-B18C-17BA5A1E5BA6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FC87C6A7-B820-4701-B97E-758B2CFC82C9}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jal.Factory.LightInject.Installer", "Jal.Factory.LightInject.Installer\Jal.Factory.LightInject.Installer.csproj", "{60B01681-5F51-4D86-91C9-4B5464C98066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jal.Factory.LightInject.Installer", "Jal.Factory.LightInject.Installer\Jal.Factory.LightInject.Installer.csproj", "{60B01681-5F51-4D86-91C9-4B5464C98066}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D8B89F0-336C-4873-98F8-AA6DEA577505}"
 	ProjectSection(SolutionItems) = preProject
@@ -46,5 +41,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {804608C9-4BFE-4FB0-A804-C555FD792A6B}
 	EndGlobalSection
 EndGlobal
