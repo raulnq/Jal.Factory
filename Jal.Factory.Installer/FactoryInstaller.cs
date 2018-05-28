@@ -9,11 +9,18 @@ namespace Jal.Factory.Installer
 {
     public class FactoryInstaller : IWindsorInstaller
     {
-        private readonly Assembly[] _objectFactoryConfigurationSourceAssemblies;
+        private readonly Assembly[] _assemblies;
 
-        public FactoryInstaller(Assembly[] objectFactoryConfigurationSourceAssemblies)
+        private readonly IObjectFactoryConfigurationSource[] _sources;
+
+        public FactoryInstaller(Assembly[] assemblies)
         {
-            _objectFactoryConfigurationSourceAssemblies = objectFactoryConfigurationSourceAssemblies;
+            _assemblies = assemblies;
+        }
+
+        public FactoryInstaller(IObjectFactoryConfigurationSource[] sources)
+        {
+            _sources = sources;
         }
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
@@ -24,14 +31,20 @@ namespace Jal.Factory.Installer
                 Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton()
             );
 
-            var assemblysources = _objectFactoryConfigurationSourceAssemblies;
-
-            if (assemblysources != null)
+            if (_assemblies != null)
             {
-                foreach (var assemblysource in assemblysources)
+                foreach (var assemblysource in _assemblies)
                 {
                     var assemblyDescriptor = Classes.FromAssembly(assemblysource);
                     container.Register(assemblyDescriptor.BasedOn<AbstractObjectFactoryConfigurationSource>().WithServiceAllInterfaces());
+                }
+            }
+
+            if (_sources != null)
+            {
+                foreach (var source in _sources)
+                {
+                    container.Register(Component.For(typeof(IObjectFactoryConfigurationSource)).ImplementedBy(source.GetType()).Named(source.GetType().FullName).LifestyleSingleton());
                 }
             }
             

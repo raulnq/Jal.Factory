@@ -8,12 +8,4 @@ namespace Jal.Factory.Tests.Model
 
         public bool Active { get; set; }
     }
-
-    public class Person
-    {
-        public string Name { get; set; }
-
-        public int Id { get; set; }
-
-    }
 }

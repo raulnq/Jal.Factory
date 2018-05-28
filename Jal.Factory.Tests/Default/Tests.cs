@@ -21,7 +21,7 @@ namespace Jal.Factory.Tests.Default
 
             var config = new AutoObjectFactoryConfigurationSource();
 
-            var factory = ObjectFactory.Builder.UseLocator(locator).UseConfigurationSource(new IObjectFactoryConfigurationSource[]{ config }).Create;
+            var factory = ObjectFactory.Create(new IObjectFactoryConfigurationSource[] {config}, locator);
 
             var customer = new Customer() { Age = 25 };
 

@@ -1,11 +1,8 @@
-﻿using System;
-using Jal.Factory.Interface;
+﻿using Jal.Factory.Interface;
 using Jal.Factory.LightInject.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
-using Jal.Finder.Atrribute;
-using Jal.Finder.Impl;
 using Jal.Locator.LightInject.Installer;
 using LightInject;
 using NUnit.Framework;
@@ -22,15 +19,9 @@ namespace Jal.Factory.Tests.LightInject
         {
             var container = new ServiceContainer();
 
-            var directory = AppDomain.CurrentDomain.BaseDirectory;
-
-            var finder = AssemblyFinder.Builder.UsePath(directory).Create;
-
             container.RegisterFrom<ServiceLocatorCompositionRoot>();
 
-            var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
-
-            container.RegisterFactory(assemblies);
+            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
 
             container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
 

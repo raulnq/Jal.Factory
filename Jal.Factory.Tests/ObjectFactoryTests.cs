@@ -1,5 +1,4 @@
 ﻿using System;
-using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Impl;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
@@ -81,16 +80,6 @@ namespace Jal.Factory.Tests
             implementations.ShouldNotBeNull();
 
             implementations.Length.ShouldBe(1);
-        }
-
-        [Test]
-        public void Builder_With_ShouldBeOne()
-        {
-            var builder = ObjectFactory.Builder;
-
-            builder.ShouldNotBeNull();
-
-            builder.ShouldBeAssignableTo<IObjectFactoryLocatorBuilder>();
         }
     }
 }

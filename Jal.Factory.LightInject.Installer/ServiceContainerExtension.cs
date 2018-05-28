@@ -31,5 +31,22 @@ namespace Jal.Factory.LightInject.Installer
                 }
             }
         }
+
+        public static void RegisterFactory(this IServiceContainer container, IObjectFactoryConfigurationSource[] sources)
+        {
+            container.Register<IObjectFactory, ObjectFactory>(new PerContainerLifetime());
+
+            container.Register<IObjectCreator, ObjectCreator>(new PerContainerLifetime());
+
+            container.Register<IObjectFactoryConfigurationProvider, ObjectFactoryConfigurationProvider>(new PerContainerLifetime());
+
+            if (sources != null)
+            {
+                foreach (var source in sources)
+                {
+                    container.Register(typeof(IObjectFactoryConfigurationSource), source.GetType(), source.GetType().FullName, new PerContainerLifetime());
+                }
+            }
+        }
     }
 }

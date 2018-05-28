@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Jal.Factory.Fluent.Impl;
-using Jal.Factory.Fluent.Interface;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
+using Jal.Locator.Interface;
 
 namespace Jal.Factory.Impl
 {
@@ -12,13 +11,16 @@ namespace Jal.Factory.Impl
 
         public static IObjectFactory Current;
 
-        public static IObjectFactoryLocatorBuilder Builder => new ObjectFactoryBuilder();
-
         public IObjectFactoryConfigurationProvider ConfigurationProvider { get; }
 
         public IObjectFactoryInterceptor Interceptor { get; set; }
 
         public IObjectCreator Creator { get; }
+
+        public static IObjectFactory Create(IObjectFactoryConfigurationSource[] sources, IServiceLocator locator)
+        {
+            return new ObjectFactory(new ObjectFactoryConfigurationProvider(sources), new ObjectCreator(locator));
+        }
 
         public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator)
         {
