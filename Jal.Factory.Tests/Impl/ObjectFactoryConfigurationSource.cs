@@ -17,6 +17,7 @@ namespace Jal.Factory.Tests.Impl
         public AutoObjectFactoryConfigurationSource()
         {
             For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
+            For<Customer, IDoSomething>().Create<DoSomething2>().When(x => x.Age < 18);
         }
     }
 }

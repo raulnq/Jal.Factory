@@ -1,10 +1,11 @@
 ﻿using Jal.Factory.Model;
+using System.Collections.Generic;
 
 namespace Jal.Factory.Interface
 {
     public interface IObjectFactoryConfigurationProvider
     {
-        IObjectFactoryConfigurationSource[] Sources { get; }
+        IEnumerable<IObjectFactoryConfigurationSource> Sources { get; }
 
         ObjectFactoryConfiguration Configuration { get; }
 

@@ -2,14 +2,16 @@ using System;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests
 {
+    [TestClass]
     public class ObjectFactoryConfigurationSourceTests
     {
-        [Test]
+        [TestMethod]
         public void Source_WithFor_ShouldBeOne()
         {
             var sut = new ObjectFactoryConfigurationSource();
@@ -31,7 +33,7 @@ namespace Jal.Factory.Tests
             configuration.Items[0].Selector.ShouldBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Source_WithNameForNoAction_ShouldEmpty()
         {
             var sut = new ObjectFactoryConfigurationSource();
@@ -45,7 +47,7 @@ namespace Jal.Factory.Tests
             configuration.Items.ShouldBeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Source_WithNameForNullAction_ShouldThorwException()
         {
             var sut = new ObjectFactoryConfigurationSource();
@@ -53,7 +55,7 @@ namespace Jal.Factory.Tests
             Should.Throw<Exception>(() => sut.For<Customer, IDoSomething>("Group", null));
         }
 
-        [Test]
+        [TestMethod]
         public void Source_WithNameFor_ShouldBeOne()
         {
             var sut = new ObjectFactoryConfigurationSource();
@@ -76,7 +78,7 @@ namespace Jal.Factory.Tests
 
             configuration.Items[0].Selector.ShouldBeNull();
         }
-        [Test]
+        [TestMethod]
         public void Source_WithForCreate_ShouldBeOne()
         {
             var sut = new ObjectFactoryConfigurationSource();
@@ -98,7 +100,7 @@ namespace Jal.Factory.Tests
             configuration.Items[0].Selector.ShouldBeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void Source_WithForCreateWhen_ShouldBeOne()
         {
             var sut = new ObjectFactoryConfigurationSource();
@@ -122,7 +124,7 @@ namespace Jal.Factory.Tests
             configuration.Items[0].Selector.ShouldBe(when);
         }
 
-        [Test]
+        [TestMethod]
         public void Source_WithNameForCreateWhen_ShouldBeOne()
         {
             var sut = new ObjectFactoryConfigurationSource();

@@ -1,41 +1,31 @@
-﻿using System;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
-using Jal.Factory.Impl;
 using Jal.Factory.Installer;
 using Jal.Factory.Interface;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
-using Jal.Finder.Atrribute;
 using Jal.Locator.CastleWindsor.Installer;
-using Jal.Locator.Impl;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 
 namespace Jal.Factory.Tests.CastleWindsor
 {
-    [TestFixture]
+    [TestClass]
     public class Tests
     {
 
-        [Test]
+        [TestMethod]
         public void Create_WithCustomerOlderThan25A_ShouldBeNotEmpty()
         {
             var container = new WindsorContainer();
 
-            var directory = AppDomain.CurrentDomain.BaseDirectory;
-
-            var finder = Finder.Impl.AssemblyFinder.Builder.UsePath(directory).Create;
-
-            container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
+            container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
             container.Install(new ServiceLocatorInstaller());
 
-            var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
-
-            container.Install(new FactoryInstaller(assemblies));
+            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }));
 
             container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
 
@@ -54,12 +44,12 @@ namespace Jal.Factory.Tests.CastleWindsor
             services[0].ShouldBeOfType<DoSomething>();
         }
 
-        [Test]
-        public void Create_WithCustomerOlderThan25B_ShouldBeNotEmpty()
+        [TestMethod]
+        public void Create_WithCustomerLessThan18_ShouldBeNotEmpty()
         {
             var container = new WindsorContainer();
 
-            container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
+            container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
             container.Install(new ServiceLocatorInstaller());
 
@@ -67,9 +57,11 @@ namespace Jal.Factory.Tests.CastleWindsor
 
             container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
 
+            container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething2>().LifestyleSingleton().Named(typeof(DoSomething2).FullName));
+
             var factory = container.Resolve<IObjectFactory>();
 
-            var customer = new Customer() { Age = 25 };
+            var customer = new Customer() { Age = 15 };
 
             var services = factory.Create<Customer, IDoSomething>(customer);
 
@@ -79,7 +71,7 @@ namespace Jal.Factory.Tests.CastleWindsor
 
             services[0].ShouldBeAssignableTo<IDoSomething>();
 
-            services[0].ShouldBeOfType<DoSomething>();
+            services[0].ShouldBeOfType<DoSomething2>();
         }
     }
 }

@@ -3,16 +3,17 @@ using Jal.Factory.Impl;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Locator.Interface;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ObjectCreatorTests
     {
-        [Test]
+        [TestMethod]
         public void Create_WithNotNullType_ShouldBeNotNull()
         {
             var locator = new Mock<IServiceLocator>();
@@ -30,7 +31,7 @@ namespace Jal.Factory.Tests
             instance.ShouldBeAssignableTo<IDoSomething>();
         }
 
-        [Test]
+        [TestMethod]
         public void Create_WithNullType_ShouldBeNotNull()
         {
             var locator = new Mock<IServiceLocator>();

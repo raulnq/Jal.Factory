@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Jal.Factory.Interface;
 using Jal.Factory.Model;
@@ -9,9 +10,9 @@ namespace Jal.Factory.Impl
     {
         public ObjectFactoryConfiguration Configuration { get; }
 
-        public IObjectFactoryConfigurationSource[] Sources { get; }
+        public IEnumerable<IObjectFactoryConfigurationSource> Sources { get; }
 
-        public ObjectFactoryConfigurationProvider(IObjectFactoryConfigurationSource[] sources)
+        public ObjectFactoryConfigurationProvider(IEnumerable<IObjectFactoryConfigurationSource> sources)
         {
             if (sources == null)
             {

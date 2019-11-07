@@ -4,15 +4,16 @@ using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
 using Jal.Locator.Impl;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests.Default
 {
-    [TestFixture]
+    [TestClass]
     public class Tests
     {
-        [Test]
+        [TestMethod]
         public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
             var locator = new ServiceLocator();

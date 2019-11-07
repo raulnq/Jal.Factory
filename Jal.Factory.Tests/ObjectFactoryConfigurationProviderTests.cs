@@ -6,23 +6,24 @@ using Jal.Factory.Model;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ObjectFactoryConfigurationProviderTests
     {
 
-        [Test]
+        [TestMethod]
         public void New_WithNullSources_ShouldThrowException()
         {
             Should.Throw<ArgumentNullException>(() => { var sut = new ObjectFactoryConfigurationProvider(null); });
         }
 
-        [Test]
+        [TestMethod]
         public void New_WithNullResultType_ShouldThrowException()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -39,7 +40,7 @@ namespace Jal.Factory.Tests
             Should.Throw<ArgumentException>(() => { var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object }); });
         }
 
-        [Test]
+        [TestMethod]
         public void Provide_WithNullInstance_ShouldThrowException()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -51,7 +52,7 @@ namespace Jal.Factory.Tests
             Should.Throw<ArgumentException>(() => sut.Provide<Customer, IDoSomething>(null, string.Empty));
         }
 
-        [Test]
+        [TestMethod]
         public void Provide_WithNoConfigurationItems_ShouldBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -63,7 +64,7 @@ namespace Jal.Factory.Tests
             sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty).ShouldBeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Provide_WithInvalidType_ShouldBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -82,11 +83,11 @@ namespace Jal.Factory.Tests
             sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty).ShouldBeEmpty();
         }
 
-        [Test]
-        [TestCase("")]
-        [TestCase("  ")]
-        [TestCase(null)]
-        [TestCase("name")]
+        [DataTestMethod]
+        [DataRow("")]
+        [DataRow("  ")]
+        [DataRow(null)]
+        [DataRow("name")]
         public void Provide_WithValidTypeAndInvalidName_ShouldBeEmpty(string name)
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -106,7 +107,7 @@ namespace Jal.Factory.Tests
 
 
 
-        [Test]
+        [TestMethod]
         public void Provide_WithValidTypeAndValidNameAndInvalidSelector_ShouldNotBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -124,7 +125,7 @@ namespace Jal.Factory.Tests
             sut.Provide<Customer, IDoSomething>(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Provide_WithValidTypeAndValidNameAndValidFalseSelector_ShouldBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -144,7 +145,7 @@ namespace Jal.Factory.Tests
             configuration.ShouldBeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Provide_WithValidTypeAndValidNameAndValidTrueSelectorAndInvalidResultType_ShouldBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
@@ -164,7 +165,7 @@ namespace Jal.Factory.Tests
             configuration.ShouldBeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Provide_WithValidTypeAndValidNameAndValidTrueSelectorAndValidResultType_ShouldNotBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();

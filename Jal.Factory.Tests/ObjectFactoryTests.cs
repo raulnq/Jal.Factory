@@ -5,16 +5,17 @@ using Jal.Factory.Model;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class ObjectFactoryTests
     {
-        [Test]
+        [TestMethod]
         public void Create_With_ShouldBeOne()
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
@@ -38,7 +39,7 @@ namespace Jal.Factory.Tests
             implementations[0].ShouldBeAssignableTo<IDoSomething>();
         }
 
-        [Test]
+        [TestMethod]
         public void Create_WithEmptyObjectFactoryConfigurationItem_ShouldBeEmpty()
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
@@ -54,7 +55,7 @@ namespace Jal.Factory.Tests
             implementations.ShouldBeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Create_ThrowException_ShouldThrowException()
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
@@ -66,7 +67,7 @@ namespace Jal.Factory.Tests
             Should.Throw<Exception>(()=>sut.Create<Customer, IDoSomething>(new Customer()));
         }
 
-        [Test]
+        [TestMethod]
         public void ConfigurationFor_With_ShouldBeOne()
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();

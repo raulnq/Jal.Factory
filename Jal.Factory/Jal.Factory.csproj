@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Raul Naupari</Authors>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Company>Raul Naupari</Company>
     <Description>Just another library to implement the factory method pattern</Description>
     <Copyright />
@@ -11,20 +11,11 @@
     <PackageProjectUrl>https://github.com/raulnq/Jal.Factory</PackageProjectUrl>
     <RepositoryUrl></RepositoryUrl>
     <PackageTags />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jal.Locator" Version="1.1.1" />
+    <PackageReference Include="Jal.Locator" Version="1.1.2" />
   </ItemGroup>
   
 </Project>

@@ -1,25 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Raul Naupari</Authors>
-    <Version>1.1.2</Version>
+    <Description>Microsoft.Extensions.DependencyInjection installer for the Jal.Factory library</Description>
     <Company>Raul Naupari</Company>
-    <Description>LightInject installer for the Jal.Factory library</Description>
-    <Copyright />
+    <Authors>Raul Naupari</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/raulnq/Jal.Factory</PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>
-    <PackageTags />
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="LightInject" Version="6.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Jal.Factory\Jal.Factory.csproj" />
   </ItemGroup>
-  
+
 </Project>

@@ -4,33 +4,26 @@ using Jal.Factory.LightInject.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
-using Jal.Finder.Atrribute;
-using Jal.Finder.Impl;
 using Jal.Locator.LightInject.Installer;
 using LightInject;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests.LightInject
 {
-    [TestFixture]
+    [TestClass]
     public class Tests
     {
 
-        [Test]
+        [TestMethod]
         public void Create_WithCustomerOlderThan25A_ShouldBeNotEmpty()
         {
             var container = new ServiceContainer();
 
-            var directory = AppDomain.CurrentDomain.BaseDirectory;
-
-            var finder = AssemblyFinder.Builder.UsePath(directory).Create;
-
             container.RegisterFrom<ServiceLocatorCompositionRoot>();
 
-            var assemblies = finder.GetAssembliesTagged<AssemblyTagAttribute>();
-
-            container.RegisterFactory(assemblies);
+            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
 
             container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
 
@@ -49,8 +42,8 @@ namespace Jal.Factory.Tests.LightInject
             services[0].ShouldBeOfType<DoSomething>();
         }
 
-        [Test]
-        public void Create_WithCustomerOlderThan25B_ShouldBeNotEmpty()
+        [TestMethod]
+        public void Create_WithCustomerLessThan18_ShouldBeNotEmpty()
         {
             var container = new ServiceContainer();
 
@@ -60,9 +53,11 @@ namespace Jal.Factory.Tests.LightInject
 
             container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
 
+            container.Register<IDoSomething, DoSomething2>(typeof(DoSomething2).FullName);
+
             var factory = container.GetInstance<IObjectFactory>();
 
-            var customer = new Customer() { Age = 25 };
+            var customer = new Customer() { Age = 15 };
 
             var services = factory.Create<Customer, IDoSomething>(customer);
 
@@ -72,7 +67,7 @@ namespace Jal.Factory.Tests.LightInject
 
             services[0].ShouldBeAssignableTo<IDoSomething>();
 
-            services[0].ShouldBeOfType<DoSomething>();
+            services[0].ShouldBeOfType<DoSomething2>();
         }
     }
 }
