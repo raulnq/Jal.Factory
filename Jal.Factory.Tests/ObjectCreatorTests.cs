@@ -1,11 +1,9 @@
 using System;
-using Jal.Factory.Impl;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
-using Jal.Locator.Interface;
+using Jal.Locator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests

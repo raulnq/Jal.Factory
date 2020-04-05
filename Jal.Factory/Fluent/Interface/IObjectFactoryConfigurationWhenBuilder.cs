@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jal.Factory.Fluent.Interface
+namespace Jal.Factory
 {
     public interface IObjectFactoryConfigurationWhenBuilder<out TTarget>
     {

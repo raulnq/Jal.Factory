@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Jal.Factory.Impl;
-using Jal.Factory.Interface;
-using Jal.Factory.Model;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests
@@ -28,14 +24,10 @@ namespace Jal.Factory.Tests
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>()
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration(new List<ObjectFactoryConfigurationItem>()
                     {
-                        new ObjectFactoryConfigurationItem(typeof(Person), null, string.Empty)
-                    }
-            }
-            );
+                        new ObjectFactoryConfigurationItem(typeof(Person), null, null, string.Empty)
+                    }));
 
             Should.Throw<ArgumentException>(() => { var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object }); });
         }
@@ -69,60 +61,29 @@ namespace Jal.Factory.Tests
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>()
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration(new List<ObjectFactoryConfigurationItem>()
                     {
-                        new ObjectFactoryConfigurationItem(typeof(Person), typeof(DoSomething))
-                    }
-            }
-            );
+                        new ObjectFactoryConfigurationItem(typeof(Person), typeof(DoSomething), typeof(IDoSomething), string.Empty, null)
+                    }));
 
             var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
 
             sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty).ShouldBeEmpty();
         }
 
-        [DataTestMethod]
-        [DataRow("")]
-        [DataRow("  ")]
-        [DataRow(null)]
-        [DataRow("name")]
-        public void Provide_WithValidTypeAndInvalidName_ShouldBeEmpty(string name)
-        {
-            var source = new Mock<IObjectFactoryConfigurationSource>();
-
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration() {Items= new List<ObjectFactoryConfigurationItem>()
-                    {
-                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething))
-                    }
-                }
-            );
-
-            var sut = new ObjectFactoryConfigurationProvider(new []{ source.Object });
-
-            sut.Provide<Customer, IDoSomething>(new Customer(), name).ShouldBeEmpty();
-        }
-
-
-
-
         [TestMethod]
         public void Provide_WithValidTypeAndValidNameAndInvalidSelector_ShouldNotBeEmpty()
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration(new List<ObjectFactoryConfigurationItem>
                     {
-                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), (Func<string, bool>)(t => true))
-                    }
-            });
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), typeof(IDoSomething), string.Empty, (Func<string, bool>)(t => true))
+                    }));
 
             var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
 
-            sut.Provide<Customer, IDoSomething>(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer))).ShouldNotBeEmpty();
+            sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty).ShouldNotBeEmpty();
         }
 
         [TestMethod]
@@ -130,17 +91,14 @@ namespace Jal.Factory.Tests
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration(new List<ObjectFactoryConfigurationItem>
                     {
-                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(Customer), (Func<Customer, bool>)(t => false))
-                    }
-            });
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), typeof(IDoSomething), string.Empty, (Func<Customer, bool>)(t => false))
+                    }));
 
             var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
 
-            var configuration = sut.Provide<Customer, IDoSomething>(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer)));
+            var configuration = sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty);
 
             configuration.ShouldBeEmpty();
         }
@@ -150,17 +108,14 @@ namespace Jal.Factory.Tests
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration(new List<ObjectFactoryConfigurationItem>
                     {
-                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(Customer), (Func<Customer, bool>)(t => true))
-                    }
-            });
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(int), typeof(IDoSomething), string.Empty, (Func<Customer, bool>)(t => true))
+                    }));
 
             var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
 
-            var configuration = sut.Provide<Customer, IDoSomething>(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof(Customer)));
+            var configuration = sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty);
 
             configuration.ShouldBeEmpty();
         }
@@ -170,17 +125,14 @@ namespace Jal.Factory.Tests
         {
             var source = new Mock<IObjectFactoryConfigurationSource>();
 
-            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration()
-            {
-                Items = new List<ObjectFactoryConfigurationItem>
+            source.Setup(x => x.Source()).Returns(new ObjectFactoryConfiguration(new List<ObjectFactoryConfigurationItem>
                     {
-                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), (Func<Customer, bool>)(t => true))
-                    }
-            });
+                        new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), typeof(IDoSomething), string.Empty, (Func<Customer, bool>)(t => true))
+                    }));
 
             var sut = new ObjectFactoryConfigurationProvider(new[] { source.Object });
 
-            var configuration = sut.Provide<Customer, IDoSomething>(new Customer(), ObjectFactorySettings.BuildDefaultName(typeof (Customer)));
+            var configuration = sut.Provide<Customer, IDoSomething>(new Customer(), string.Empty);
 
             configuration.ShouldNotBeEmpty();
         }

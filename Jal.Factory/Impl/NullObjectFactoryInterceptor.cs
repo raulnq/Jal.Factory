@@ -1,4 +1,4 @@
-﻿namespace Jal.Factory.Impl
+﻿namespace Jal.Factory
 {
     public class NullObjectFactoryInterceptor : AbstractObjectFactoryInterceptor
     {

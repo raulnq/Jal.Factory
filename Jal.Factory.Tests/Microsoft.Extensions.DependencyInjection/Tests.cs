@@ -1,16 +1,10 @@
-﻿using System;
-using Jal.Factory.Interface;
-using Jal.Factory.LightInject.Installer;
-using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;
+﻿using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
-using Jal.Locator.LightInject.Installer;
-using Jal.Locator.Microsoft.Extensions.DependencyInjection.Extensions;
-using LightInject;
+using Jal.Locator.Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
@@ -24,11 +18,12 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
         {
             var container = new ServiceCollection();
 
-            var namedservicecollection = container.AddServiceLocator();
+            container.AddServiceLocator();
 
-            container.AddFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
-
-            namedservicecollection.AddSingleton<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
+            container.AddFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            {
+                c.AddForFactory<IDoSomething, DoSomething>();
+            });
 
             var provider = container.BuildServiceProvider();
 
@@ -52,13 +47,13 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
         {
             var container = new ServiceCollection();
 
-            var namedservicecollection = container.AddServiceLocator();
+            container.AddServiceLocator();
 
-            container.AddFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
-
-            namedservicecollection.AddSingleton<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
-
-            namedservicecollection.AddSingleton<IDoSomething, DoSomething2>(typeof(DoSomething2).FullName);
+            container.AddFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            {
+                c.AddForFactory<IDoSomething, DoSomething>();
+                c.AddForFactory<IDoSomething, DoSomething2>();
+            });
 
             var provider = container.BuildServiceProvider();
 

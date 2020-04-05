@@ -41,7 +41,7 @@ Setup the Castle Windsor container
 ```c++
 var container = new WindsorContainer();
 
-container.Kernel.Resolver.AddSubResolver(new ArrayResolver(container.Kernel));
+container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 ```
 Install the Jal.Locator.CastleWindsor library
 ```c++
@@ -49,11 +49,10 @@ container.Install(new ServiceLocatorInstaller());
 ```
 Install the Jal.Factory library
 ```c++
-container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[]{ new ObjectFactoryConfigurationSource() } ));
-```
-Register your services, it's mandatory name the service with the full name of the class
-```c++
-container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName)));
+container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+{
+    c.RegisterForFactory<IDoSomething, DoSomething>();
+}));
 ```
 Create a class to setup the Jal.Factory library
 ```c++
@@ -89,11 +88,10 @@ container.RegisterFrom<ServiceLocatorCompositionRoot>();
 ```     
 Install the Jal.Factory library, use the FactoryInstaller class included
 ```c++
-container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
-```    
-Register your services, it's mandatory name the service with the full name of the class
-```c++
-container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
+container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+{
+    c.RegisterForFactory<IDoSomething, DoSomething>();
+});
 ```    
 Create a class to setup the Jal.Factory library
 ```c++

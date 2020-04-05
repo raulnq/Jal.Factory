@@ -1,16 +1,14 @@
-﻿using Jal.Factory.Model;
-
-namespace Jal.Factory.Interface
+﻿namespace Jal.Factory
 {
     public interface IObjectFactory
     {
-        TResult[] Create<TTarget, TResult>(TTarget target, string name) where TResult : class;
+        TService[] Create<TTarget, TService>(TTarget target, string name) where TService : class;
 
-        TResult[] Create<TTarget, TResult>(TTarget target) where TResult : class;
+        TService[] Create<TTarget, TService>(TTarget target) where TService : class;
 
-        ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget target, string name) where TResult : class;
+        ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TService>(TTarget target, string name) where TService : class;
 
-        ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget target) where TResult : class;
+        ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TService>(TTarget target) where TService : class;
 
         IObjectFactoryConfigurationProvider ConfigurationProvider { get; }
 

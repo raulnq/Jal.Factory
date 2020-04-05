@@ -1,7 +1,7 @@
-﻿namespace Jal.Factory.Fluent.Interface
+﻿namespace Jal.Factory
 {
-    public interface IObjectFactoryConfigurationGroupCreateBuilder<out TTarget, in TRestriction>
+    public interface IObjectFactoryConfigurationGroupCreateBuilder<out TTarget, in TService>
     {
-        IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TResult>() where TResult : TRestriction;
+        IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TImplementation>() where TImplementation : TService;
     }
 }

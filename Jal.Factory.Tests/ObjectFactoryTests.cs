@@ -1,13 +1,9 @@
 ﻿using System;
-using Jal.Factory.Impl;
-using Jal.Factory.Interface;
-using Jal.Factory.Model;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests
@@ -20,7 +16,7 @@ namespace Jal.Factory.Tests
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
 
-            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] {new ObjectFactoryConfigurationItem(typeof (Customer), typeof(DoSomething)) });
+            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] {new ObjectFactoryConfigurationItem(typeof (Customer), typeof(DoSomething), string.Empty) });
 
             var creator = new Mock<IObjectCreator>();
 
@@ -72,7 +68,7 @@ namespace Jal.Factory.Tests
         {
             var provider = new Mock<IObjectFactoryConfigurationProvider>();
 
-            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething)) {Bag = ""} });
+            provider.Setup(x => x.Provide<Customer, IDoSomething>(It.IsAny<Customer>(), It.IsAny<string>())).Returns(new[] { new ObjectFactoryConfigurationItem(typeof(Customer), typeof(DoSomething), string.Empty) });
 
             var sut = new ObjectFactory(provider.Object, null);
 

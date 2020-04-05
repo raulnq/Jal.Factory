@@ -28,7 +28,7 @@ namespace Jal.Factory.Tests
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 
-            configuration.Items[0].ResultType.ShouldBeNull();
+            configuration.Items[0].ImplementationType.ShouldBeNull();
 
             configuration.Items[0].Selector.ShouldBeNull();
         }
@@ -70,11 +70,11 @@ namespace Jal.Factory.Tests
 
             configuration.Items.Count.ShouldBe(1);
 
-            configuration.Items[0].Name = "Group";
+            //configuration.Items[0].Name = "Group";
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 
-            configuration.Items[0].ResultType.ShouldBe(typeof(DoSomething));
+            configuration.Items[0].ImplementationType.ShouldBe(typeof(DoSomething));
 
             configuration.Items[0].Selector.ShouldBeNull();
         }
@@ -95,7 +95,7 @@ namespace Jal.Factory.Tests
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 
-            configuration.Items[0].ResultType.ShouldBe(typeof(DoSomething));
+            configuration.Items[0].ImplementationType.ShouldBe(typeof(DoSomething));
 
             configuration.Items[0].Selector.ShouldBeNull();
         }
@@ -119,7 +119,7 @@ namespace Jal.Factory.Tests
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 
-            configuration.Items[0].ResultType.ShouldBe(typeof(DoSomething));
+            configuration.Items[0].ImplementationType.ShouldBe(typeof(DoSomething));
 
             configuration.Items[0].Selector.ShouldBe(when);
         }
@@ -141,11 +141,11 @@ namespace Jal.Factory.Tests
 
             configuration.Items.Count.ShouldBe(1);
 
-            configuration.Items[0].Name = "Group";
+            //configuration.Items[0].Name = "Group";
 
             configuration.Items[0].TargetType.ShouldBe(typeof(Customer));
 
-            configuration.Items[0].ResultType.ShouldBe(typeof(DoSomething));
+            configuration.Items[0].ImplementationType.ShouldBe(typeof(DoSomething));
 
             configuration.Items[0].Selector.ShouldBe(when);
         }

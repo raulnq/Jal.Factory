@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Jal.Factory.Interface;
-using Jal.Factory.Model;
-using Jal.Locator.Interface;
 
-namespace Jal.Factory.Impl
+namespace Jal.Factory
 {
     public class ObjectFactory : IObjectFactory
     {
-
-        public static IObjectFactory Current;
-
         public IObjectFactoryConfigurationProvider ConfigurationProvider { get; }
 
         public IObjectFactoryInterceptor Interceptor { get; set; }
 
         public IObjectCreator Creator { get; }
-
-        public static IObjectFactory Create(IObjectFactoryConfigurationSource[] sources, IServiceLocator locator)
-        {
-            return new ObjectFactory(new ObjectFactoryConfigurationProvider(sources), new ObjectCreator(locator));
-        }
 
         public ObjectFactory(IObjectFactoryConfigurationProvider objectFactoryConfigurationProvider, IObjectCreator objectCreator)
         {
@@ -31,50 +20,45 @@ namespace Jal.Factory.Impl
             Interceptor = AbstractObjectFactoryInterceptor.Instance;
         }
 
-        public TResult[] Create<TTarget, TResult>(TTarget instance) where TResult : class
+        public TService[] Create<TTarget, TService>(TTarget instance) where TService : class
         {
-            var name = ObjectFactorySettings.BuildDefaultName(typeof(TTarget));
-
-            return Create<TTarget, TResult>(instance, name);
+            return Create<TTarget, TService>(instance, string.Empty);
         }
 
-        public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget instance) where TResult : class
+        public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TService>(TTarget target) where TService : class
         {
-            var name = ObjectFactorySettings.BuildDefaultName(typeof(TTarget));
-
-            return ConfigurationFor<TTarget, TResult>(instance, name);
+            return ConfigurationFor<TTarget, TService>(target, string.Empty);
         }
 
-        public TResult[] Create<TTarget, TResult>(TTarget instance, string name) where TResult : class
+        public TService[] Create<TTarget, TService>(TTarget target, string name) where TService : class
         {
-
-            var list = new TResult[] {};
+            var list = Array.Empty<TService>();
 
             try
             {
-                Interceptor.OnEntry(instance, name);
+                Interceptor.OnEntry(target, name);
 
-                list = ConfigurationFor<TTarget, TResult> (instance, name).Select(item=> Creator.Create<TResult>(item.ResultType)).ToArray();
+                list = ConfigurationFor<TTarget, TService> (target, name).Select(item=> Creator.Create<TService>(item.ImplementationType)).ToArray();
 
-                Interceptor.OnSuccess(instance, name, list);
+                Interceptor.OnSuccess(target, name, list);
                 
             }
             catch (Exception ex)
             {
-                Interceptor.OnError(instance, name, list, ex);
+                Interceptor.OnError(target, name, list, ex);
 
                 throw;
             }
             finally
             {
-                Interceptor.OnExit(instance, name, list);
+                Interceptor.OnExit(target, name, list);
             }
             return list;
         }
 
-        public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TResult>(TTarget instance, string name) where TResult : class
+        public ObjectFactoryConfigurationItem[] ConfigurationFor<TTarget, TService>(TTarget target, string name) where TService : class
         {
-            return ConfigurationProvider.Provide<TTarget, TResult>(instance, name);
+            return ConfigurationProvider.Provide<TTarget, TService>(target, name);
         }
     }
 }

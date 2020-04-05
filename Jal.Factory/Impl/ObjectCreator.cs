@@ -1,8 +1,7 @@
 ﻿using System;
-using Jal.Factory.Interface;
-using Jal.Locator.Interface;
+using Jal.Locator;
 
-namespace Jal.Factory.Impl
+namespace Jal.Factory
 {
     public class ObjectCreator : IObjectCreator
     {

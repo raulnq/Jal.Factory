@@ -1,13 +1,10 @@
-﻿using System;
-using Jal.Factory.Interface;
-using Jal.Factory.LightInject.Installer;
+﻿using Jal.Factory.LightInject.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
-using Jal.Locator.LightInject.Installer;
+using Jal.Locator.LightInject;
 using LightInject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
 using Shouldly;
 
 namespace Jal.Factory.Tests.LightInject
@@ -23,9 +20,11 @@ namespace Jal.Factory.Tests.LightInject
 
             container.RegisterFrom<ServiceLocatorCompositionRoot>();
 
-            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
+            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            {
+                c.RegisterForFactory<IDoSomething, DoSomething>();
+            });
 
-            container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
 
             var factory = container.GetInstance<IObjectFactory>();
 

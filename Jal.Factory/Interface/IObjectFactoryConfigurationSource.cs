@@ -1,6 +1,4 @@
-﻿using Jal.Factory.Model;
-
-namespace Jal.Factory.Interface
+﻿namespace Jal.Factory
 {
     public interface IObjectFactoryConfigurationSource
     {

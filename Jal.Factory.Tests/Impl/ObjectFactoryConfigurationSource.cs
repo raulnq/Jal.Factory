@@ -1,5 +1,4 @@
-﻿using Jal.Factory.Impl;
-using Jal.Factory.Tests.Interfaces;
+﻿using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
 
 namespace Jal.Factory.Tests.Impl

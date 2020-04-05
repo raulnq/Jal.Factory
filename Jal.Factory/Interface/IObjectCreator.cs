@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jal.Factory.Interface
+namespace Jal.Factory
 {
     public interface IObjectCreator
     {

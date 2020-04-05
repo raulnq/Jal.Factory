@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Jal.Factory.Fluent.Impl;
-using Jal.Factory.Fluent.Interface;
-using Jal.Factory.Interface;
-using Jal.Factory.Model;
 
-namespace Jal.Factory.Impl
+namespace Jal.Factory
 {
     public abstract class AbstractObjectFactoryConfigurationSource : IObjectFactoryConfigurationSource
     {
@@ -23,25 +20,25 @@ namespace Jal.Factory.Impl
             return result;
         }
 
-        public IObjectFactoryConfigurationCreateBuilder<TTarget, TRestriction> For<TTarget, TRestriction>()
+        public IObjectFactoryConfigurationCreateBuilder<TTarget, TService> For<TTarget, TService>()
         {
-            var value = new ObjectFactoryConfigurationItem(typeof(TTarget));
+            var value = new ObjectFactoryConfigurationItem(typeof(TTarget), typeof(TService), string.Empty);
 
-            var descriptor = new ObjectFactoryConfigurationCreateBuilder<TTarget, TRestriction>(value);
+            var descriptor = new ObjectFactoryConfigurationCreateBuilder<TTarget, TService>(value);
 
             Items.Add(value);
 
             return descriptor;
         }
 
-        public void For<TTarget, TRestriction>(string name, Action<IObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction>> action)
+        public void For<TTarget, TService>(string name, Action<IObjectFactoryConfigurationGroupCreateBuilder<TTarget, TService>> action)
         {
             if (action == null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
 
-            var descriptor = new ObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction>(Items, name);
+            var descriptor = new ObjectFactoryConfigurationGroupCreateBuilder<TTarget, TService>(Items, name);
 
             action.Invoke(descriptor);
         }

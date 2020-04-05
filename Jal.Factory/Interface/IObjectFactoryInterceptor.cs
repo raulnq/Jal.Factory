@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Jal.Factory.Interface
+namespace Jal.Factory
 {
     public interface IObjectFactoryInterceptor
     {
-        void OnEntry<TTarget>(TTarget instance, string name);
+        void OnEntry<TTarget>(TTarget target, string name);
 
-        void OnSuccess<TTarget, TResult>(TTarget instance, string name, IList<TResult> results);
+        void OnSuccess<TTarget, TService>(TTarget target, string name, IList<TService> services);
 
-        void OnError<TTarget, TResult>(TTarget instance, string name, IList<TResult> results, Exception exception);
+        void OnError<TTarget, TService>(TTarget target, string name, IList<TService> services, Exception exception);
 
-        void OnExit<TTarget, TResult>(TTarget instance, string name, IList<TResult> results);
+        void OnExit<TTarget, TService>(TTarget target, string name, IList<TService> services);
     }
 }

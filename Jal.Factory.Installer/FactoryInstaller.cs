@@ -1,26 +1,20 @@
-﻿using System.Reflection;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Jal.Factory.Impl;
-using Jal.Factory.Interface;
+using System;
 
 namespace Jal.Factory.Installer
 {
     public class FactoryInstaller : IWindsorInstaller
     {
-        private readonly Assembly[] _assemblies;
-
         private readonly IObjectFactoryConfigurationSource[] _sources;
 
-        public FactoryInstaller(Assembly[] assemblies)
-        {
-            _assemblies = assemblies;
-        }
+        private readonly Action<IWindsorContainer> _action;
 
-        public FactoryInstaller(IObjectFactoryConfigurationSource[] sources)
+        public FactoryInstaller(IObjectFactoryConfigurationSource[] sources, Action<IWindsorContainer> action = null)
         {
             _sources = sources;
+            _action = action;
         }
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
@@ -31,15 +25,6 @@ namespace Jal.Factory.Installer
                 Component.For(typeof(IObjectFactoryConfigurationProvider)).ImplementedBy(typeof(ObjectFactoryConfigurationProvider)).LifestyleSingleton()
             );
 
-            if (_assemblies != null)
-            {
-                foreach (var assemblysource in _assemblies)
-                {
-                    var assemblyDescriptor = Classes.FromAssembly(assemblysource);
-                    container.Register(assemblyDescriptor.BasedOn<AbstractObjectFactoryConfigurationSource>().WithServiceAllInterfaces());
-                }
-            }
-
             if (_sources != null)
             {
                 foreach (var source in _sources)
@@ -47,7 +32,11 @@ namespace Jal.Factory.Installer
                     container.Register(Component.For(typeof(IObjectFactoryConfigurationSource)).ImplementedBy(source.GetType()).Named(source.GetType().FullName).LifestyleSingleton());
                 }
             }
-            
+
+            if (_action != null)
+            {
+                _action(container);
+            }
         }
     }
 }

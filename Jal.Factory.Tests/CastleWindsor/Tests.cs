@@ -2,11 +2,10 @@
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Jal.Factory.Installer;
-using Jal.Factory.Interface;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
 using Jal.Factory.Tests.Model;
-using Jal.Locator.CastleWindsor.Installer;
+using Jal.Locator.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 
@@ -25,9 +24,10 @@ namespace Jal.Factory.Tests.CastleWindsor
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }));
-
-            container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
+            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            {
+                c.RegisterForFactory<IDoSomething, DoSomething>();
+            }));
 
             var factory = container.Resolve<IObjectFactory>();
 
@@ -53,11 +53,15 @@ namespace Jal.Factory.Tests.CastleWindsor
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }));
+            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            {
+                c.RegisterForFactory<IDoSomething, DoSomething>();
+                c.RegisterForFactory<IDoSomething, DoSomething2>();
+            }));
 
-            container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
+            //container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
 
-            container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething2>().LifestyleSingleton().Named(typeof(DoSomething2).FullName));
+            //container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething2>().LifestyleSingleton().Named(typeof(DoSomething2).FullName));
 
             var factory = container.Resolve<IObjectFactory>();
 

@@ -1,53 +1,44 @@
 using System;
 using System.Diagnostics;
 
-namespace Jal.Factory.Model
+namespace Jal.Factory
 {
-    [DebuggerDisplay("Name: {Name}, TargetType: {TargetType.Name}, ResultType: {ResultType.Name}, Selector: {Selector!=null}")]
+    [DebuggerDisplay("Name: {Name}, TargetType: {TargetType.Name}, ImplementationType: {ImplementationType.Name}, ServiceType: {ServiceType.Name} Selector: {Selector!=null}")]
     public class ObjectFactoryConfigurationItem
     {
-        public ObjectFactoryConfigurationItem(Type target, Type result, string name, object selector)
+        public ObjectFactoryConfigurationItem(Type target, Type implementation, Type service, string name, object selector)
         {
             Name = name;
 
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                Name = ObjectFactorySettings.BuildDefaultName(target);
-            }
-
             Selector = selector;
 
-            ResultType = result;
+            ImplementationType = implementation;
 
             TargetType = target;
+
+            ServiceType = service;
         }
 
-        public ObjectFactoryConfigurationItem(Type target, Type result, object selector)
-            : this(target, result, null, selector)
+        public ObjectFactoryConfigurationItem(Type target, Type implementation, Type service, string name)
+        : this(target, implementation, service, name, null)
+            {
+
+            }
+
+        public ObjectFactoryConfigurationItem(Type target, Type service, string name)
+            : this(target, null, service, name)
         {
 
         }
 
-        public ObjectFactoryConfigurationItem(Type target, Type result)
-            : this(target, result, null, null)
-        {
+        public string Name { get; }
 
-        }
+        public Type TargetType { get; }
 
-        public ObjectFactoryConfigurationItem(Type target)
-            : this(target, null)
-        {
+        public Type ImplementationType { get; set; }
 
-        }
-
-        public string Name { get; set; }
-
-        public Type TargetType { get; set; }
-
-        public Type ResultType { get; set; }
+        public Type ServiceType { get; }
 
         public object Selector { get; set; }
-
-        public dynamic Bag { get; set; }
     }
 }

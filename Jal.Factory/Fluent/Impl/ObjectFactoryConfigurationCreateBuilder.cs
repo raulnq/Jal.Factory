@@ -1,9 +1,6 @@
-﻿using Jal.Factory.Fluent.Interface;
-using Jal.Factory.Model;
-
-namespace Jal.Factory.Fluent.Impl
+﻿namespace Jal.Factory.Fluent.Impl
 {
-    public class ObjectFactoryConfigurationCreateBuilder<TTarget, TRestriction> : IObjectFactoryConfigurationCreateBuilder<TTarget, TRestriction>
+    public class ObjectFactoryConfigurationCreateBuilder<TTarget, TService> : IObjectFactoryConfigurationCreateBuilder<TTarget, TService>
     {
         private readonly ObjectFactoryConfigurationItem _item;
 
@@ -12,9 +9,9 @@ namespace Jal.Factory.Fluent.Impl
             _item = item;
         }
 
-        public IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TResult>() where TResult : TRestriction
+        public IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TImplementation>() where TImplementation : TService
         {
-            _item.ResultType = typeof(TResult);
+            _item.ImplementationType = typeof(TImplementation);
 
             return new ObjectFactoryConfigurationWhenBuilder<TTarget>(_item);
         }

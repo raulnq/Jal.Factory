@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Jal.Factory.Interface;
-using Jal.Factory.Model;
 
-namespace Jal.Factory.Impl
+namespace Jal.Factory
 {
     public class ObjectFactoryConfigurationProvider : IObjectFactoryConfigurationProvider
     {
@@ -21,25 +19,22 @@ namespace Jal.Factory.Impl
 
             Sources = sources;
 
-            Configuration = new ObjectFactoryConfiguration()
-            {
-                Items = Sources.Select(source => source.Source()).Where(source => source != null).SelectMany(source => source.Items).ToList()
-            };
+            Configuration = new ObjectFactoryConfiguration(Sources.Select(source => source.Source()).Where(source => source != null).SelectMany(source => source.Items).ToList());
 
-            foreach (var item in Configuration.Items.Where(objectFactoryConfigurationItem => objectFactoryConfigurationItem.ResultType == null))
+            foreach (var item in Configuration.Items.Where(objectFactoryConfigurationItem => objectFactoryConfigurationItem.ImplementationType == null || objectFactoryConfigurationItem.ServiceType==null))
             {
-                throw new ArgumentException($"The return type for the item named {item.Name} is null");
+                throw new ArgumentException($"The implementation/service type for the item named {item.Name} for the target {item.TargetType.FullName} is null");
             }
         }
 
-        public ObjectFactoryConfigurationItem[] Provide<TTarget, TResult>(TTarget instance, string name)
+        public ObjectFactoryConfigurationItem[] Provide<TTarget, TService>(TTarget target, string name)
         {
-            if (instance == null)
+            if (target == null)
             {
-                throw new ArgumentNullException(nameof(instance));
+                throw new ArgumentNullException(nameof(target));
             }
 
-            return Configuration.Items.Where(item => SameTargetTypeOf<TTarget>(item) && SameNameConfiguration(item, name) && IsSelected(item, instance) && ResultAssignableTo<TResult>(item)).ToArray();
+            return Configuration.Items.Where(item => SameTargetTypeOf<TTarget>(item) && SameServiceTypeOf<TService>(item) && SameNameConfiguration(item, name) && IsSelected(item, target) && ImplementationAssignableTo<TService>(item)).ToArray();
         }
 
         private static bool IsSelected<TTarget>(ObjectFactoryConfigurationItem item, TTarget instance)
@@ -61,9 +56,14 @@ namespace Jal.Factory.Impl
             return item.TargetType == typeof (TTarget);
         }
 
-        private static bool ResultAssignableTo<TResult>(ObjectFactoryConfigurationItem item)
+        private static bool SameServiceTypeOf<TService>(ObjectFactoryConfigurationItem item)
         {
-            return typeof(TResult).IsAssignableFrom(item.ResultType);
+            return item.ServiceType == typeof(TService);
+        }
+
+        private static bool ImplementationAssignableTo<TService>(ObjectFactoryConfigurationItem item)
+        {
+            return typeof(TService).IsAssignableFrom(item.ImplementationType);
         }
 
         private static bool SameNameConfiguration(ObjectFactoryConfigurationItem item, string name)

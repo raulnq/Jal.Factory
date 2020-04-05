@@ -1,38 +1,16 @@
-﻿using System.Reflection;
-using Jal.Factory.Impl;
-using Jal.Factory.Interface;
-using LightInject;
+﻿using LightInject;
+using System;
 
 namespace Jal.Factory.LightInject.Installer
 {
     public static class ServiceContainerExtension
     {
-        public static void RegisterFactory(this IServiceContainer container, Assembly[] assemblies)
+        public static void RegisterForFactory<TService, TImplementation>(this IServiceContainer container) where TImplementation : TService
         {
-            container.Register<IObjectFactory, ObjectFactory>(new PerContainerLifetime());
-
-            container.Register<IObjectCreator, ObjectCreator>(new PerContainerLifetime());
-
-            container.Register<IObjectFactoryConfigurationProvider, ObjectFactoryConfigurationProvider>(new PerContainerLifetime());
-
-            var assemblysources = assemblies;
-
-            if (assemblysources != null)
-            {
-                foreach (var assemblysource in assemblysources)
-                {
-                    foreach (var exportedType in assemblysource.ExportedTypes)
-                    {
-                        if (exportedType.IsSubclassOf(typeof(AbstractObjectFactoryConfigurationSource)))
-                        {
-                            container.Register(typeof(IObjectFactoryConfigurationSource), exportedType, exportedType.FullName, new PerContainerLifetime());
-                        }
-                    }
-                }
-            }
+            container.Register<TService, TImplementation>(typeof(TImplementation).FullName, new PerContainerLifetime());
         }
 
-        public static void RegisterFactory(this IServiceContainer container, IObjectFactoryConfigurationSource[] sources)
+        public static void RegisterFactory(this IServiceContainer container, IObjectFactoryConfigurationSource[] sources, Action<IServiceContainer> action=null)
         {
             container.Register<IObjectFactory, ObjectFactory>(new PerContainerLifetime());
 
@@ -46,6 +24,11 @@ namespace Jal.Factory.LightInject.Installer
                 {
                     container.Register(typeof(IObjectFactoryConfigurationSource), source.GetType(), source.GetType().FullName, new PerContainerLifetime());
                 }
+            }
+
+            if(action!=null)
+            {
+                action(container);
             }
         }
     }

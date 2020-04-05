@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using Jal.Factory.Fluent.Interface;
-using Jal.Factory.Model;
 
-namespace Jal.Factory.Fluent.Impl
+namespace Jal.Factory
 {
-    public class ObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction> : IObjectFactoryConfigurationGroupCreateBuilder<TTarget, TRestriction>
+    public class ObjectFactoryConfigurationGroupCreateBuilder<TTarget, TService> : IObjectFactoryConfigurationGroupCreateBuilder<TTarget, TService>
     {
         private readonly List<ObjectFactoryConfigurationItem> _objectFactoryConfigurationItems;
 
@@ -17,9 +15,9 @@ namespace Jal.Factory.Fluent.Impl
             _name = name;
         }
 
-        public IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TResult>() where TResult : TRestriction
+        public IObjectFactoryConfigurationWhenBuilder<TTarget> Create<TImplementation>() where TImplementation : TService
         {
-            var value = new ObjectFactoryConfigurationItem(typeof(TTarget)) { ResultType = typeof(TResult), Name = _name };
+            var value = new ObjectFactoryConfigurationItem(typeof(TTarget), typeof(TImplementation), typeof(TService), _name);
 
             _objectFactoryConfigurationItems.Add(value);
 

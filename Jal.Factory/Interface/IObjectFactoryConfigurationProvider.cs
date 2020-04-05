@@ -1,7 +1,6 @@
-﻿using Jal.Factory.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Jal.Factory.Interface
+namespace Jal.Factory
 {
     public interface IObjectFactoryConfigurationProvider
     {
@@ -9,6 +8,6 @@ namespace Jal.Factory.Interface
 
         ObjectFactoryConfiguration Configuration { get; }
 
-        ObjectFactoryConfigurationItem[] Provide<TTarget,TResult>(TTarget target, string name);
+        ObjectFactoryConfigurationItem[] Provide<TTarget, TService>(TTarget target, string name);
     }
 }

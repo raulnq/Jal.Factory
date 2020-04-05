@@ -1,8 +1,6 @@
 ﻿using System;
-using Jal.Factory.Fluent.Interface;
-using Jal.Factory.Model;
 
-namespace Jal.Factory.Fluent.Impl
+namespace Jal.Factory
 {
     public class ObjectFactoryConfigurationWhenBuilder<TTarget> : IObjectFactoryConfigurationWhenBuilder<TTarget>
     {
