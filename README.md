@@ -86,7 +86,7 @@ Install the Jal.Locator.CastleWindsor library
 ```c++
 container.RegisterFrom<ServiceLocatorCompositionRoot>();
 ```     
-Install the Jal.Factory library, use the FactoryInstaller class included
+Install the Jal.Factory library
 ```c++
 container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
@@ -106,6 +106,48 @@ public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurati
 Resolve a instance of IObjectFactory
 ```c++
 var factory = container.GetInstance<IObjectFactory>();
+``` 
+Use the factory
+```c++
+var customer = new Customer(){Age = 25};
+
+var services = factory.Create<Customer, IDoSomething>(customer);
+``` 
+
+### Microsoft.Extensions.DependencyInjection as service locator [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer)
+
+The [Jal.Locator.Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Jal.Locator.Microsoft.Extensions.DependencyInjection/) library is needed. 
+
+Setup the LightInject container
+```c++
+var container = new ServiceCollection();
+```     
+Install the Jal.Locator.Microsoft.Extensions.DependencyInjection library
+```c++
+container.AddServiceLocator();
+```     
+Install the Jal.Factory library
+```c++
+container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+{
+    c.AddForFactory<IDoSomething, DoSomething>();
+});
+```    
+Create a class to setup the Jal.Factory library
+```c++
+public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
+{
+    public ObjectFactoryConfigurationSource()
+    {
+        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
+    }
+}
+```  
+Resolve a instance of IObjectFactory
+```c++
+var provider = container.BuildServiceProvider();
+
+var factory = provider.GetService<IObjectFactory>();
 ``` 
 Use the factory
 ```c++
