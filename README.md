@@ -25,7 +25,7 @@ public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurati
 ```
 Create an instance of the factory
 ```c++
-var factory = ObjectFactory.Create(new IObjectFactoryConfigurationSource[] {new ObjectFactoryConfigurationSource()}, locator);
+var factory = new ObjectFactory (new ObjectFactoryConfigurationProvider(new IObjectFactoryConfigurationSource[] { config }), new ObjectCreator(locator));
 ```    
 Use the factory
 ```c++
