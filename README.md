@@ -2,156 +2,110 @@
 Just another library to implement the factory method pattern
 
 ## How to use?
+Create your classes
+```csharp
+public class Customer
+{
+    public string Name { get; set; }
 
-### Default service locator
+    public int Age { get; set; }
+}
 
-Create an instance of the locator
-```c++
-var locator = new ServiceLocator();
+public interface IDoSomething
+{
+    bool Apply();
+}
+
+public class DoSomething : IDoSomething
+{
+    public bool Apply()
+    {
+        return true;
+    }
+}
+
+public class DoSomethingLessThan18 : IDoSomething
+{
+    public bool Apply()
+    {
+        return true;
+    }
+}
 ```
-Register your services, it's mandatory name the service with the full name of the class
-```c++
-locator.Register(typeof(IDoSomething), new DoSomething(), typeof(DoSomething).FullName);
-```
-Create a class to setup the Jal.Factory library
-```c++
+Create a class to setup the factory
+```csharp
 public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
 {
     public ObjectFactoryConfigurationSource()
     {
-        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
+        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age >= 18);
+        For<Customer, IDoSomething>().Create<DoSomethingLessThan18>().When(x => x.Age < 18);
     }
 }
 ```
-Create an instance of the factory
-```c++
-var factory = new ObjectFactory (new ObjectFactoryConfigurationProvider(new IObjectFactoryConfigurationSource[] { config }), new ObjectCreator(locator));
-```    
 Use the factory
-```c++
+```csharp
 var customer = new Customer(){Age = 25};
 
 var services = factory.Create<Customer, IDoSomething>(customer);
 ```
-### Castle Windsor as service locator [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Installer)
+
+## IObjectFactory interface building
+
+### Castle Windsor [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Installer)
 
 The [Jal.Locator.CastleWindsor](https://www.nuget.org/packages/Jal.Locator.CastleWindsor/) library is needed.
 
-Setup the Castle Windsor container
-```c++
+```csharp
 var container = new WindsorContainer();
 
 container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-```
-Install the Jal.Locator.CastleWindsor library
-```c++
+
 container.Install(new ServiceLocatorInstaller());
-```
-Install the Jal.Factory library
-```c++
+
 container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
     c.RegisterForFactory<IDoSomething, DoSomething>();
+    c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
 }));
-```
-Create a class to setup the Jal.Factory library
-```c++
-public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
-{
-    public ObjectFactoryConfigurationSource()
-    {
-        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
-    }
-}
-```     
-Resolve an instance of IObjectFactory
-```c++
-var factory = container.Resolve<IObjectFactory>();
-```   
-Use the factory
-```c++
-var customer = new Customer(){Age = 25};
 
-var services = factory.Create<Customer, IDoSomething>(customer);
-``` 
-### LightInject as service locator [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.LightInject.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.LightInject.Installer)
+var factory = container.Resolve<IObjectFactory>();
+```
+
+### LightInject [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.LightInject.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.LightInject.Installer)
 
 The [Jal.Locator.LightInject](https://www.nuget.org/packages/Jal.Locator.LightInject/) library is needed. 
 
-Setup the LightInject container
-```c++
+```csharp
 var container = new ServiceContainer();
-```     
-Install the Jal.Locator.CastleWindsor library
-```c++
+
 container.RegisterFrom<ServiceLocatorCompositionRoot>();
-```     
-Install the Jal.Factory library
-```c++
+
 container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
     c.RegisterForFactory<IDoSomething, DoSomething>();
+    c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
 });
-```    
-Create a class to setup the Jal.Factory library
-```c++
-public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
-{
-    public ObjectFactoryConfigurationSource()
-    {
-        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
-    }
-}
-```  
-Resolve a instance of IObjectFactory
-```c++
+
 var factory = container.GetInstance<IObjectFactory>();
 ``` 
-Use the factory
-```c++
-var customer = new Customer(){Age = 25};
 
-var services = factory.Create<Customer, IDoSomething>(customer);
-``` 
-
-### Microsoft.Extensions.DependencyInjection as service locator [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer)
+### Microsoft.Extensions.DependencyInjection [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer)
 
 The [Jal.Locator.Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Jal.Locator.Microsoft.Extensions.DependencyInjection/) library is needed. 
 
-Setup the LightInject container
-```c++
+```csharp
 var container = new ServiceCollection();
-```     
-Install the Jal.Locator.Microsoft.Extensions.DependencyInjection library
-```c++
+
 container.AddServiceLocator();
-```     
-Install the Jal.Factory library
-```c++
+
 container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
     c.AddForFactory<IDoSomething, DoSomething>();
+    c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
 });
-```    
-Create a class to setup the Jal.Factory library
-```c++
-public class ObjectFactoryConfigurationSource : AbstractObjectFactoryConfigurationSource
-{
-    public ObjectFactoryConfigurationSource()
-    {
-        For<Customer, IDoSomething>().Create<DoSomething>().When(x => x.Age > 18);
-    }
-}
-```  
-Resolve a instance of IObjectFactory
-```c++
+
 var provider = container.BuildServiceProvider();
 
 var factory = provider.GetService<IObjectFactory>();
-``` 
-Use the factory
-```c++
-var customer = new Customer(){Age = 25};
-
-var services = factory.Create<Customer, IDoSomething>(customer);
 ``` 

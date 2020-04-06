@@ -10,36 +10,27 @@ using Shouldly;
 namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
 {
     [TestClass]
-    public class Tests
+    public class Tests : AbstractTest
     {
 
         [TestMethod]
-        public void Create_WithCustomerOlderThan25A_ShouldBeNotEmpty()
+        public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
             var container = new ServiceCollection();
 
             container.AddServiceLocator();
 
-            container.AddFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
             {
                 c.AddForFactory<IDoSomething, DoSomething>();
+                c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
             });
 
             var provider = container.BuildServiceProvider();
 
             var factory = provider.GetService<IObjectFactory>();
 
-            var customer = new Customer(){Age = 25};
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething>();
+            Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
 
         [TestMethod]
@@ -49,27 +40,17 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
 
             container.AddServiceLocator();
 
-            container.AddFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
             {
                 c.AddForFactory<IDoSomething, DoSomething>();
-                c.AddForFactory<IDoSomething, DoSomething2>();
+                c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
             });
 
             var provider = container.BuildServiceProvider();
 
             var factory = provider.GetService<IObjectFactory>();
 
-            var customer = new Customer() { Age = 15 };
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething2>();
+            Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
         }
     }
 }

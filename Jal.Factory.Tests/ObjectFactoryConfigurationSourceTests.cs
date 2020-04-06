@@ -14,7 +14,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithFor_ShouldBeOne()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             sut.For<Customer, IDoSomething>();
 
@@ -36,7 +36,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithNameForNoAction_ShouldEmpty()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             sut.For<Customer, IDoSomething>("Group", x => {});
 
@@ -50,7 +50,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithNameForNullAction_ShouldThorwException()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             Should.Throw<Exception>(() => sut.For<Customer, IDoSomething>("Group", null));
         }
@@ -58,7 +58,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithNameFor_ShouldBeOne()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             sut.For<Customer, IDoSomething>("Group", x=> x.Create<DoSomething>());
 
@@ -81,7 +81,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithForCreate_ShouldBeOne()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             sut.For<Customer, IDoSomething>().Create<DoSomething>();
 
@@ -103,7 +103,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithForCreateWhen_ShouldBeOne()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             Func <Customer, bool> when =  x => x.Active;
 
@@ -127,7 +127,7 @@ namespace Jal.Factory.Tests
         [TestMethod]
         public void Source_WithNameForCreateWhen_ShouldBeOne()
         {
-            var sut = new ObjectFactoryConfigurationSource();
+            var sut = new EmptyFactoryConfigurationSource();
 
             Func<Customer, bool> when = x => x.Active;
 

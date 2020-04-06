@@ -2,7 +2,7 @@
 
 namespace Jal.Factory.Tests.Impl
 {
-    public class DoSomething : IDoSomething
+    public class DoSomethingLessThan18 : IDoSomething
     {
         public bool Apply()
         {

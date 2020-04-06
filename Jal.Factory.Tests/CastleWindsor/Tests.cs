@@ -1,22 +1,19 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.Resolvers.SpecializedResolvers;
+﻿using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Jal.Factory.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
-using Jal.Factory.Tests.Model;
 using Jal.Locator.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 
 namespace Jal.Factory.Tests.CastleWindsor
 {
-    [TestClass]
-    public class Tests
-    {
 
+    [TestClass]
+    public class Tests : AbstractTest
+    {
         [TestMethod]
-        public void Create_WithCustomerOlderThan25A_ShouldBeNotEmpty()
+        public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
             var container = new WindsorContainer();
 
@@ -24,24 +21,15 @@ namespace Jal.Factory.Tests.CastleWindsor
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {
                 c.RegisterForFactory<IDoSomething, DoSomething>();
+                c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
             }));
 
             var factory = container.Resolve<IObjectFactory>();
 
-            var customer = new Customer(){Age = 25};
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething>();
+            Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
 
         [TestMethod]
@@ -53,29 +41,15 @@ namespace Jal.Factory.Tests.CastleWindsor
 
             container.Install(new ServiceLocatorInstaller());
 
-            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {
                 c.RegisterForFactory<IDoSomething, DoSomething>();
-                c.RegisterForFactory<IDoSomething, DoSomething2>();
+                c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
             }));
-
-            //container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething>().LifestyleSingleton().Named(typeof(DoSomething).FullName));
-
-            //container.Register(Component.For<IDoSomething>().ImplementedBy<DoSomething2>().LifestyleSingleton().Named(typeof(DoSomething2).FullName));
 
             var factory = container.Resolve<IObjectFactory>();
 
-            var customer = new Customer() { Age = 15 };
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething2>();
+            Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
         }
     }
 }

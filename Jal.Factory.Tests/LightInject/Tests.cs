@@ -1,44 +1,32 @@
 ﻿using Jal.Factory.LightInject.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
-using Jal.Factory.Tests.Model;
 using Jal.Locator.LightInject;
 using LightInject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
+
 
 namespace Jal.Factory.Tests.LightInject
 {
     [TestClass]
-    public class Tests
+    public class Tests :AbstractTest
     {
-
         [TestMethod]
-        public void Create_WithCustomerOlderThan25A_ShouldBeNotEmpty()
+        public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
             var container = new ServiceContainer();
 
             container.RegisterFrom<ServiceLocatorCompositionRoot>();
 
-            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() }, c=>
+            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
             {
                 c.RegisterForFactory<IDoSomething, DoSomething>();
+                c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
             });
-
 
             var factory = container.GetInstance<IObjectFactory>();
 
-            var customer = new Customer(){Age = 25};
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething>();
+            Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
 
         [TestMethod]
@@ -48,25 +36,15 @@ namespace Jal.Factory.Tests.LightInject
 
             container.RegisterFrom<ServiceLocatorCompositionRoot>();
 
-            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new AutoObjectFactoryConfigurationSource() });
-
-            container.Register<IDoSomething, DoSomething>(typeof(DoSomething).FullName);
-
-            container.Register<IDoSomething, DoSomething2>(typeof(DoSomething2).FullName);
+            container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
+            {
+                c.RegisterForFactory<IDoSomething, DoSomething>();
+                c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
+            });
 
             var factory = container.GetInstance<IObjectFactory>();
 
-            var customer = new Customer() { Age = 15 };
-
-            var services = factory.Create<Customer, IDoSomething>(customer);
-
-            services.ShouldNotBeEmpty();
-
-            services.Length.ShouldBe(1);
-
-            services[0].ShouldBeAssignableTo<IDoSomething>();
-
-            services[0].ShouldBeOfType<DoSomething2>();
+            Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
         }
     }
 }
