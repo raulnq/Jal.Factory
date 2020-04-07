@@ -5,9 +5,9 @@ using Shouldly;
 
 namespace Jal.Factory.Tests
 {
-    public class AbstractTest
+    public class TestCases
     {
-        protected void Create_WithCustomerOlderThan25_ShouldBeNotEmpty(IObjectFactory factory)
+        public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty(IObjectFactory factory)
         {
             var customer = new Customer() { Age = 25 };
 
@@ -22,7 +22,7 @@ namespace Jal.Factory.Tests
             services[0].ShouldBeOfType<DoSomething>();
         }
 
-        protected void Create_WithCustomerLessThan18_ShouldBeNotEmpty(IObjectFactory factory)
+        public void Create_WithCustomerLessThan18_ShouldBeNotEmpty(IObjectFactory factory)
         {
             var customer = new Customer() { Age = 15 };
 

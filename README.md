@@ -61,12 +61,12 @@ var container = new WindsorContainer();
 
 container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
-container.Install(new ServiceLocatorInstaller());
+container.AddServiceLocator();
 
-container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+container.AddFactory(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
-    c.RegisterForFactory<IDoSomething, DoSomething>();
-    c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
+    c.AddForFactory<IDoSomething, DoSomething>();
+    c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
 }));
 
 var factory = container.Resolve<IObjectFactory>();
@@ -79,12 +79,12 @@ The [Jal.Locator.LightInject](https://www.nuget.org/packages/Jal.Locator.LightIn
 ```csharp
 var container = new ServiceContainer();
 
-container.RegisterFrom<ServiceLocatorCompositionRoot>();
+container.AddServiceLocator();
 
-container.RegisterFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
-    c.RegisterForFactory<IDoSomething, DoSomething>();
-    c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
+    c.AddForFactory<IDoSomething, DoSomething>();
+    c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
 });
 
 var factory = container.GetInstance<IObjectFactory>();

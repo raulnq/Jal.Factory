@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jal.Locator.CastleWindsor" Version="2.0.0" />
-    <PackageReference Include="Jal.Locator.LightInject" Version="2.0.0" />
+    <PackageReference Include="Jal.Locator.CastleWindsor" Version="2.1.0" />
+    <PackageReference Include="Jal.Locator.LightInject" Version="2.1.0" />
     <PackageReference Include="Jal.Locator.Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Moq" Version="4.13.1" />

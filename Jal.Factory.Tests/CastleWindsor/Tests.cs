@@ -10,46 +10,50 @@ namespace Jal.Factory.Tests.CastleWindsor
 {
 
     [TestClass]
-    public class Tests : AbstractTest
+    public class Tests
     {
         [TestMethod]
         public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
+            var tests = new TestCases();
+
             var container = new WindsorContainer();
 
             container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
-            container.Install(new ServiceLocatorInstaller());
+            container.AddServiceLocator();
 
-            container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
+            container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {
-                c.RegisterForFactory<IDoSomething, DoSomething>();
-                c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
-            }));
+                c.AddForFactory<IDoSomething, DoSomething>();
+                c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
+            });
 
             var factory = container.Resolve<IObjectFactory>();
 
-            Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
+            tests.Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
 
         [TestMethod]
         public void Create_WithCustomerLessThan18_ShouldBeNotEmpty()
         {
+            var tests = new TestCases();
+
             var container = new WindsorContainer();
 
             container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
-            container.Install(new ServiceLocatorInstaller());
+            container.AddServiceLocator();
 
             container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {
-                c.RegisterForFactory<IDoSomething, DoSomething>();
-                c.RegisterForFactory<IDoSomething, DoSomethingLessThan18>();
+                c.AddForFactory<IDoSomething, DoSomething>();
+                c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
             }));
 
             var factory = container.Resolve<IObjectFactory>();
 
-            Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
+            tests.Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
         }
     }
 }

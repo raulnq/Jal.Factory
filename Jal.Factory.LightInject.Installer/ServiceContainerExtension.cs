@@ -5,12 +5,12 @@ namespace Jal.Factory.LightInject.Installer
 {
     public static class ServiceContainerExtension
     {
-        public static void RegisterForFactory<TService, TImplementation>(this IServiceContainer container) where TImplementation : TService
+        public static void AddForFactory<TService, TImplementation>(this IServiceContainer container) where TImplementation : TService
         {
             container.Register<TService, TImplementation>(typeof(TImplementation).FullName, new PerContainerLifetime());
         }
 
-        public static void RegisterFactory(this IServiceContainer container, IObjectFactoryConfigurationSource[] sources, Action<IServiceContainer> action=null)
+        public static void AddFactory(this IServiceContainer container, IObjectFactoryConfigurationSource[] sources, Action<IServiceContainer> action=null)
         {
             container.Register<IObjectFactory, ObjectFactory>(new PerContainerLifetime());
 

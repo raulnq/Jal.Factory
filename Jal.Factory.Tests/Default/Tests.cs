@@ -8,11 +8,13 @@ using Shouldly;
 namespace Jal.Factory.Tests.Default
 {
     [TestClass]
-    public class Tests : AbstractTest
+    public class Tests
     {
         [TestMethod]
         public void Create_WithCustomerOlderThan25_ShouldBeNotEmpty()
         {
+            var tests = new TestCases();
+
             var locator = new ServiceLocator();
 
             locator.Register(typeof(IDoSomething), new DoSomething(), typeof(DoSomething).FullName);
@@ -21,7 +23,7 @@ namespace Jal.Factory.Tests.Default
 
             var factory = new ObjectFactory (new ObjectFactoryConfigurationProvider(new IObjectFactoryConfigurationSource[] { config }), new ObjectCreator(locator));
 
-            Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
+            tests.Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
     }
 }
