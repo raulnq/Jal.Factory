@@ -7,11 +7,12 @@
     <Authors>Raul Naupari</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/raulnq/Jal.Factory</PackageProjectUrl>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Jal.Locator.Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
 

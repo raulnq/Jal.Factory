@@ -1,10 +1,8 @@
 ﻿using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
-using Jal.Locator.Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
 
 namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
 {
@@ -18,8 +16,6 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
             var tests = new TestCases();
 
             var container = new ServiceCollection();
-
-            container.AddServiceLocator();
 
             container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
             {
@@ -40,8 +36,6 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
             var tests = new TestCases();
 
             var container = new ServiceCollection();
-
-            container.AddServiceLocator();
 
             container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
             {

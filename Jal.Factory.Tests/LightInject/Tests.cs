@@ -1,7 +1,6 @@
 ﻿using Jal.Factory.LightInject.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
-using Jal.Locator.LightInject;
 using LightInject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,8 +16,6 @@ namespace Jal.Factory.Tests.LightInject
             var tests = new TestCases();
 
             var container = new ServiceContainer();
-
-            container.AddServiceLocator();
 
             container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
             {
@@ -37,8 +34,6 @@ namespace Jal.Factory.Tests.LightInject
             var tests = new TestCases();
 
             var container = new ServiceContainer();
-
-            container.RegisterFrom<ServiceLocatorCompositionRoot>();
 
             container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {

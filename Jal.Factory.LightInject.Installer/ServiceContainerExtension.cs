@@ -1,5 +1,7 @@
-﻿using LightInject;
+﻿using Jal.Locator.LightInject;
+using LightInject;
 using System;
+using System.Linq;
 
 namespace Jal.Factory.LightInject.Installer
 {
@@ -12,11 +14,22 @@ namespace Jal.Factory.LightInject.Installer
 
         public static void AddFactory(this IServiceContainer container, IObjectFactoryConfigurationSource[] sources, Action<IServiceContainer> action=null)
         {
-            container.Register<IObjectFactory, ObjectFactory>(new PerContainerLifetime());
+            container.AddServiceLocator();
 
-            container.Register<IObjectCreator, ObjectCreator>(new PerContainerLifetime());
+            if (container.AvailableServices.All(x => x.ServiceType != typeof(IObjectFactory)))
+            {
+                container.Register<IObjectFactory, ObjectFactory>(new PerContainerLifetime());
+            }
 
-            container.Register<IObjectFactoryConfigurationProvider, ObjectFactoryConfigurationProvider>(new PerContainerLifetime());
+            if (container.AvailableServices.All(x => x.ServiceType != typeof(IObjectCreator)))
+            {
+                container.Register<IObjectCreator, ObjectCreator>(new PerContainerLifetime());
+            }
+
+            if (container.AvailableServices.All(x => x.ServiceType != typeof(IObjectFactoryConfigurationProvider)))
+            {
+                container.Register<IObjectFactoryConfigurationProvider, ObjectFactoryConfigurationProvider>(new PerContainerLifetime());
+            }
 
             if (sources != null)
             {

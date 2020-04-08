@@ -1,14 +1,11 @@
-﻿using Castle.MicroKernel.Resolvers.SpecializedResolvers;
-using Castle.Windsor;
+﻿using Castle.Windsor;
 using Jal.Factory.Installer;
 using Jal.Factory.Tests.Impl;
 using Jal.Factory.Tests.Interfaces;
-using Jal.Locator.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Jal.Factory.Tests.CastleWindsor
 {
-
     [TestClass]
     public class Tests
     {
@@ -18,10 +15,6 @@ namespace Jal.Factory.Tests.CastleWindsor
             var tests = new TestCases();
 
             var container = new WindsorContainer();
-
-            container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-
-            container.AddServiceLocator();
 
             container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {
@@ -40,10 +33,6 @@ namespace Jal.Factory.Tests.CastleWindsor
             var tests = new TestCases();
 
             var container = new WindsorContainer();
-
-            container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-
-            container.AddServiceLocator();
 
             container.Install(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
             {

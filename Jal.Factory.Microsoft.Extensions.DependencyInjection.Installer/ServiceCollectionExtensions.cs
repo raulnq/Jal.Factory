@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Jal.Locator.Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 
 namespace Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer
@@ -14,11 +16,13 @@ namespace Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer
 
         public static IServiceCollection AddFactory(this IServiceCollection servicecollection, IObjectFactoryConfigurationSource[] sources, Action<IServiceCollection> action = null)
         {
-            servicecollection.AddSingleton<IObjectFactory, ObjectFactory>();
+            servicecollection.AddServiceLocator();
 
-            servicecollection.AddSingleton<IObjectCreator, ObjectCreator>();
+            servicecollection.TryAddSingleton<IObjectFactory, ObjectFactory>();
 
-            servicecollection.AddSingleton<IObjectFactoryConfigurationProvider, ObjectFactoryConfigurationProvider>();
+            servicecollection.TryAddSingleton<IObjectCreator, ObjectCreator>();
+
+            servicecollection.TryAddSingleton<IObjectFactoryConfigurationProvider, ObjectFactoryConfigurationProvider>();
 
             if (sources != null)
             {

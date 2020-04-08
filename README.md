@@ -54,14 +54,8 @@ var services = factory.Create<Customer, IDoSomething>(customer);
 
 ### Castle Windsor [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Installer)
 
-The [Jal.Locator.CastleWindsor](https://www.nuget.org/packages/Jal.Locator.CastleWindsor/) library is needed.
-
 ```csharp
 var container = new WindsorContainer();
-
-container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-
-container.AddServiceLocator();
 
 container.AddFactory(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
@@ -74,12 +68,8 @@ var factory = container.Resolve<IObjectFactory>();
 
 ### LightInject [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.LightInject.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.LightInject.Installer)
 
-The [Jal.Locator.LightInject](https://www.nuget.org/packages/Jal.Locator.LightInject/) library is needed. 
-
 ```csharp
 var container = new ServiceContainer();
-
-container.AddServiceLocator();
 
 container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
@@ -92,12 +82,8 @@ var factory = container.GetInstance<IObjectFactory>();
 
 ### Microsoft.Extensions.DependencyInjection [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer)
 
-The [Jal.Locator.Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Jal.Locator.Microsoft.Extensions.DependencyInjection/) library is needed. 
-
 ```csharp
 var container = new ServiceCollection();
-
-container.AddServiceLocator();
 
 container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
 {
