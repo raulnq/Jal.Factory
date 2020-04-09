@@ -17,5 +17,10 @@ namespace Jal.Factory.Installer
         {
             container.Install(new FactoryInstaller(sources, action));
         }
+
+        public static IObjectFactory GetFactory(this IWindsorContainer container)
+        {
+            return container.Resolve<IObjectFactory>();
+        }
     }
 }

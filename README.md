@@ -63,7 +63,7 @@ container.AddFactory(new FactoryInstaller(new IObjectFactoryConfigurationSource[
     c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
 }));
 
-var factory = container.Resolve<IObjectFactory>();
+var factory = container.GetFactory();
 ```
 
 ### LightInject [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.LightInject.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.LightInject.Installer)
@@ -77,7 +77,7 @@ container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactory
     c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
 });
 
-var factory = container.GetInstance<IObjectFactory>();
+var factory = container.GetFactory();
 ``` 
 
 ### Microsoft.Extensions.DependencyInjection [![NuGet](https://img.shields.io/nuget/v/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer.svg)](https://www.nuget.org/packages/Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer)
@@ -93,5 +93,5 @@ container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactory
 
 var provider = container.BuildServiceProvider();
 
-var factory = provider.GetService<IObjectFactory>();
+var factory = provider.GetFactory();
 ``` 

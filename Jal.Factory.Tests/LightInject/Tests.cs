@@ -23,7 +23,7 @@ namespace Jal.Factory.Tests.LightInject
                 c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
             });
 
-            var factory = container.GetInstance<IObjectFactory>();
+            var factory = container.GetFactory();
 
             tests.Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
@@ -41,7 +41,7 @@ namespace Jal.Factory.Tests.LightInject
                 c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
             });
 
-            var factory = container.GetInstance<IObjectFactory>();
+            var factory = container.GetFactory();
 
             tests.Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
         }

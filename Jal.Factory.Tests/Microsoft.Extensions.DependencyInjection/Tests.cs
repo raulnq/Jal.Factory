@@ -25,7 +25,7 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
 
             var provider = container.BuildServiceProvider();
 
-            var factory = provider.GetService<IObjectFactory>();
+            var factory = provider.GetFactory();
 
             tests.Create_WithCustomerOlderThan25_ShouldBeNotEmpty(factory);
         }
@@ -45,7 +45,7 @@ namespace Jal.Factory.Tests.Microsoft.Extensions.DependencyInjection
 
             var provider = container.BuildServiceProvider();
 
-            var factory = provider.GetService<IObjectFactory>();
+            var factory = provider.GetFactory();
 
             tests.Create_WithCustomerLessThan18_ShouldBeNotEmpty(factory);
         }

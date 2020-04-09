@@ -44,5 +44,10 @@ namespace Jal.Factory.LightInject.Installer
                 action(container);
             }
         }
+
+        public static IObjectFactory GetFactory(this IServiceContainer container)
+        {
+            return container.GetInstance<IObjectFactory>();
+        }
     }
 }

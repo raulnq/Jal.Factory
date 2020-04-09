@@ -15,8 +15,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Jal.Locator.LightInject" Version="2.1.1" />
-    <PackageReference Include="LightInject" Version="6.3.2" />
+    <PackageReference Include="Jal.Locator.LightInject" Version="2.2.1" />
   </ItemGroup>
 
   <ItemGroup>
