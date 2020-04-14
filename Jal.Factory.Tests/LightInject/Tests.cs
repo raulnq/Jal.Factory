@@ -17,10 +17,11 @@ namespace Jal.Factory.Tests.LightInject
 
             var container = new ServiceContainer();
 
-            container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+            container.AddFactory(c=>
             {
-                c.AddForFactory<IDoSomething, DoSomething>();
-                c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
+                c.AddSource<ObjectFactoryConfigurationSource>();
+                c.AddSingleton<IDoSomething, DoSomething>();
+                c.AddSingleton<IDoSomething, DoSomethingLessThan18>();
             });
 
             var factory = container.GetFactory();
@@ -35,10 +36,11 @@ namespace Jal.Factory.Tests.LightInject
 
             var container = new ServiceContainer();
 
-            container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c =>
+            container.AddFactory(c =>
             {
-                c.AddForFactory<IDoSomething, DoSomething>();
-                c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
+                c.AddSource<ObjectFactoryConfigurationSource>();
+                c.AddSingleton<IDoSomething, DoSomething>();
+                c.AddSingleton<IDoSomething, DoSomethingLessThan18>();
             });
 
             var factory = container.GetFactory();

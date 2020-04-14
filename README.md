@@ -57,11 +57,12 @@ var services = factory.Create<Customer, IDoSomething>(customer);
 ```csharp
 var container = new WindsorContainer();
 
-container.AddFactory(new FactoryInstaller(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+container.AddFactory(c=>
 {
-    c.AddForFactory<IDoSomething, DoSomething>();
-    c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
-}));
+    c.AddSource<ObjectFactoryConfigurationSource>();
+    c.AddSingleton<IDoSomething, DoSomething>();
+    c.AddSingleton<IDoSomething, DoSomethingLessThan18>();
+});
 
 var factory = container.GetFactory();
 ```
@@ -71,10 +72,11 @@ var factory = container.GetFactory();
 ```csharp
 var container = new ServiceContainer();
 
-container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+container.AddFactory(c=>
 {
-    c.AddForFactory<IDoSomething, DoSomething>();
-    c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
+    c.AddSource<ObjectFactoryConfigurationSource>();
+    c.AddSingleton<IDoSomething, DoSomething>();
+    c.AddSingleton<IDoSomething, DoSomethingLessThan18>();
 });
 
 var factory = container.GetFactory();
@@ -85,10 +87,11 @@ var factory = container.GetFactory();
 ```csharp
 var container = new ServiceCollection();
 
-container.AddFactory(new IObjectFactoryConfigurationSource[] { new ObjectFactoryConfigurationSource() }, c=>
+container.AddFactory(c=>
 {
-    c.AddForFactory<IDoSomething, DoSomething>();
-    c.AddForFactory<IDoSomething, DoSomethingLessThan18>();
+    c.AddSource<ObjectFactoryConfigurationSource>();
+    c.AddSingleton<IDoSomething, DoSomething>();
+    c.AddSingleton<IDoSomething, DoSomethingLessThan18>();
 });
 
 var provider = container.BuildServiceProvider();

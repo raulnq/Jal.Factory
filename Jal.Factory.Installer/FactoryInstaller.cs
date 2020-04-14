@@ -13,13 +13,10 @@ namespace Jal.Factory.Installer
 {
     public class FactoryInstaller : IWindsorInstaller
     {
-        private readonly IObjectFactoryConfigurationSource[] _sources;
+        private readonly Action<IObjectFactoryBuilder> _action;
 
-        private readonly Action<IWindsorContainer> _action;
-
-        public FactoryInstaller(IObjectFactoryConfigurationSource[] sources, Action<IWindsorContainer> action = null)
+        public FactoryInstaller(Action<IObjectFactoryBuilder> action = null)
         {
-            _sources = sources;
             _action = action;
         }
 
@@ -54,17 +51,9 @@ namespace Jal.Factory.Installer
                 container.Register(Component.For<IObjectFactoryConfigurationProvider>().ImplementedBy<ObjectFactoryConfigurationProvider>().LifestyleSingleton());
             }
 
-            if (_sources != null)
-            {
-                foreach (var source in _sources)
-                {
-                    container.Register(Component.For(typeof(IObjectFactoryConfigurationSource)).ImplementedBy(source.GetType()).Named(source.GetType().FullName).LifestyleSingleton());
-                }
-            }
-
             if (_action != null)
             {
-                _action(container);
+                _action(new ObjectFactoryBuilder(container));
             }
         }
     }
