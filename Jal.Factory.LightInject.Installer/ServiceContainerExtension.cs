@@ -8,7 +8,7 @@ namespace Jal.Factory.LightInject.Installer
 
     public static class ServiceContainerExtension
     {
-        public static void AddFactory(this IServiceContainer container, Action<IObjectFactoryBuilder> action=null)
+        public static void AddFactory(this IServiceContainer container, Action<IFactoryBuilder> action=null)
         {
             container.AddServiceLocator();
 
@@ -29,7 +29,7 @@ namespace Jal.Factory.LightInject.Installer
 
             if(action!=null)
             {
-                action(new ObjectFactoryBuilder(container));
+                action(new FactoryBuilder(container));
             }
         }
 

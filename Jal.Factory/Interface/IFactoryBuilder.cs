@@ -1,16 +1,16 @@
 ﻿namespace Jal.Factory
 {
-    public interface IObjectFactoryBuilder
+    public interface IFactoryBuilder
     {
-        IObjectFactoryBuilder AddSingleton<TService, TImplementation>() 
+        IFactoryBuilder AddSingleton<TService, TImplementation>() 
             where TService : class
             where TImplementation : class, TService;
 
-        IObjectFactoryBuilder AddTransient<TService, TImplementation>()
+        IFactoryBuilder AddTransient<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService;
 
-        IObjectFactoryBuilder AddSource<TImplementation>()
+        IFactoryBuilder AddSource<TImplementation>()
             where TImplementation : class, IObjectFactoryConfigurationSource;
     }
 }

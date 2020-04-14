@@ -3,15 +3,15 @@ using Castle.Windsor;
 
 namespace Jal.Factory.Installer
 {
-    public class ObjectFactoryBuilder : IObjectFactoryBuilder
+    public class FactoryBuilder : IFactoryBuilder
     {
         private readonly IWindsorContainer _container;
-        public ObjectFactoryBuilder(IWindsorContainer container)
+        public FactoryBuilder(IWindsorContainer container)
         {
             _container = container;
         }
 
-        public IObjectFactoryBuilder AddSingleton<TService, TImplementation>()
+        public IFactoryBuilder AddSingleton<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
         {
@@ -20,7 +20,7 @@ namespace Jal.Factory.Installer
             return this;
         }
 
-        public IObjectFactoryBuilder AddTransient<TService, TImplementation>()
+        public IFactoryBuilder AddTransient<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
         {
@@ -29,7 +29,7 @@ namespace Jal.Factory.Installer
             return this;
         }
 
-        public IObjectFactoryBuilder AddSource<TImplementation>() where TImplementation : class, IObjectFactoryConfigurationSource
+        public IFactoryBuilder AddSource<TImplementation>() where TImplementation : class, IObjectFactoryConfigurationSource
         {
             _container.Register(Component.For<IObjectFactoryConfigurationSource>().ImplementedBy<TImplementation>().Named(typeof(TImplementation).FullName).LifestyleSingleton());
 

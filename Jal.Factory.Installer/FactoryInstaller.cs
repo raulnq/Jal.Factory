@@ -13,9 +13,9 @@ namespace Jal.Factory.Installer
 {
     public class FactoryInstaller : IWindsorInstaller
     {
-        private readonly Action<IObjectFactoryBuilder> _action;
+        private readonly Action<IFactoryBuilder> _action;
 
-        public FactoryInstaller(Action<IObjectFactoryBuilder> action = null)
+        public FactoryInstaller(Action<IFactoryBuilder> action = null)
         {
             _action = action;
         }
@@ -53,7 +53,7 @@ namespace Jal.Factory.Installer
 
             if (_action != null)
             {
-                _action(new ObjectFactoryBuilder(container));
+                _action(new FactoryBuilder(container));
             }
         }
     }

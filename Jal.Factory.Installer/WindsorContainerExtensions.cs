@@ -5,7 +5,7 @@ namespace Jal.Factory.Installer
 {
     public static class WindsorContainerExtensions
     {
-        public static void AddFactory(this IWindsorContainer container, Action<IObjectFactoryBuilder> action = null)
+        public static void AddFactory(this IWindsorContainer container, Action<IFactoryBuilder> action = null)
         {
             container.Install(new FactoryInstaller(action));
         }

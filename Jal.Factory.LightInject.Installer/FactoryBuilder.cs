@@ -2,15 +2,15 @@
 
 namespace Jal.Factory.LightInject.Installer
 {
-    public class ObjectFactoryBuilder : IObjectFactoryBuilder
+    public class FactoryBuilder : IFactoryBuilder
     {
         private readonly IServiceContainer _container;
-        public ObjectFactoryBuilder(IServiceContainer container)
+        public FactoryBuilder(IServiceContainer container)
         {
             _container = container;
         }
 
-        public IObjectFactoryBuilder AddSingleton<TService, TImplementation>()
+        public IFactoryBuilder AddSingleton<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
         {
@@ -19,7 +19,7 @@ namespace Jal.Factory.LightInject.Installer
             return this;
         }
 
-        public IObjectFactoryBuilder AddTransient<TService, TImplementation>()
+        public IFactoryBuilder AddTransient<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
         {
@@ -28,7 +28,7 @@ namespace Jal.Factory.LightInject.Installer
             return this;
         }
 
-        public IObjectFactoryBuilder AddSource<TImplementation>() where TImplementation : class, IObjectFactoryConfigurationSource
+        public IFactoryBuilder AddSource<TImplementation>() where TImplementation : class, IObjectFactoryConfigurationSource
         {
             _container.Register<IObjectFactoryConfigurationSource, TImplementation>(typeof(TImplementation).FullName, new PerContainerLifetime());
 

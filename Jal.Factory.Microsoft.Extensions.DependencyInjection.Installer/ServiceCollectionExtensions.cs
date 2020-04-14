@@ -8,7 +8,7 @@ namespace Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer
 
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFactory(this IServiceCollection servicecollection, Action<IObjectFactoryBuilder> action = null)
+        public static IServiceCollection AddFactory(this IServiceCollection servicecollection, Action<IFactoryBuilder> action = null)
         {
             servicecollection.AddServiceLocator();
 
@@ -20,7 +20,7 @@ namespace Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer
 
             if (action != null)
             {
-                action(new ObjectFactoryBuilder(servicecollection));
+                action(new FactoryBuilder(servicecollection));
             }
 
             return servicecollection;
